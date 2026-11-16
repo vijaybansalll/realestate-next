@@ -1,0 +1,6 @@
+.next
+dist
+node_modules
+bun.lock
+public
+.vscode
