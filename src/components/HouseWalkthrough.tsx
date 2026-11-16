@@ -186,14 +186,17 @@ export default function HouseWalkthrough() {
           className="absolute inset-0 block h-full w-full object-cover"
         />
 
-        {/* Subtle radial vignette for cinematic contrast */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(2,6,23,0.4)_0%,rgba(2,6,23,0.2)_50%,rgba(2,6,23,0.65)_100%)]" />
 
-        {/* Centered Luxury Header */}
-        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-6 text-center select-none">
+        <div
+          className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-6 text-center transition-transform duration-75 select-none"
+          style={{
+            opacity: Math.max(0, 1 - scrollProgress * 4),
+            transform: `translateY(-${scrollProgress * 40}px)`,
+          }}
+        >
           <div className="mx-auto flex max-w-5xl flex-col items-center">
-            {/* Main Header with Luxury Font */}
-            <h1 className="bg-gradient-to-b from-[#ffffff] via-[#f7f3ec] to-[#e8d7be] bg-clip-text font-luxury text-4xl leading-[1.08] font-light tracking-[0.03em] text-transparent drop-shadow-[0_12px_32px_rgba(0,0,0,0.9)] sm:text-6xl md:text-7xl lg:text-8xl">
+            <h1 className="font-sans text-4xl leading-[1.08] font-medium tracking-tight text-white drop-shadow-[0_12px_32px_rgba(0,0,0,0.9)] sm:text-6xl md:text-7xl lg:text-8xl">
               Crafting Luxury Living Experiences
             </h1>
           </div>
