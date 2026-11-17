@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
-import { Instrument_Sans } from "next/font/google";
+import { Instrument_Sans, Inter } from "next/font/google";
 import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+import Navbar from "@/components/navbar";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 const instrumentSans = Instrument_Sans({
   variable: "--font-instrument-sans",
@@ -23,10 +27,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSans.variable} h-full font-sans antialiased`}
+      className={cn(
+        "h-full",
+        "antialiased",
+        instrumentSans.variable,
+        "font-sans",
+        inter.variable
+      )}
     >
       <body className="flex min-h-full flex-col bg-slate-950 font-sans text-slate-100">
-        <SmoothScroll>{children}</SmoothScroll>
+        <SmoothScroll>
+          <Navbar />
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );
