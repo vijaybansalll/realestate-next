@@ -60,7 +60,7 @@ const footerSections: FooterData[] = [
     links: [
       {
         title: "Contact us",
-        href: "#",
+        href: "#contact",
       },
       {
         title: "About us",
@@ -101,11 +101,11 @@ const footerSections: FooterData[] = [
 
 const Footer = () => {
   return (
-    <footer className="py-10">
-      <div className="max-w-7xl xl:px-16 lg:px-8 px-4 mx-auto">
+    <footer className="py-8 sm:py-10">
+      <div className="max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-16 mx-auto">
         <div className="flex flex-col gap-6 sm:gap-12">
-          <div className="py-12 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 lg:grid-cols-12 gap-x-8 gap-y-10 px-6 xl:px-0">
-            <div className="col-span-full lg:col-span-4">
+          <div className="py-8 sm:py-12 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 lg:grid-cols-12 gap-x-6 sm:gap-x-8 gap-y-10">
+            <div className="col-span-2 sm:col-span-4 lg:col-span-4">
               <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-100 ease-in-out fill-mode-both">
                 {/* Logo */}
                 <a href="#">
@@ -113,7 +113,7 @@ const Footer = () => {
                 </a>
 
                 <p className="text-base font-normal text-muted-foreground">
-                  Empowering businesses with innovative solutions. Let's create
+                  Empowering businesses with innovative solutions. Let&apos;s create
                   something amazing together.
                 </p>
 
@@ -150,7 +150,7 @@ const Footer = () => {
             <div className="col-span-1 lg:block hidden"></div>
 
             {footerSections.map(({ title, links }, index) => (
-              <div key={index} className="col-span-2">
+              <div key={index} className="col-span-1 sm:col-span-2 md:col-span-2 lg:col-span-2">
                 <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-100 ease-in-out fill-mode-both">
                   <p className="text-base font-medium text-foreground">
                     {title}
@@ -171,7 +171,7 @@ const Footer = () => {
               </div>
             ))}
 
-            <div className="col-span-3">
+            <div className="col-span-2 sm:col-span-4 md:col-span-3 lg:col-span-3">
               <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-100 ease-in-out fill-mode-both">
                 <p className="text-base font-medium text-foreground">
                   Contact Details

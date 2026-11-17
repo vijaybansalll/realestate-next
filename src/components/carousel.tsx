@@ -84,11 +84,11 @@ const properties: Property[] = [
 
 export default function CarouselDemo() {
   return (
-    <div className="mx-auto px-14 py-20">
-      <div className="flex items-end justify-between">
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20 lg:px-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 className="text-3xl font-medium tracking-tight">dddepth</h2>
-          <p className="mt-2 text-lg leading-snug text-pretty text-muted-foreground">
+          <h2 className="text-2xl font-medium tracking-tight sm:text-3xl">dddepth</h2>
+          <p className="mt-1 sm:mt-2 text-xs sm:text-sm md:text-base leading-relaxed text-pretty text-muted-foreground">
             A Curated Collection of AI-generated Abstract 3D Shapes
           </p>
         </div>
@@ -101,7 +101,7 @@ export default function CarouselDemo() {
       <Carousel className="mt-6 w-full" opts={{ loop: true, align: "start" }}>
         <CarouselContent>
           {properties.map((property) => (
-            <CarouselItem className="basis-1/2 md:basis-1/3" key={property.id}>
+            <CarouselItem className="basis-[88%] sm:basis-1/2 lg:basis-1/3" key={property.id}>
               <div className="p-1">
                 <div className="group overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-xs transition hover:shadow-md">
                   {/* Property Image */}
@@ -130,7 +130,7 @@ export default function CarouselDemo() {
                     </div>
 
                     {/* Stats: Bedroom, Bathroom, Car Garage */}
-                    <div className="mt-3 flex items-center justify-between border-t border-border/80 pt-2.5 text-xs text-muted-foreground">
+                    <div className="mt-3 flex items-center justify-between border-t border-border/80 pt-2.5 text-[11px] sm:text-xs text-muted-foreground">
                       <div
                         className="flex items-center gap-1"
                         title={`${property.bedrooms} Bedrooms`}
@@ -159,14 +159,14 @@ export default function CarouselDemo() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <div className="mt-4 flex items-center justify-between sm:justify-end">
-          <div className="flex items-center justify-end gap-1.5">
-            <CarouselPrevious className="-left-10 max-md:static max-md:translate-y-0" />
-            <CarouselNext className="-right-10 max-md:static max-md:translate-y-0" />
+        <div className="mt-6 flex items-center justify-between sm:justify-end">
+          <div className="flex items-center justify-end gap-2">
+            <CarouselPrevious className="static translate-y-0" />
+            <CarouselNext className="static translate-y-0" />
           </div>
 
           <Button className="sm:hidden" size="sm" variant="outline">
-            <Link href="https://www.fffuel.co/dddepth/">View all</Link>
+            <Link href="https://www.fffuel.co/dddepth/" target="_blank">View all</Link>
           </Button>
         </div>
       </Carousel>

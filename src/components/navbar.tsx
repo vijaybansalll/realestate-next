@@ -34,7 +34,7 @@ const Navbar = () => {
         "fixed top-0 inset-x-0 z-50 transition-all duration-300 ease-in-out",
         isScrolled
           ? "h-16 bg-slate-950/90 backdrop-blur-md border-b border-slate-800/80 shadow-lg shadow-black/25"
-          : "h-20 bg-transparent border-b border-transparent shadow-none"
+          : "h-16 sm:h-20 bg-transparent border-b border-transparent shadow-none"
       )}
     >
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">

@@ -112,11 +112,11 @@ const StickyCard002 = ({
     <div className={cn("relative w-full", className)} ref={container}>
       <div
         ref={stickyCardsRef}
-        className="sticky-cards relative flex h-screen w-full items-center justify-center overflow-hidden px-4 pt-16 pb-8 sm:px-6 lg:px-8"
+        className="sticky-cards relative flex h-screen h-[100dvh] w-full items-center justify-center overflow-hidden px-4 pt-20 pb-6 sm:px-6 sm:pt-16 sm:pb-8 lg:px-8"
       >
         <div
           className={cn(
-            "relative h-[65vh] max-h-[640px] w-full max-w-sm overflow-hidden rounded-2xl shadow-2xl sm:h-[70vh] sm:max-w-xl sm:rounded-3xl md:h-[75vh] md:max-w-2xl lg:max-w-3xl xl:max-w-4xl",
+            "relative h-[60vh] max-h-[560px] w-full max-w-[92vw] overflow-hidden rounded-2xl shadow-2xl sm:h-[70vh] sm:max-h-[640px] sm:max-w-xl sm:rounded-3xl md:h-[75vh] md:max-w-2xl lg:max-w-3xl xl:max-w-4xl",
             containerClassName
           )}
         >
@@ -139,19 +139,19 @@ const StickyCard002 = ({
                 draggable={false}
               />
               {(card.title || card.tag) && (
-                <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-slate-950/90 via-slate-950/25 to-transparent p-6 sm:p-8">
+                <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent p-4 sm:p-6 md:p-8">
                   {card.tag && (
-                    <span className="mb-2 inline-block w-fit rounded-full border border-amber-500/30 bg-amber-500/20 px-3 py-1 text-xs font-medium text-amber-300 backdrop-blur-md">
+                    <span className="mb-2 inline-block w-fit rounded-full border border-amber-500/30 bg-amber-500/20 px-2.5 py-0.5 text-[11px] font-medium text-amber-300 backdrop-blur-md sm:px-3 sm:py-1 sm:text-xs">
                       {card.tag}
                     </span>
                   )}
                   {card.title && (
-                    <h4 className="text-xl font-semibold tracking-tight text-white sm:text-2xl">
+                    <h4 className="text-lg font-semibold tracking-tight text-white sm:text-2xl">
                       {card.title}
                     </h4>
                   )}
                   {card.subtitle && (
-                    <p className="mt-1 text-sm text-slate-300">
+                    <p className="mt-1 text-xs text-slate-300 line-clamp-2 sm:text-sm sm:line-clamp-none">
                       {card.subtitle}
                     </p>
                   )}

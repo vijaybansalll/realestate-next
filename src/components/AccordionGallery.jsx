@@ -43,7 +43,18 @@ const AccordionGallery = ({
   const firstRunRef = useRef(true);
   const mediaSizeRef = useRef(320);
 
-  const vertical = orientation === 'vertical';
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(max-width: 640px)');
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
+  const vertical = orientation === 'vertical' || isMobile;
   const count = items.length;
   const [active, setActive] = useState(Math.min(Math.max(defaultIndex, 0), count - 1));
 
@@ -164,6 +175,8 @@ const AccordionGallery = ({
     if (i !== active) {
       e.preventDefault();
       setActive(i);
+    } else if (items[i]?.link === '#' || !items[i]?.link) {
+      e.preventDefault();
     }
   };
 
@@ -187,7 +200,7 @@ const AccordionGallery = ({
         '--ag-text': textColor,
         '--ag-gap': `${gap}px`,
         '--ag-radius': `${radius}px`,
-        height: vertical ? `${Math.round(height * 1.6)}px` : `${height}px`
+        height: isMobile ? '480px' : vertical ? `${Math.round(height * 1.4)}px` : `${height}px`
       }}
       role="list"
       aria-label="Image accordion gallery"

@@ -52,7 +52,9 @@ export default function HouseWalkthrough() {
     if (!img || !img.complete || img.naturalWidth === 0) return;
 
     const dpr =
-      typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
+      typeof window !== "undefined"
+        ? Math.min(window.devicePixelRatio || 1, 2)
+        : 1;
     const displayWidth = canvas.clientWidth || window.innerWidth;
     const displayHeight = canvas.clientHeight || window.innerHeight;
 
@@ -178,9 +180,9 @@ export default function HouseWalkthrough() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[450vh] w-full bg-slate-950"
+      className="relative min-h-[320vh] sm:min-h-[450vh] w-full bg-slate-950"
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
+      <div className="sticky top-0 h-screen h-[100dvh] w-full overflow-hidden">
         <canvas
           ref={canvasRef}
           className="absolute inset-0 block h-full w-full object-cover"
@@ -189,14 +191,14 @@ export default function HouseWalkthrough() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(2,6,23,0.4)_0%,rgba(2,6,23,0.2)_50%,rgba(2,6,23,0.65)_100%)]" />
 
         <div
-          className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-6 text-center transition-transform duration-75 select-none"
+          className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 text-center transition-transform duration-75 select-none"
           style={{
             opacity: Math.max(0, 1 - scrollProgress * 4),
             transform: `translateY(-${scrollProgress * 40}px)`,
           }}
         >
           <div className="mx-auto flex max-w-5xl flex-col items-center">
-            <h1 className="font-sans text-4xl leading-[1.08] font-medium tracking-tight text-white drop-shadow-[0_12px_32px_rgba(0,0,0,0.9)] sm:text-6xl md:text-7xl lg:text-8xl">
+            <h1 className="font-sans text-3xl leading-[1.12] font-medium tracking-tight text-white drop-shadow-[0_12px_32px_rgba(0,0,0,0.9)] sm:text-6xl md:text-7xl lg:text-8xl px-2">
               Crafting Luxury Living Experiences
             </h1>
           </div>

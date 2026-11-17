@@ -121,19 +121,28 @@
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
 }
 
-@media (max-width: 520px) {
+@media (max-width: 640px) {
   .accordion-gallery {
     flex-direction: column;
     perspective: none;
-    height: auto !important;
+    height: 480px !important;
   }
   .ag-panel {
-    min-height: 84px;
+    min-height: 72px;
     transform: none !important;
   }
   .accordion-gallery .ag-panel__media {
     width: 100%;
     height: var(--ag-media-size);
+  }
+  .ag-panel__label {
+    left: 16px;
+    bottom: 16px;
+    right: 16px;
+    gap: 8px;
+  }
+  .ag-panel__text {
+    font-size: 1.1rem;
   }
 }
 

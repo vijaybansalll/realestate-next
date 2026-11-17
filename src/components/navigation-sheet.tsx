@@ -52,7 +52,7 @@ export const NavigationSheet = ({
 
       <SheetContent
         side="right"
-        className="flex h-full flex-col justify-between border-l border-slate-800 bg-slate-950/98 px-6 py-6 text-slate-100 backdrop-blur-2xl sm:max-w-xs"
+        className="flex h-full w-[85%] max-w-xs flex-col justify-between border-l border-slate-800 bg-slate-950/98 px-5 py-6 text-slate-100 backdrop-blur-2xl"
       >
         <div>
           <div className="flex items-center justify-between border-b border-slate-800/80 pb-5 pr-8">

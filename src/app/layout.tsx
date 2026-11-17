@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Instrument_Sans, Inter } from "next/font/google";
 import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
@@ -20,6 +20,13 @@ export const metadata: Metadata = {
     "Explore Villa Lumina with an interactive 60FPS scroll-driven architectural walkthrough.",
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#020617",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,7 +44,7 @@ export default function RootLayout({
         inter.variable
       )}
     >
-      <body className="flex min-h-full flex-col bg-slate-950 font-sans text-slate-100">
+      <body className="flex min-h-full flex-col overflow-x-hidden bg-slate-950 font-sans text-slate-100">
         <SmoothScroll>
           <Navbar />
           {children}

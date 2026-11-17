@@ -31,7 +31,7 @@ export function PerspectiveFlipCard({
   front,
   back,
   h = "h-[500px]",
-  w = "w-[360px]",
+  w = "w-full max-w-[360px]",
 }: PerspectiveFlipCardProps) {
   return (
     <div className={cn("group/p-card [perspective:2000px]", h, w, className)}>

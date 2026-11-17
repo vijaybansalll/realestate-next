@@ -9,8 +9,8 @@ import { Button } from "@/components/ui/button";
 
 const CTA = () => {
   return (
-    <div className="px-0 py-16 sm:px-6">
-      <div className="relative mx-auto max-w-5xl overflow-hidden border-border/60 border-y p-14 sm:rounded-xl sm:border-x dark:bg-foreground">
+    <div className="px-4 py-12 sm:px-6 sm:py-16">
+      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-2xl border border-border/60 p-6 sm:p-10 md:p-14 dark:bg-foreground">
         {/* Aurora Silk Fade Gradient */}
         <div
           className="absolute inset-0 z-0 opacity-70"
@@ -69,22 +69,22 @@ const CTA = () => {
         </div>
 
         <div className="relative isolate">
-          <h2 className="text-balance font-medium text-4xl text-black/85 tracking-tighter md:leading-tight lg:text-[2.75rem]">
+          <h2 className="text-balance font-medium text-2xl text-black/85 tracking-tight sm:text-3xl md:text-4xl lg:text-[2.75rem] md:leading-tight">
             Turn your vision into reality
           </h2>
-          <p className="mt-4 text-balance text-black/70 text-xl/normal md:mt-2.5 lg:text-[1.4rem]/normal">
+          <p className="mt-3 sm:mt-4 text-balance text-black/70 text-sm/relaxed sm:text-base/relaxed md:text-xl/normal">
             Join thousands of developers using our premium component library to
             ship beautiful UIs in minutes, not hours.
           </p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-6 sm:mt-9 flex flex-col gap-3 sm:flex-row">
             <Button
-              className="bg-neutral-950 text-white hover:bg-neutral-950/90"
+              className="w-full sm:w-auto bg-neutral-950 text-white hover:bg-neutral-950/90"
               size="lg"
             >
               Get Started <ArrowUpRight />
             </Button>
             <Button
-              className="border-white/60 bg-white/50 text-black hover:bg-white/80 dark:border-white/60 dark:bg-white/50 dark:text-black dark:hover:bg-white/80"
+              className="w-full sm:w-auto border-white/60 bg-white/50 text-black hover:bg-white/80 dark:border-white/60 dark:bg-white/50 dark:text-black dark:hover:bg-white/80"
               size="lg"
               variant="outline"
             >
