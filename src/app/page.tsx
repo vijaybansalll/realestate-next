@@ -53,7 +53,7 @@ export default function Home() {
           <div className="mb-10 sm:mb-16">
             <AccordionGallery
               items={items}
-              defaultIndex={2}
+              defaultIndex={0}
               expandRatio={0.52}
               trigger="hover"
               accentColor="#f5f5f5"
@@ -70,6 +70,9 @@ export default function Home() {
               gap={10}
               radius={16}
               orientation="horizontal"
+              autoPlay={true}
+              autoPlayInterval={2000}
+              pauseOnHover={true}
             />
           </div>
 
