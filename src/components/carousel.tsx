@@ -84,11 +84,11 @@ const properties: Property[] = [
 
 export default function CarouselDemo() {
   return (
-    <div className="mx-auto max-w-5xl px-14 py-20">
+    <div className="mx-auto px-14 py-20">
       <div className="flex items-end justify-between">
         <div>
-          <h2 className="font-medium text-3xl tracking-tight">dddepth</h2>
-          <p className="mt-2 text-pretty text-lg text-muted-foreground leading-snug">
+          <h2 className="text-3xl font-medium tracking-tight">dddepth</h2>
+          <p className="mt-2 text-lg leading-snug text-pretty text-muted-foreground">
             A Curated Collection of AI-generated Abstract 3D Shapes
           </p>
         </div>
@@ -101,10 +101,7 @@ export default function CarouselDemo() {
       <Carousel className="mt-6 w-full" opts={{ loop: true, align: "start" }}>
         <CarouselContent>
           {properties.map((property) => (
-            <CarouselItem
-              className="basis-1/2 md:basis-1/3"
-              key={property.id}
-            >
+            <CarouselItem className="basis-1/2 md:basis-1/3" key={property.id}>
               <div className="p-1">
                 <div className="group overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-xs transition hover:shadow-md">
                   {/* Property Image */}
@@ -120,7 +117,7 @@ export default function CarouselDemo() {
                   <div className="p-3 sm:p-3.5">
                     {/* Title */}
                     <h3
-                      className="truncate font-medium text-sm text-foreground tracking-tight sm:text-base"
+                      className="truncate text-sm font-medium tracking-tight text-foreground sm:text-base"
                       title={property.title}
                     >
                       {property.title}
