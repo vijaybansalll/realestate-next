@@ -29,6 +29,7 @@ export default function RootLayout({
       lang="en"
       className={cn(
         "h-full",
+        "dark",
         "antialiased",
         instrumentSans.variable,
         "font-sans",
