@@ -33,7 +33,7 @@ const Navbar = () => {
       className={cn(
         "fixed top-0 inset-x-0 z-50 transition-all duration-300 ease-in-out",
         isScrolled
-          ? "h-16 bg-slate-950/90 backdrop-blur-md border-b border-slate-800/80 shadow-lg shadow-black/25"
+          ? "h-16 bg-neutral-950/90 backdrop-blur-md border-b border-neutral-800/80 shadow-lg shadow-black/25"
           : "h-16 sm:h-20 bg-transparent border-b border-transparent shadow-none"
       )}
     >
@@ -45,7 +45,7 @@ const Navbar = () => {
             className="flex items-center gap-2 group transition-opacity hover:opacity-90"
             aria-label="Home"
           >
-            <Logo className="text-white fill-current" />
+            <Logo className="text-neutral-100 fill-current" />
           </Link>
         </div>
 
@@ -62,8 +62,8 @@ const Navbar = () => {
             className={cn(
               "hidden sm:inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-semibold tracking-wide transition-all duration-300 active:scale-95",
               isScrolled
-                ? "bg-white text-slate-950 hover:bg-slate-200 shadow-md shadow-black/20"
-                : "bg-white text-slate-950 hover:bg-slate-100 shadow-lg shadow-black/40 hover:shadow-white/10"
+                ? "bg-neutral-100 text-neutral-950 hover:bg-neutral-200 shadow-md shadow-black/20"
+                : "bg-neutral-100 text-neutral-950 hover:bg-neutral-200 shadow-lg shadow-black/40 hover:shadow-neutral-100/10"
             )}
           >
             <span>Get in touch</span>

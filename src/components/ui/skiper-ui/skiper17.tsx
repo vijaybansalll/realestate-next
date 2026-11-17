@@ -24,40 +24,107 @@ export interface StickyCard002Props {
   imageClassName?: string;
 }
 
+const DEFAULT_CARDS: CardData[] = [
+  {
+    id: 1,
+    image: "/portfolio-luxury.jpg",
+    tag: "Curated Estate",
+    title: "Villa Lumina Overlook",
+    subtitle:
+      "Panoramic coastal residence with private terrace & infinity pool",
+    alt: "Villa Lumina luxury modern estate",
+  },
+  {
+    id: 2,
+    image: "/portfolio-townhouse.jpg",
+    tag: "Urban Living",
+    title: "The Sky Penthouse",
+    subtitle: "Multi-level townhouse with bespoke spatial staging",
+    alt: "Modern townhouse architectural estate",
+  },
+  {
+    id: 3,
+    image: "/portfolio-custom-homes.jpg",
+    tag: "Signature Architecture",
+    title: "Nordic Haven Residence",
+    subtitle: "Custom engineered timber-frame architectural retreat",
+    alt: "Custom designed modern estate home",
+  },
+  {
+    id: 4,
+    image: "/architect-blueprint-plan.png",
+    tag: "Design Phase",
+    title: "Spatial Blueprint Matrix",
+    subtitle: "Precision CAD architectural engineering and zoning layouts",
+    alt: "Architectural blueprint and site plan",
+  },
+  {
+    id: 5,
+    image: "/property-built-after.png",
+    tag: "Completed Realization",
+    title: "Coastal Sanctuary",
+    subtitle: "Turnkey luxury estate completed to exact specifications",
+    alt: "Finished modern luxury property built",
+  },
+];
+
 const StickyCard002 = ({
-  cards,
+  cards = DEFAULT_CARDS,
   className,
   containerClassName,
   imageClassName,
 }: StickyCard002Props) => {
   const container = useRef<HTMLDivElement>(null);
   const stickyCardsRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Synchronize ScrollTrigger with Lenis smooth-scroll ticks
   useLenis(() => {
     ScrollTrigger.update();
   });
 
-  // Refresh ScrollTrigger once DOM layout and images settle
+  // Multi-stage refresh to ensure ScrollTrigger coordinates are 100% accurate
+  // even as upstream images, fonts, and dynamic heights finish loading.
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const refresh = () => {
       ScrollTrigger.refresh();
-    }, 150);
+    };
 
-    return () => clearTimeout(timer);
-  }, [cards]);
+    // Staged refreshes as surrounding layout settles
+    const timer1 = setTimeout(refresh, 100);
+    const timer2 = setTimeout(refresh, 500);
+    const timer3 = setTimeout(refresh, 1200);
+
+    // Refresh when all window assets finish loading
+    window.addEventListener("load", refresh);
+    window.addEventListener("resize", refresh);
+
+    if (typeof document !== "undefined" && document.fonts?.ready) {
+      document.fonts.ready.then(refresh).catch(() => {});
+    }
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+      window.removeEventListener("load", refresh);
+      window.removeEventListener("resize", refresh);
+    };
+  }, []);
 
   useGSAP(
     () => {
       gsap.registerPlugin(ScrollTrigger);
 
-      const cardElements = cardRefs.current.filter(Boolean);
+      // Query DOM elements directly in container scope to prevent stale or empty refs
+      const cardElements = gsap.utils.toArray<HTMLDivElement>(
+        ".sticky-card-item",
+        container.current
+      );
       const totalCards = cardElements.length;
 
       if (totalCards === 0 || !stickyCardsRef.current) return;
 
-      // Set initial positions
+      // Set guaranteed initial positions
       gsap.set(cardElements[0], { y: "0%", scale: 1, rotation: 0 });
 
       for (let i = 1; i < totalCards; i++) {
@@ -68,10 +135,11 @@ const StickyCard002 = ({
         scrollTrigger: {
           trigger: stickyCardsRef.current,
           start: "top top",
-          end: `+=${window.innerHeight * (totalCards - 1)}`,
+          end: () => `+=${window.innerHeight * (totalCards - 1)}`,
           pin: true,
           scrub: 0.5,
           pinSpacing: true,
+          anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       });
@@ -104,6 +172,9 @@ const StickyCard002 = ({
           position
         );
       }
+
+      // Initial layout calculation
+      ScrollTrigger.refresh();
     },
     { scope: container, dependencies: [cards] }
   );
@@ -112,49 +183,47 @@ const StickyCard002 = ({
     <div className={cn("relative w-full", className)} ref={container}>
       <div
         ref={stickyCardsRef}
-        className="sticky-cards relative flex h-screen h-[100dvh] w-full items-center justify-center overflow-hidden px-4 pt-20 pb-6 sm:px-6 sm:pt-16 sm:pb-8 lg:px-8"
+        className="sticky-cards relative flex h-[100dvh] h-screen w-full items-center justify-center overflow-hidden px-4 pt-0 pb-6 sm:px-6 sm:pt-16 sm:pb-8 lg:px-8"
       >
         <div
           className={cn(
-            "relative h-[60vh] max-h-[560px] w-full max-w-[92vw] overflow-hidden rounded-2xl shadow-2xl sm:h-[70vh] sm:max-h-[640px] sm:max-w-xl sm:rounded-3xl md:h-[75vh] md:max-w-2xl lg:max-w-3xl xl:max-w-4xl",
+            "relative h-[80vh] max-h-[560px] w-full max-w-[92vw] overflow-hidden rounded-2xl shadow-2xl sm:h-[70vh] sm:max-h-[640px] sm:rounded-3xl md:h-[75vh]",
             containerClassName
           )}
         >
           {cards.map((card, i) => (
             <div
               key={card.id}
-              ref={(el) => {
-                cardRefs.current[i] = el;
+              style={{
+                zIndex: i + 1,
+                transform: i === 0 ? "none" : "translate3d(0, 100%, 0)",
               }}
-              style={{ zIndex: i + 1 }}
               className={cn(
-                "absolute inset-0 h-full w-full overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-2xl shadow-black/80 will-change-transform sm:rounded-3xl",
+                "sticky-card-item absolute inset-0 h-full w-full overflow-hidden rounded-2xl border border-neutral-100/10 bg-neutral-900 shadow-2xl shadow-black/80 will-change-transform sm:rounded-3xl",
                 imageClassName
               )}
             >
               <img
                 src={card.image}
                 alt={card.alt || card.title || `Property card ${i + 1}`}
+                onLoad={() => ScrollTrigger.refresh()}
                 className="pointer-events-none h-full w-full object-cover select-none"
                 draggable={false}
               />
-              {(card.title || card.tag) && (
-                <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent p-4 sm:p-6 md:p-8">
-                  {card.tag && (
-                    <span className="mb-2 inline-block w-fit rounded-full border border-amber-500/30 bg-amber-500/20 px-2.5 py-0.5 text-[11px] font-medium text-amber-300 backdrop-blur-md sm:px-3 sm:py-1 sm:text-xs">
-                      {card.tag}
-                    </span>
-                  )}
-                  {card.title && (
-                    <h4 className="text-lg font-semibold tracking-tight text-white sm:text-2xl">
-                      {card.title}
-                    </h4>
-                  )}
-                  {card.subtitle && (
-                    <p className="mt-1 text-xs text-slate-300 line-clamp-2 sm:text-sm sm:line-clamp-none">
-                      {card.subtitle}
-                    </p>
-                  )}
+              {(card.title || card.subtitle) && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-neutral-950/30 p-6 text-center select-none sm:p-10">
+                  <div className="mx-auto max-w-2xl px-4">
+                    {card.title && (
+                      <h4 className="text-2xl font-medium tracking-tight text-neutral-100 drop-shadow-[0_8px_24px_rgba(0,0,0,0.95)] text-shadow-2xs sm:text-4xl md:text-5xl">
+                        {card.title}
+                      </h4>
+                    )}
+                    {card.subtitle && (
+                      <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed font-normal text-neutral-200/90 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] text-shadow-2xs sm:mt-4 sm:text-base md:text-lg">
+                        {card.subtitle}
+                      </p>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
@@ -167,53 +236,9 @@ const StickyCard002 = ({
 
 // Example usage component with default architectural cards
 const Skiper17 = () => {
-  const defaultCards: CardData[] = [
-    {
-      id: 1,
-      image: "/portfolio-luxury.jpg",
-      tag: "Curated Estate",
-      title: "Villa Lumina Overlook",
-      subtitle:
-        "Panoramic coastal residence with private terrace & infinity pool",
-      alt: "Villa Lumina luxury modern estate",
-    },
-    {
-      id: 2,
-      image: "/portfolio-townhouse.jpg",
-      tag: "Urban Living",
-      title: "The Sky Penthouse",
-      subtitle: "Multi-level townhouse with bespoke spatial staging",
-      alt: "Modern townhouse architectural estate",
-    },
-    {
-      id: 3,
-      image: "/portfolio-custom-homes.jpg",
-      tag: "Signature Architecture",
-      title: "Nordic Haven Residence",
-      subtitle: "Custom engineered timber-frame architectural retreat",
-      alt: "Custom designed modern estate home",
-    },
-    {
-      id: 4,
-      image: "/architect-blueprint-plan.png",
-      tag: "Design Phase",
-      title: "Spatial Blueprint Matrix",
-      subtitle: "Precision CAD architectural engineering and zoning layouts",
-      alt: "Architectural blueprint and site plan",
-    },
-    {
-      id: 5,
-      image: "/property-built-after.png",
-      tag: "Completed Realization",
-      title: "Coastal Sanctuary",
-      subtitle: "Turnkey luxury estate completed to exact specifications",
-      alt: "Finished modern luxury property built",
-    },
-  ];
-
   return (
     <div className="w-full">
-      <StickyCard002 cards={defaultCards} />
+      <StickyCard002 cards={DEFAULT_CARDS} />
     </div>
   );
 };

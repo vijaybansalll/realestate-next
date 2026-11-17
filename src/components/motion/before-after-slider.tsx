@@ -313,7 +313,7 @@ export function BeforeAfterSlider({
   };
 
   const chip =
-    "pointer-events-none absolute top-3 rounded-full bg-black/45 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm";
+    "pointer-events-none absolute top-3 rounded-full bg-black/45 px-2.5 py-1 text-xs font-medium text-neutral-100 backdrop-blur-sm";
 
   return (
     // biome-ignore lint/a11y/noStaticElementInteractions: a pointer surface for the slider below, which owns focus, keys and the accessible value.
@@ -374,7 +374,7 @@ export function BeforeAfterSlider({
         <motion.path
           d={lineD}
           fill="none"
-          stroke="white"
+          stroke="#f5f5f5"
           strokeLinecap="square"
           vectorEffect="non-scaling-stroke"
           initial={false}
@@ -404,7 +404,7 @@ export function BeforeAfterSlider({
             onPointerLeave={() => setHovered(false)}
             animate={{ scale: reduce ? 1 : dragging ? 1.08 : hovered ? 1.04 : 1 }}
             transition={SPRING_PRESS}
-            className="pointer-events-auto flex size-10 items-center justify-center rounded-full bg-white text-neutral-900 shadow-[0_0_0_1px_rgb(0_0_0/0.12)] outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-black/20"
+            className="pointer-events-auto flex size-10 items-center justify-center rounded-full bg-neutral-100 text-neutral-950 shadow-[0_0_0_1px_rgb(0_0_0/0.12)] outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-black/20"
           >
             {/* The chevrons part as the handle is hovered and grabbed. */}
             {([ChevronLeft, ChevronRight] as const).map((Icon, index) => {

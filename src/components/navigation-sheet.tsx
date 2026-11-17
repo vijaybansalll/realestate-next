@@ -41,8 +41,8 @@ export const NavigationSheet = ({
             className={cn(
               "rounded-full transition-colors",
               isScrolled
-                ? "text-slate-200 hover:bg-slate-800 hover:text-white"
-                : "text-white hover:bg-white/10"
+                ? "text-neutral-200 hover:bg-neutral-800 hover:text-neutral-100"
+                : "text-neutral-100 hover:bg-neutral-100/10"
             )}
           />
         }
@@ -52,12 +52,12 @@ export const NavigationSheet = ({
 
       <SheetContent
         side="right"
-        className="flex h-full w-[85%] max-w-xs flex-col justify-between border-l border-slate-800 bg-slate-950/98 px-5 py-6 text-slate-100 backdrop-blur-2xl"
+        className="flex h-full w-[85%] max-w-xs flex-col justify-between border-l border-neutral-800 bg-neutral-950/98 px-5 py-6 text-neutral-100 backdrop-blur-2xl"
       >
         <div>
-          <div className="flex items-center justify-between border-b border-slate-800/80 pb-5 pr-8">
+          <div className="flex items-center justify-between border-b border-neutral-800/80 pb-5 pr-8">
             <Link href="#" onClick={() => setOpen(false)}>
-              <Logo className="text-white fill-current" />
+              <Logo className="text-neutral-100 fill-current" />
             </Link>
           </div>
 
@@ -67,20 +67,20 @@ export const NavigationSheet = ({
                 key={item.title}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-between rounded-xl px-4 py-3 text-base font-medium text-slate-300 transition-colors hover:bg-slate-900 hover:text-white"
+                className="flex items-center justify-between rounded-xl px-4 py-3 text-base font-medium text-neutral-300 transition-colors hover:bg-neutral-900 hover:text-neutral-100"
               >
                 <span>{item.title}</span>
-                <ArrowUpRight className="size-4 text-slate-500" />
+                <ArrowUpRight className="size-4 text-neutral-500" />
               </Link>
             ))}
           </nav>
         </div>
 
-        <div className="border-t border-slate-800/80 pt-6">
+        <div className="border-t border-neutral-800/80 pt-6">
           <Link
             href="#contact"
             onClick={() => setOpen(false)}
-            className="flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-white/5 transition-all hover:bg-slate-200 active:scale-95"
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-neutral-100 px-5 py-3 text-sm font-semibold text-neutral-950 shadow-lg shadow-neutral-100/5 transition-all hover:bg-neutral-200 active:scale-95"
           >
             <span>Get in touch</span>
             <ArrowUpRight className="size-4" />

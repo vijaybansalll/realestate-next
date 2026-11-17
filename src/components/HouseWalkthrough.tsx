@@ -70,7 +70,7 @@ export default function HouseWalkthrough() {
     ctx.scale(dpr, dpr);
 
     // Clear background
-    ctx.fillStyle = "#020617";
+    ctx.fillStyle = "#0a0a0a";
     ctx.fillRect(0, 0, displayWidth, displayHeight);
 
     // Object-fit: cover calculation
@@ -180,7 +180,7 @@ export default function HouseWalkthrough() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[320vh] sm:min-h-[450vh] w-full bg-slate-950"
+      className="relative min-h-[320vh] sm:min-h-[450vh] w-full bg-neutral-950"
     >
       <div className="sticky top-0 h-screen h-[100dvh] w-full overflow-hidden">
         <canvas
@@ -188,7 +188,7 @@ export default function HouseWalkthrough() {
           className="absolute inset-0 block h-full w-full object-cover"
         />
 
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(2,6,23,0.4)_0%,rgba(2,6,23,0.2)_50%,rgba(2,6,23,0.65)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(10,10,10,0.4)_0%,rgba(10,10,10,0.2)_50%,rgba(10,10,10,0.65)_100%)]" />
 
         <div
           className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 text-center transition-transform duration-75 select-none"
@@ -198,7 +198,7 @@ export default function HouseWalkthrough() {
           }}
         >
           <div className="mx-auto flex max-w-5xl flex-col items-center">
-            <h1 className="font-sans text-3xl leading-[1.12] font-medium tracking-tight text-white drop-shadow-[0_12px_32px_rgba(0,0,0,0.9)] sm:text-6xl md:text-7xl lg:text-8xl px-2">
+            <h1 className="font-sans text-3xl leading-[1.12] font-medium tracking-tight text-neutral-100 drop-shadow-[0_12px_32px_rgba(0,0,0,0.9)] sm:text-6xl md:text-7xl lg:text-8xl px-2">
               Crafting Luxury Living Experiences
             </h1>
           </div>

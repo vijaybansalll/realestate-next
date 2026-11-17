@@ -28,7 +28,7 @@ export default function Home() {
   ];
 
   return (
-    <main className="relative min-h-screen bg-slate-950 font-sans text-slate-100 selection:bg-amber-500 selection:text-slate-950">
+    <main className="relative min-h-screen bg-neutral-950 font-sans text-neutral-100 selection:bg-amber-500 selection:text-neutral-950">
       <section id="walkthrough" className="relative">
         <HouseWalkthrough />
       </section>
@@ -41,10 +41,10 @@ export default function Home() {
             <span className="text-xs font-semibold tracking-[0.25em] text-amber-400 uppercase">
               Curated Portfolio
             </span>
-            <h2 className="mt-3 text-2xl font-medium tracking-tight text-white sm:text-4xl md:text-5xl">
+            <h2 className="mt-3 text-2xl font-medium tracking-tight text-neutral-100 sm:text-4xl md:text-5xl">
               Featured Architectural Estates
             </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-xs text-slate-400 sm:mt-4 sm:text-base sm:text-sm">
+            <p className="mx-auto mt-3 max-w-2xl text-xs text-neutral-400 sm:mt-4 sm:text-base sm:text-sm">
               Explore our handpicked collection of modern residences, prime
               coastal retreats, and architectural masterpieces.
             </p>
@@ -56,9 +56,9 @@ export default function Home() {
               defaultIndex={2}
               expandRatio={0.52}
               trigger="hover"
-              accentColor="#ffffff"
-              overlayColor="#060010"
-              textColor="#ffffff"
+              accentColor="#f5f5f5"
+              overlayColor="#0a0a0a"
+              textColor="#f5f5f5"
               grayscale
               showLabels
               duration={0.6}
@@ -79,17 +79,17 @@ export default function Home() {
                 <span className="text-xs font-semibold tracking-widest text-amber-400 uppercase">
                   Transformation
                 </span>
-                <h3 className="mt-2 text-2xl font-medium text-white sm:text-3xl">
+                <h3 className="mt-2 text-2xl font-medium text-neutral-100 sm:text-3xl">
                   Restoration & Spatial Architecture
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-400 sm:text-base">
+                <p className="mt-3 text-sm leading-relaxed text-neutral-400 sm:text-base">
                   Every property undergoes a comprehensive visual and
                   architectural assessment. Drag the slider to witness our
                   bespoke spatial staging and atmospheric illumination.
                 </p>
               </div>
 
-              <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl border border-slate-800 shadow-2xl lg:w-1/2">
+              <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl border border-neutral-800 shadow-2xl lg:w-1/2">
                 <BeforeAfterSlider
                   showLabels
                   labels={{
@@ -127,10 +127,10 @@ export default function Home() {
             <span className="text-xs font-semibold tracking-[0.25em] text-amber-400 uppercase">
               Interactive Showcase
             </span>
-            <h2 className="mt-3 text-2xl font-medium tracking-tight text-white sm:text-4xl md:text-5xl">
+            <h2 className="mt-3 text-2xl font-medium tracking-tight text-neutral-100 sm:text-4xl md:text-5xl">
               Architectural Perspectives
             </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-xs text-slate-400 sm:mt-4 sm:text-sm md:text-base">
+            <p className="mx-auto mt-3 max-w-2xl text-xs text-neutral-400 sm:mt-4 sm:text-sm md:text-base">
               Scroll to explore our layered portfolio of bespoke residences and
               transformations.
             </p>

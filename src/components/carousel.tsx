@@ -87,7 +87,7 @@ export default function CarouselDemo() {
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20 lg:px-8">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 className="text-2xl font-medium tracking-tight sm:text-3xl">dddepth</h2>
+          <h2 className="text-2xl font-medium tracking-tight text-neutral-100 sm:text-3xl">dddepth</h2>
           <p className="mt-1 sm:mt-2 text-xs sm:text-sm md:text-base leading-relaxed text-pretty text-muted-foreground">
             A Curated Collection of AI-generated Abstract 3D Shapes
           </p>

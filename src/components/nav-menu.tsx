@@ -26,8 +26,8 @@ export const NavMenu = ({
               className={cn(
                 "inline-flex items-center justify-center rounded-full px-3.5 py-1.5 text-sm font-medium transition-all duration-200 tracking-wide select-none",
                 isScrolled
-                  ? "text-slate-300 hover:text-white hover:bg-slate-800/80 active:bg-slate-800"
-                  : "text-slate-200/90 hover:text-white hover:bg-white/10 active:bg-white/15 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
+                  ? "text-neutral-300 hover:text-neutral-100 hover:bg-neutral-800/80 active:bg-neutral-800"
+                  : "text-neutral-200/90 hover:text-neutral-100 hover:bg-neutral-100/10 active:bg-neutral-100/15 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
               )}
             >
               {item.title}

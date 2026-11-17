@@ -24,7 +24,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#020617",
+  themeColor: "#0a0a0a",
 };
 
 export default function RootLayout({
@@ -44,7 +44,7 @@ export default function RootLayout({
         inter.variable
       )}
     >
-      <body className="flex min-h-full flex-col overflow-x-hidden bg-slate-950 font-sans text-slate-100">
+      <body className="flex min-h-full flex-col overflow-x-hidden bg-neutral-950 font-sans text-neutral-100">
         <SmoothScroll>
           <Navbar />
           {children}

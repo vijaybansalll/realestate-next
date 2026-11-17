@@ -35,56 +35,56 @@ const CTA = () => {
         />
 
         <div className="absolute top-1/2 right-20 -translate-y-1/2">
-          <div className="relative flex size-20 items-center justify-center border border-white/40 bg-white/10 max-md:hidden">
-            <Zap className="size-12 fill-white/10 stroke-[1px] text-white/80" />
-            <div className="mask-y-from-75% absolute -inset-y-12 -left-px border-white/60 border-s border-dashed" />
-            <div className="mask-y-from-75% absolute -inset-y-12 -right-px border-white/60 border-e border-dashed" />
-            <div className="mask-x-from-75% absolute -inset-x-12 -top-px border-white/80 border-t border-dashed" />
-            <div className="mask-x-from-75% absolute -inset-x-12 -bottom-px border-white/80 border-b border-dashed" />
+          <div className="relative flex size-20 items-center justify-center border border-neutral-100/40 bg-neutral-100/10 max-md:hidden">
+            <Zap className="size-12 fill-neutral-100/10 stroke-[1px] text-neutral-100/80" />
+            <div className="mask-y-from-75% absolute -inset-y-12 -left-px border-neutral-100/60 border-s border-dashed" />
+            <div className="mask-y-from-75% absolute -inset-y-12 -right-px border-neutral-100/60 border-e border-dashed" />
+            <div className="mask-x-from-75% absolute -inset-x-12 -top-px border-neutral-100/80 border-t border-dashed" />
+            <div className="mask-x-from-75% absolute -inset-x-12 -bottom-px border-neutral-100/80 border-b border-dashed" />
           </div>
-          <div className="relative flex size-20 -translate-x-full items-center justify-center border border-white/40 bg-white/10 max-md:hidden">
-            <Package className="size-12 fill-white/10 stroke-[1px] text-white/80" />
-            <div className="mask-y-from-75% absolute -inset-y-12 -left-px border-white/60 border-s border-dashed" />
-            <div className="mask-y-from-75% absolute -inset-y-12 -right-px border-white/60 border-e border-dashed" />
-            <div className="mask-x-from-75% absolute -inset-x-12 -top-px border-white/80 border-t border-dashed" />
-            <div className="mask-x-from-75% absolute -inset-x-12 -bottom-px border-white/80 border-b border-dashed" />
+          <div className="relative flex size-20 -translate-x-full items-center justify-center border border-neutral-100/40 bg-neutral-100/10 max-md:hidden">
+            <Package className="size-12 fill-neutral-100/10 stroke-[1px] text-neutral-100/80" />
+            <div className="mask-y-from-75% absolute -inset-y-12 -left-px border-neutral-100/60 border-s border-dashed" />
+            <div className="mask-y-from-75% absolute -inset-y-12 -right-px border-neutral-100/60 border-e border-dashed" />
+            <div className="mask-x-from-75% absolute -inset-x-12 -top-px border-neutral-100/80 border-t border-dashed" />
+            <div className="mask-x-from-75% absolute -inset-x-12 -bottom-px border-neutral-100/80 border-b border-dashed" />
           </div>
-          <div className="relative flex size-20 items-center justify-center border border-white/40 bg-white/10 max-md:hidden">
-            <ComponentIcon className="size-12 fill-white/10 stroke-[1px] text-white/80" />
-            <div className="mask-y-from-75% absolute -inset-y-12 -left-px border-white/60 border-s border-dashed" />
-            <div className="mask-y-from-75% absolute -inset-y-12 -right-px border-white/60 border-e border-dashed" />
-            <div className="mask-x-from-75% absolute -inset-x-12 -top-px border-white/80 border-t border-dashed" />
-            <div className="mask-x-from-75% absolute -inset-x-12 -bottom-px border-white/80 border-b border-dashed" />
+          <div className="relative flex size-20 items-center justify-center border border-neutral-100/40 bg-neutral-100/10 max-md:hidden">
+            <ComponentIcon className="size-12 fill-neutral-100/10 stroke-[1px] text-neutral-100/80" />
+            <div className="mask-y-from-75% absolute -inset-y-12 -left-px border-neutral-100/60 border-s border-dashed" />
+            <div className="mask-y-from-75% absolute -inset-y-12 -right-px border-neutral-100/60 border-e border-dashed" />
+            <div className="mask-x-from-75% absolute -inset-x-12 -top-px border-neutral-100/80 border-t border-dashed" />
+            <div className="mask-x-from-75% absolute -inset-x-12 -bottom-px border-neutral-100/80 border-b border-dashed" />
           </div>
         </div>
 
         <div className="absolute top-1/2 right-20 -translate-y-1/2">
-          <div className="mask-r-from-75% relative flex size-20 translate-x-full items-center justify-center border border-white/40 bg-white/10 max-md:hidden">
-            <CpuIcon className="size-12 fill-white/10 stroke-[1px] text-white/80" />
-            <div className="mask-y-from-75% absolute -inset-y-12 -left-px border-white/60 border-s border-dashed" />
-            <div className="mask-y-from-75% absolute -inset-y-12 -right-px border-white/60 border-e border-dashed" />
-            <div className="mask-x-from-75% absolute -inset-x-12 -top-px border-white/80 border-t border-dashed" />
-            <div className="mask-x-from-75% absolute -inset-x-12 -bottom-px border-white/80 border-b border-dashed" />
+          <div className="mask-r-from-75% relative flex size-20 translate-x-full items-center justify-center border border-neutral-100/40 bg-neutral-100/10 max-md:hidden">
+            <CpuIcon className="size-12 fill-neutral-100/10 stroke-[1px] text-neutral-100/80" />
+            <div className="mask-y-from-75% absolute -inset-y-12 -left-px border-neutral-100/60 border-s border-dashed" />
+            <div className="mask-y-from-75% absolute -inset-y-12 -right-px border-neutral-100/60 border-e border-dashed" />
+            <div className="mask-x-from-75% absolute -inset-x-12 -top-px border-neutral-100/80 border-t border-dashed" />
+            <div className="mask-x-from-75% absolute -inset-x-12 -bottom-px border-neutral-100/80 border-b border-dashed" />
           </div>
         </div>
 
         <div className="relative isolate">
-          <h2 className="text-balance font-medium text-2xl text-black/85 tracking-tight sm:text-3xl md:text-4xl lg:text-[2.75rem] md:leading-tight">
+          <h2 className="text-balance font-medium text-2xl text-neutral-900 tracking-tight sm:text-3xl md:text-4xl lg:text-[2.75rem] md:leading-tight">
             Turn your vision into reality
           </h2>
-          <p className="mt-3 sm:mt-4 text-balance text-black/70 text-sm/relaxed sm:text-base/relaxed md:text-xl/normal">
+          <p className="mt-3 sm:mt-4 text-balance text-neutral-700 text-sm/relaxed sm:text-base/relaxed md:text-xl/normal">
             Join thousands of developers using our premium component library to
             ship beautiful UIs in minutes, not hours.
           </p>
           <div className="mt-6 sm:mt-9 flex flex-col gap-3 sm:flex-row">
             <Button
-              className="w-full sm:w-auto bg-neutral-950 text-white hover:bg-neutral-950/90"
+              className="w-full sm:w-auto bg-neutral-950 text-neutral-100 hover:bg-neutral-900"
               size="lg"
             >
               Get Started <ArrowUpRight />
             </Button>
             <Button
-              className="w-full sm:w-auto border-white/60 bg-white/50 text-black hover:bg-white/80 dark:border-white/60 dark:bg-white/50 dark:text-black dark:hover:bg-white/80"
+              className="w-full sm:w-auto border-neutral-400/60 bg-neutral-100/50 text-neutral-950 hover:bg-neutral-100/80 dark:border-neutral-400/60 dark:bg-neutral-100/50 dark:text-neutral-950 dark:hover:bg-neutral-100/80"
               size="lg"
               variant="outline"
             >
