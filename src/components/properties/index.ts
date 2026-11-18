@@ -10,6 +10,7 @@ export { PropertiesEmptyState } from "./properties-empty-state";
 
 // Interactive Estate Components
 export { PropertyCard } from "./property-card";
+export { PropertyImageCarousel } from "./property-image-carousel";
 export {
   PropertyFiltersSheet,
   PropertyFiltersSheet as PropertyFiltersComponent,

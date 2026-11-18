@@ -19,6 +19,12 @@ export const ALL_PROPERTIES: Property[] = [
     size: "650 m² (7,000 sq ft)",
     image:
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?auto=format&fit=crop&w=1200&q=80",
+    ],
     description:
       "A benchmark architectural masterpiece situated on an elevated ridge with panoramic valley horizons, bespoke stone accents, and an infinity pool.",
     features: [
@@ -47,6 +53,12 @@ export const ALL_PROPERTIES: Property[] = [
     size: "820 m² (8,826 sq ft)",
     image:
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80",
+    ],
     description:
       "Direct Pacific oceanfront villa featuring dramatic cantilevered teak decks, private tidal beach access, and floor-to-ceiling structural glass.",
     features: [
@@ -75,6 +87,12 @@ export const ALL_PROPERTIES: Property[] = [
     size: "340 m² (3,660 sq ft)",
     image:
       "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80",
+    ],
     description:
       "Tri-level crown penthouse with private keyed elevator access, 360-degree skyline vistas, wrap-around bronze terrace, and rooftop plunge pool.",
     features: [
@@ -103,6 +121,12 @@ export const ALL_PROPERTIES: Property[] = [
     size: "460 m² (4,950 sq ft)",
     image:
       "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585153490-76fb20a32601?auto=format&fit=crop&w=1200&q=80",
+    ],
     description:
       "Desert modernism brought to life with rammed earth walls, shaded courtyards, reflective water bodies, and custom acoustic ceiling timber.",
     features: [
@@ -130,6 +154,12 @@ export const ALL_PROPERTIES: Property[] = [
     size: "710 m² (7,640 sq ft)",
     image:
       "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?auto=format&fit=crop&w=1200&q=80",
+    ],
     description:
       "Iconic alpine timber-and-glass retreat with ski-in/ski-out privileges, stone fireplaces, radiant heat flagstone, and year-round mountain views.",
     features: [
@@ -157,7 +187,13 @@ export const ALL_PROPERTIES: Property[] = [
     landAreaSqM: 1400,
     size: "390 m² (4,200 sq ft)",
     image:
-      "https://images.unsplash.com/photo-160058515526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1200&q=80",
+    ],
     description:
       "A serene desert sanctuary crafted with polished aggregate floors, expansive shaded loggias, integrated outdoor kitchen, and infinity spa.",
     features: [
@@ -186,6 +222,12 @@ export const ALL_PROPERTIES: Property[] = [
     size: "95 m² (1,022 sq ft)",
     image:
       "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+    ],
     description:
       "Sun-drenched authentic cast-iron loft with soaring 14-foot ceilings, bespoke custom walnut millwork, and top-tier Miele appliances.",
     features: [
@@ -213,6 +255,12 @@ export const ALL_PROPERTIES: Property[] = [
     size: "88 m² (947 sq ft)",
     image:
       "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+    ],
     description:
       "Architecturally refined modern coastal studio with a private balcony, polished microcement floors, and sustainable cross-laminated timber beams.",
     features: ["Private Balcony", "Walk to Canals", "Polished Terrazzo"],
@@ -236,6 +284,12 @@ export const ALL_PROPERTIES: Property[] = [
     size: "145 m² (1,560 sq ft)",
     image:
       "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80",
+    ],
     description:
       "Period elegance meets contemporary minimalism overlooking private communal gardens with 24-hour uniformed concierge service.",
     features: [
@@ -264,6 +318,12 @@ export const ALL_PROPERTIES: Property[] = [
     size: "160 m² (1,722 sq ft)",
     image:
       "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80",
+    ],
     description:
       "Modern dual-aspect corner residence boasting panoramic views of Manhattan skyline, marble waterfall kitchen island, and dedicated private parking.",
     features: [
@@ -292,6 +352,12 @@ export const ALL_PROPERTIES: Property[] = [
     size: "310 m² (3,336 sq ft)",
     image:
       "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1613977257592-4871e5fcd7c4?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?auto=format&fit=crop&w=1200&q=80",
+    ],
     description:
       "Intimate architectural gem shielded by mature olive groves with an indoor-outdoor seamless glass pocket door system and heated saltwater lap pool.",
     features: ["Lap Pool", "Architectural Concrete", "Olive Grove Patio"],
@@ -315,6 +381,12 @@ export const ALL_PROPERTIES: Property[] = [
     size: "260 m² (2,798 sq ft)",
     image:
       "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1200&q=80",
+    ],
     description:
       "Three-story architectural townhouse bordering greenbelt nature reserves with a panoramic private rooftop deck and smart energy storage.",
     features: ["Rooftop Deck", "Greenbelt Access", "Smart Lock Automation"],
@@ -338,6 +410,12 @@ export const ALL_PROPERTIES: Property[] = [
     size: "520 m² (5,597 sq ft)",
     image:
       "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?auto=format&fit=crop&w=1200&q=80",
+    ],
     description:
       "Sublime coastal compound poised above Santa Monica bay featuring private gated drive, limestone floors, dual master retreats, and curated sculpture gardens.",
     features: [
@@ -366,6 +444,12 @@ export const ALL_PROPERTIES: Property[] = [
     size: "740 m² (7,965 sq ft)",
     image:
       "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585153490-76fb20a32601?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?auto=format&fit=crop&w=1200&q=80",
+    ],
     description:
       "Timeless classical architectural estate renovated to contemporary passive-house standards with uninterrupted views of the Golden Gate Bridge.",
     features: [

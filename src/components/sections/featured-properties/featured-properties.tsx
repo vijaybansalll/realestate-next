@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
@@ -13,6 +12,7 @@ import {
 import { Bed, Bath, Car, Maximize2 } from "lucide-react";
 import { FEATURED_PROPERTIES } from "@/data";
 import type { Property } from "@/types";
+import { PropertyImageCarousel } from "@/components/properties";
 
 interface FeaturedPropertiesProps {
   properties?: Property[];
@@ -58,17 +58,20 @@ export function FeaturedProperties({
             >
               <div className="p-1">
                 <div className="group overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-xs transition hover:shadow-md">
-                  {/* Property Image */}
-                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
-                    <Image
-                      className="object-cover transition duration-300 group-hover:scale-105"
-                      src={property.image}
-                      alt={property.title}
-                      fill
-                      sizes="(max-width: 640px) 88vw, (max-width: 1024px) 50vw, 33vw"
-                      draggable={false}
-                    />
-                  </div>
+                  {/* Property Image Carousel */}
+                  <PropertyImageCarousel
+                    images={
+                      property.images && property.images.length > 0
+                        ? property.images
+                        : [property.image]
+                    }
+                    alt={property.title}
+                    aspectRatio="aspect-[4/3]"
+                    autoPlay={true}
+                    enableDrag={false}
+                    dotsClassName="bottom-3"
+                    sizes="(max-width: 640px) 88vw, (max-width: 1024px) 50vw, 33vw"
+                  />
 
                   {/* Property Info */}
                   <div className="p-3 sm:p-3.5">

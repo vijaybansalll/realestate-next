@@ -1,20 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import { useState, useMemo } from "react";
 import {
   Bed,
   Bath,
   Maximize2,
   MapPin,
   Sparkles,
-  Heart,
   Layers,
+  Heart,
   ArrowUpRight,
 } from "lucide-react";
 import type { Property } from "@/types";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { PropertyImageCarousel } from "./property-image-carousel";
 
 interface PropertyCardProps {
   property: Property;
@@ -29,6 +29,22 @@ export function PropertyCard({
 }: PropertyCardProps) {
   const [isFavorite, setIsFavorite] = useState(false);
 
+  // Normalize image list: support multiple images with fallback to property.image
+  const images = useMemo(() => {
+    if (property.images && property.images.length > 0) {
+      return property.images;
+    }
+    return property.image ? [property.image] : [];
+  }, [property.images, property.image]);
+
+  // Subtle stagger for auto-play across different cards in grid
+  const autoPlayInterval = useMemo(() => {
+    const hash = property.id
+      .split("")
+      .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return 3400 + (hash % 5) * 300;
+  }, [property.id]);
+
   return (
     <article
       className={cn(
@@ -36,22 +52,23 @@ export function PropertyCard({
         className
       )}
     >
-      {/* Media Frame */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-950">
-        <Image
-          src={property.image}
-          alt={property.title}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-          draggable={false}
-        />
-
-        {/* Dark Vignette Overlay */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-neutral-950/40" />
-
-        {/* Top Badges */}
-        <div className="pointer-events-none absolute inset-x-3 top-3 flex items-center justify-between">
+      {/* Media Frame with Auto Image Carousel */}
+      <PropertyImageCarousel
+        images={images}
+        alt={property.title}
+        aspectRatio="aspect-[16/10]"
+        autoPlay={true}
+        autoPlayInterval={autoPlayInterval}
+        pauseOnHover={true}
+        showArrows={true}
+        showDots={true}
+        showCounter={true}
+        counterClassName="top-3 right-12"
+        enableDrag={true}
+        dotsClassName="bottom-15"
+      >
+        {/* Top Badges & Actions */}
+        <div className="pointer-events-none absolute inset-x-3 top-3 z-10 flex items-center justify-between">
           <div className="flex flex-wrap items-center gap-1.5">
             <span
               className={cn(
@@ -71,22 +88,42 @@ export function PropertyCard({
               </span>
             )}
           </div>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsFavorite(!isFavorite);
+            }}
+            aria-label={
+              isFavorite ? "Remove from favorites" : "Save to favorites"
+            }
+            className="pointer-events-auto flex size-7 items-center justify-center rounded-full border border-neutral-700/60 bg-neutral-950/75 text-neutral-200 shadow-sm backdrop-blur-md transition-all hover:scale-105 hover:border-rose-500/60 hover:bg-neutral-900 focus-visible:outline-none"
+          >
+            <Heart
+              className={cn(
+                "size-3.5 transition-colors",
+                isFavorite ? "fill-rose-500 text-rose-500" : "text-neutral-300"
+              )}
+            />
+          </button>
         </div>
 
         {/* Bottom Price Tag inside image */}
-        <div className="absolute right-3 bottom-3 left-3 flex items-end justify-between">
-          <div className="rounded-lg border border-neutral-800/80 bg-neutral-950/80 px-3 py-1.5 shadow-lg backdrop-blur-md">
+        <div className="pointer-events-none absolute right-3 bottom-3 left-3 z-10 flex items-end justify-between">
+          <div className="pointer-events-auto rounded-lg border border-neutral-800/80 bg-neutral-950/80 px-3 py-1.5 shadow-lg backdrop-blur-md">
             <span className="block text-xs text-neutral-300">Price</span>
             <span className="text-base font-semibold tracking-tight text-neutral-100 sm:text-xl md:font-bold">
               {property.formattedPrice}
             </span>
           </div>
 
-          <span className="rounded-md border border-neutral-800 bg-neutral-900/90 px-2.5 py-1 text-xs font-medium text-neutral-300 backdrop-blur-md">
+          <span className="pointer-events-auto rounded-md border border-neutral-800 bg-neutral-900/90 px-2.5 py-1 text-xs font-medium text-neutral-300 backdrop-blur-md">
             {property.bhk} BHK
           </span>
         </div>
-      </div>
+      </PropertyImageCarousel>
 
       {/* Content Details */}
       <div className="flex flex-1 flex-col justify-between p-5">

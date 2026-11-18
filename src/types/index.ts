@@ -24,6 +24,7 @@ export interface Property {
   landAreaSqM: number;
   size: string;
   image: string;
+  images?: string[];
   description?: string;
   features?: string[];
   featured?: boolean;
