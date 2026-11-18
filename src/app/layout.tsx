@@ -1,10 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Instrument_Sans, Inter } from "next/font/google";
-import SmoothScroll from "@/components/SmoothScroll";
-import "./globals.css";
+import { Navbar, Footer, SmoothScroll } from "@/components/layout";
+import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/shadcn-space/blocks/footer-01/footer";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -15,9 +14,8 @@ const instrumentSans = Instrument_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Villa Lumina | Luxury Real Estate Experience",
-  description:
-    "Explore Villa Lumina with an interactive 60FPS scroll-driven architectural walkthrough.",
+  title: siteConfig.title,
+  description: siteConfig.description,
 };
 
 export const viewport: Viewport = {

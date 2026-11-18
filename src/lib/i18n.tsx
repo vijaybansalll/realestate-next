@@ -25,7 +25,9 @@ type LocaleContextValue = {
 
 const NO_MESSAGES: LocaleMessages = {};
 
-const LocaleContext = createContext<LocaleContextValue>({ messages: NO_MESSAGES });
+const LocaleContext = createContext<LocaleContextValue>({
+  messages: NO_MESSAGES,
+});
 
 /** Without a locale, digits stay plain so server and client render the same text. */
 export function formatNumber(value: number, locale?: string) {
@@ -44,9 +46,15 @@ export interface LocaleProviderProps {
   children: ReactNode;
 }
 
-export function LocaleProvider({ locale, messages = NO_MESSAGES, children }: LocaleProviderProps) {
+export function LocaleProvider({
+  locale,
+  messages = NO_MESSAGES,
+  children,
+}: LocaleProviderProps) {
   const value = useMemo(() => ({ locale, messages }), [locale, messages]);
-  return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
+  return (
+    <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>
+  );
 }
 
 export function useLocale(): { locale?: string } {
@@ -61,7 +69,7 @@ export function useLocale(): { locale?: string } {
 export function useMessages<T extends Messages>(
   namespace: string,
   defaults: T,
-  labels?: Partial<T>,
+  labels?: Partial<T>
 ) {
   const { locale, messages } = useContext(LocaleContext);
   const provided = messages[namespace];
@@ -71,7 +79,7 @@ export function useMessages<T extends Messages>(
   const labelsKey = labels ? JSON.stringify(labels) : "";
   const stableLabels = useMemo(
     () => (labelsKey ? (JSON.parse(labelsKey) as Partial<T>) : undefined),
-    [labelsKey],
+    [labelsKey]
   );
 
   return useCallback(
@@ -84,6 +92,6 @@ export function useMessages<T extends Messages>(
         return typeof value === "number" ? formatNumber(value, locale) : value;
       });
     },
-    [defaults, stableLabels, locale, provided],
+    [defaults, stableLabels, locale, provided]
   );
 }

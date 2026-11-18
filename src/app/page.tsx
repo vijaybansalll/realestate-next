@@ -1,35 +1,19 @@
-"use client";
-
-import HouseWalkthrough from "@/components/HouseWalkthrough";
-import AccordionGallery from "@/components/AccordionGallery";
-import { BeforeAfterSlider } from "@/components/motion/before-after-slider";
-import CarouselDemo from "@/components/carousel";
-import Stats from "@/components/stats";
-import CTA from "@/components/cta";
-import { Skiper17 } from "@/components/ui/skiper-ui/skiper17";
+import {
+  HouseWalkthrough,
+  AccordionGallery,
+  SpatialTransformation,
+  FeaturedProperties,
+  StickyShowcase,
+  Stats,
+  CTA,
+} from "@/components/sections";
+import { PORTFOLIO_GALLERY_ITEMS } from "@/data";
 
 export default function Home() {
-  const items = [
-    {
-      image: "/portfolio-luxury.jpg",
-      label: "Luxury",
-      link: "#",
-    },
-    {
-      image: "/portfolio-townhouse.jpg",
-      label: "Town House",
-      link: "#",
-    },
-    {
-      image: "/portfolio-custom-homes.jpg",
-      label: "Custom Homes",
-      link: "#",
-    },
-  ];
-
   return (
     <main className="relative min-h-screen bg-neutral-950 font-sans text-neutral-100 selection:bg-amber-500 selection:text-neutral-950">
       <HouseWalkthrough />
+
       <div className="container mx-auto">
         <section
           id="properties"
@@ -50,7 +34,7 @@ export default function Home() {
 
           <div className="mb-10 sm:mb-16">
             <AccordionGallery
-              items={items}
+              items={PORTFOLIO_GALLERY_ITEMS}
               defaultIndex={0}
               expandRatio={0.52}
               trigger="hover"
@@ -74,52 +58,10 @@ export default function Home() {
             />
           </div>
 
-          <div className="grid grid-cols-1 items-center gap-8">
-            <div className="flex flex-col items-center gap-8 lg:flex-row lg:gap-12">
-              <div className="w-full lg:w-1/2">
-                <span className="text-xs font-semibold tracking-widest text-amber-400 uppercase">
-                  Transformation
-                </span>
-                <h3 className="mt-2 text-2xl font-medium text-neutral-100 sm:text-3xl">
-                  Restoration & Spatial Architecture
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-neutral-400 sm:text-base">
-                  Every property undergoes a comprehensive visual and
-                  architectural assessment. Drag the slider to witness our
-                  bespoke spatial staging and atmospheric illumination.
-                </p>
-              </div>
-
-              <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl border border-neutral-800 shadow-2xl lg:w-1/2">
-                <BeforeAfterSlider
-                  showLabels
-                  labels={{
-                    before: "Architectural Blueprint",
-                    after: "Property Built",
-                  }}
-                  before={
-                    <img
-                      src="/architect-blueprint-plan.png"
-                      alt="Architectural property map blueprint"
-                      draggable={false}
-                      className="h-full w-full object-cover"
-                    />
-                  }
-                  after={
-                    <img
-                      src="/property-built-after.png"
-                      alt="Completed architectural property built"
-                      draggable={false}
-                      className="h-full w-full object-cover"
-                    />
-                  }
-                />
-              </div>
-            </div>
-          </div>
+          <SpatialTransformation />
         </section>
 
-        <CarouselDemo />
+        <FeaturedProperties />
 
         <Stats />
 
@@ -136,7 +78,7 @@ export default function Home() {
               transformations.
             </p>
           </div>
-          <Skiper17 />
+          <StickyShowcase />
         </section>
 
         <CTA />
