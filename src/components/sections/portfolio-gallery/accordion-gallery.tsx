@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
+import { cn } from "@/lib/utils";
 import type { PortfolioGalleryItem } from "@/types";
 import { PORTFOLIO_GALLERY_ITEMS } from "@/data";
 
@@ -65,6 +66,7 @@ export function AccordionGallery({
   const tlRef = useRef<gsap.core.Timeline | null>(null);
   const firstRunRef = useRef(true);
   const mediaSizeRef = useRef(320);
+  const touchTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const [isMobile, setIsMobile] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -111,8 +113,11 @@ export function AccordionGallery({
         const bar = barRefs.current[i];
         const text = textRefs.current[i];
 
-        const rot = isActive ? 0 : i < active ? tilt : -tilt;
-        const rotProp = vertical ? { rotateX: -rot } : { rotateY: rot };
+        // On mobile / vertical layout, disable 3D rotation to keep cards flat and crisp
+        const rot = isActive || vertical ? 0 : i < active ? tilt : -tilt;
+        const rotProp = vertical
+          ? { rotateX: 0, rotateY: 0 }
+          : { rotateY: rot };
 
         tl.to(
           panel,
@@ -130,7 +135,7 @@ export function AccordionGallery({
               xPercent: -50,
               yPercent: -50,
               x: vertical ? 0 : isActive ? 0 : shift,
-              y: vertical ? (isActive ? 0 : shift) : 0,
+              y: vertical ? (isActive ? 0 : shift * 0.4) : 0,
               "--ag-gray": gray,
               "--ag-dim": isActive ? 0 : 0.35,
               duration: dur,
@@ -154,9 +159,15 @@ export function AccordionGallery({
               0
             );
           } else {
+            tl.to(bar, { opacity: 0, x: -14, duration: dur * 0.6, ease }, 0);
             tl.to(
-              [bar, text],
-              { opacity: 0, x: -14, duration: dur * 0.6, ease },
+              text,
+              {
+                opacity: vertical ? 0.75 : 0,
+                x: vertical ? 0 : -14,
+                duration: dur * 0.6,
+                ease,
+              },
               0
             );
           }
@@ -189,10 +200,12 @@ export function AccordionGallery({
       const rect = el.getBoundingClientRect();
       const total = vertical ? rect.height : rect.width;
       const usable = Math.max(total - gap * (count - 1), 120);
-      const size = Math.max(
-        140,
-        usable * Math.min(Math.max(expandRatio, 0.2), 0.9) * 1.22
-      );
+      const size = vertical
+        ? Math.max(total, 400)
+        : Math.max(
+            140,
+            usable * Math.min(Math.max(expandRatio, 0.2), 0.9) * 1.22
+          );
       mediaSizeRef.current = size;
       el.style.setProperty("--ag-media-size", `${size}px`);
       applyLayout(!firstRunRef.current);
@@ -212,6 +225,7 @@ export function AccordionGallery({
   useEffect(
     () => () => {
       tlRef.current?.kill();
+      if (touchTimerRef.current) clearTimeout(touchTimerRef.current);
     },
     []
   );
@@ -271,6 +285,16 @@ export function AccordionGallery({
     autoPlayInterval,
   ]);
 
+  const handleTouchStart = () => {
+    if (pauseOnHover) {
+      setIsHovered(true);
+      if (touchTimerRef.current) clearTimeout(touchTimerRef.current);
+      touchTimerRef.current = setTimeout(() => {
+        setIsHovered(false);
+      }, 4500);
+    }
+  };
+
   const handleEnter = (i: number) => {
     if (pauseOnHover) setIsHovered(true);
     if (trigger === "hover") setActive(i);
@@ -298,7 +322,11 @@ export function AccordionGallery({
   return (
     <div
       ref={rootRef}
-      className={`accordion-gallery${vertical ? "accordion-gallery--vertical" : ""}${className ? ` ${className}` : ""}`}
+      className={cn(
+        "accordion-gallery",
+        vertical && "accordion-gallery--vertical",
+        className
+      )}
       style={{
         ["--ag-accent" as string]: accentColor,
         ["--ag-overlay" as string]: overlayColor,
@@ -319,6 +347,7 @@ export function AccordionGallery({
       onMouseLeave={() => {
         if (pauseOnHover) setIsHovered(false);
       }}
+      onTouchStart={handleTouchStart}
       onFocus={() => {
         if (pauseOnHover) setIsHovered(true);
       }}
@@ -340,7 +369,7 @@ export function AccordionGallery({
             ref={(el: HTMLElement | null) => {
               panelRefs.current[i] = el;
             }}
-            className={`ag-panel${isActive ? "ag-panel--active" : ""}`}
+            className={cn("ag-panel", isActive && "ag-panel--active")}
             style={{ borderRadius: `${radius}px` }}
             href={item.link || undefined}
             onClick={(e) => handleClick(i, e)}
@@ -363,7 +392,7 @@ export function AccordionGallery({
                   src={item.image}
                   alt={item.alt || item.label || ""}
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   priority={i === 0}
                   draggable={false}
                   className="object-cover"
