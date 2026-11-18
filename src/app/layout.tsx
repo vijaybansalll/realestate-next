@@ -36,7 +36,6 @@ export default function RootLayout({
     <html
       lang="en"
       className={cn(
-        "h-full",
         "dark",
         "antialiased",
         instrumentSans.variable,
@@ -44,7 +43,7 @@ export default function RootLayout({
         inter.variable
       )}
     >
-      <body className="flex min-h-full flex-col overflow-x-hidden bg-neutral-950 font-sans text-neutral-100">
+      <body className="min-h-screen overflow-x-clip bg-neutral-950 font-sans text-neutral-100">
         <SmoothScroll>
           <Navbar />
           {children}

@@ -29,9 +29,7 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen bg-neutral-950 font-sans text-neutral-100 selection:bg-amber-500 selection:text-neutral-950">
-      <section id="walkthrough" className="relative">
-        <HouseWalkthrough />
-      </section>
+      <HouseWalkthrough />
       <div className="container mx-auto">
         <section
           id="properties"

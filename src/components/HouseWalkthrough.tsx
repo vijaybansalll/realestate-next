@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useLenis } from "lenis/react";
 
-const TOTAL_FRAMES = 100;
+const TOTAL_FRAMES = 144;
 
 export default function HouseWalkthrough() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -34,17 +34,27 @@ export default function HouseWalkthrough() {
 
     // Find requested frame or closest available loaded frame
     let img: HTMLImageElement | null = imagesRef.current[frameIdx - 1];
+    let actualFrameIdx = frameIdx;
+
     if (!img || !img.complete || img.naturalWidth === 0) {
       for (let delta = 1; delta < TOTAL_FRAMES; delta++) {
-        const prev = imagesRef.current[frameIdx - 1 - delta];
-        if (prev && prev.complete && prev.naturalWidth > 0) {
-          img = prev;
-          break;
+        const prevIdx = frameIdx - 1 - delta;
+        if (prevIdx >= 0) {
+          const prev = imagesRef.current[prevIdx];
+          if (prev && prev.complete && prev.naturalWidth > 0) {
+            img = prev;
+            actualFrameIdx = prevIdx + 1;
+            break;
+          }
         }
-        const next = imagesRef.current[frameIdx - 1 + delta];
-        if (next && next.complete && next.naturalWidth > 0) {
-          img = next;
-          break;
+        const nextIdx = frameIdx - 1 + delta;
+        if (nextIdx < TOTAL_FRAMES) {
+          const next = imagesRef.current[nextIdx];
+          if (next && next.complete && next.naturalWidth > 0) {
+            img = next;
+            actualFrameIdx = nextIdx + 1;
+            break;
+          }
         }
       }
     }
@@ -87,7 +97,7 @@ export default function HouseWalkthrough() {
     ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
     ctx.restore();
 
-    currentRenderedFrameRef.current = frameIdx;
+    currentRenderedFrameRef.current = actualFrameIdx;
   }, []);
 
   // Update progress calculation
@@ -136,11 +146,17 @@ export default function HouseWalkthrough() {
     // Load first frame immediately for instant first paint
     const img1 = new Image();
     img1.src = getFramePath(1);
-    img1.onload = () => {
+    const onFirstLoad = () => {
       if (isCancelled) return;
       imagesRef.current[0] = img1;
       renderFrame(1);
     };
+
+    if (img1.complete && img1.naturalWidth > 0) {
+      onFirstLoad();
+    } else {
+      img1.onload = onFirstLoad;
+    }
 
     // Load remaining frames in parallel
     for (let i = 2; i <= TOTAL_FRAMES; i++) {
@@ -149,8 +165,14 @@ export default function HouseWalkthrough() {
       img.onload = () => {
         if (isCancelled) return;
         imagesRef.current[i - 1] = img;
-        if (i === targetFrameRef.current) {
-          renderFrame(i);
+
+        // If this frame is the target or closer than what is currently rendered, redraw!
+        const currentDist = Math.abs(
+          currentRenderedFrameRef.current - targetFrameRef.current
+        );
+        const thisDist = Math.abs(i - targetFrameRef.current);
+        if (thisDist < currentDist || i === targetFrameRef.current) {
+          renderFrame(targetFrameRef.current);
         }
       };
     }
@@ -163,11 +185,12 @@ export default function HouseWalkthrough() {
   // Handle window resize
   useEffect(() => {
     const handleResize = () => {
+      updateProgress();
       renderFrame(targetFrameRef.current);
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [renderFrame]);
+  }, [renderFrame, updateProgress]);
 
   // Fallback native scroll listener
   useEffect(() => {
@@ -179,16 +202,17 @@ export default function HouseWalkthrough() {
 
   return (
     <section
+      id="walkthrough"
       ref={containerRef}
       className="relative min-h-[320vh] sm:min-h-[450vh] w-full bg-neutral-950"
     >
-      <div className="sticky top-0 h-screen h-[100dvh] w-full overflow-hidden">
+      <div className="sticky top-0 h-screen h-dvh w-full overflow-hidden">
         <canvas
           ref={canvasRef}
-          className="absolute inset-0 block h-full w-full object-cover"
+          className="absolute inset-0 block h-full w-full"
         />
 
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(10,10,10,0.4)_0%,rgba(10,10,10,0.2)_50%,rgba(10,10,10,0.65)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(10,10,10,0.3)_0%,rgba(10,10,10,0.15)_50%,rgba(10,10,10,0.6)_100%)]" />
 
         <div
           className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 text-center transition-transform duration-75 select-none"
