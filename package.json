@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "bun --bun next dev",
-    "build": "bun --bun next build",
-    "start": "bun --bun next start",
-    "lint": "bun --bun eslint",
-    "format": "bun --bun prettier --write .",
-    "format:check": "bun --bun prettier --check ."
+    "dev": "bun next dev",
+    "build": "bun next build",
+    "start": "bun next start",
+    "lint": "bun eslint",
+    "format": "bun prettier --write .",
+    "format:check": "bun prettier --check ."
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
