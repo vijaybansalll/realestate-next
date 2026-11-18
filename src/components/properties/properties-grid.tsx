@@ -11,9 +11,10 @@ export interface PropertiesGridProps {
 export function PropertiesGrid({ properties, onInquire }: PropertiesGridProps) {
   return (
     <div
+      id="properties-grid"
       role="region"
       aria-label="Available architectural estates"
-      className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      className="grid scroll-mt-24 grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
     >
       {properties.map((property) => (
         <PropertyCard

@@ -16,6 +16,10 @@ export {
 } from "./property-filters-sheet";
 export { PropertyInquiryModal } from "./property-inquiry-modal";
 export { LiquidPurposeSelector } from "./liquid-purpose-selector";
+export {
+  Pagination14,
+  Pagination14 as PropertiesPagination,
+} from "@/components/pagination-14";
 
 // Hooks & State Management
 export { usePropertyFilters, type ActiveChip } from "./use-property-filters";

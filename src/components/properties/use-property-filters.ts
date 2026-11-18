@@ -14,6 +14,8 @@ export interface ActiveChip {
 export function usePropertyFilters(initial = INITIAL_FILTERS) {
   const [filters, setFilters] = useState<PropertyFilters>(initial);
   const [filterSheetOpen, setFilterSheetOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(6);
 
   const handleFilterChange = useCallback(
     <K extends keyof PropertyFilters>(key: K, value: PropertyFilters[K]) => {
@@ -21,12 +23,14 @@ export function usePropertyFilters(initial = INITIAL_FILTERS) {
         ...prev,
         [key]: value,
       }));
+      setPage(1);
     },
     []
   );
 
   const handleReset = useCallback(() => {
     setFilters(INITIAL_FILTERS);
+    setPage(1);
   }, []);
 
   const handlePurposeChange = useCallback((mode: "all" | "buy" | "rent") => {
@@ -44,6 +48,7 @@ export function usePropertyFilters(initial = INITIAL_FILTERS) {
       }
       return next;
     });
+    setPage(1);
   }, []);
 
   // Filtered & Sorted properties
@@ -279,6 +284,33 @@ export function usePropertyFilters(initial = INITIAL_FILTERS) {
     return chips;
   }, [filters, handleFilterChange]);
 
+  // Pagination calculation and clamping
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredProperties.length / pageSize)
+  );
+  const safePage = Math.min(Math.max(1, page), totalPages);
+
+  const paginatedProperties = useMemo(() => {
+    const start = (safePage - 1) * pageSize;
+    return filteredProperties.slice(start, start + pageSize);
+  }, [filteredProperties, safePage, pageSize]);
+
+  const handlePageChange = useCallback((newPage: number) => {
+    setPage(newPage);
+    if (typeof window !== "undefined") {
+      const gridElem = document.getElementById("properties-grid");
+      if (gridElem) {
+        gridElem.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  }, []);
+
+  const handlePageSizeChange = useCallback((newSize: number) => {
+    setPageSize(newSize);
+    setPage(1);
+  }, []);
+
   return {
     filters,
     filterSheetOpen,
@@ -287,6 +319,12 @@ export function usePropertyFilters(initial = INITIAL_FILTERS) {
     handlePurposeChange,
     handleReset,
     filteredProperties,
+    paginatedProperties,
+    page: safePage,
+    pageSize,
+    totalPages,
+    setPage: handlePageChange,
+    setPageSize: handlePageSizeChange,
     totalCount: ALL_PROPERTIES.length,
     filteredCount: filteredProperties.length,
     activeChips,

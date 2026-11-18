@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Property } from "@/types";
+import { Pagination14 } from "@/components/pagination-14";
 import { usePropertyFilters } from "./use-property-filters";
 import { PropertiesHeader } from "./properties-header";
 import { PropertiesControlBar } from "./properties-control-bar";
@@ -19,6 +20,11 @@ export function PropertiesCatalog() {
     handlePurposeChange,
     handleReset,
     filteredProperties,
+    paginatedProperties,
+    page,
+    pageSize,
+    setPage,
+    setPageSize,
     totalCount,
     filteredCount,
     activeChips,
@@ -52,12 +58,24 @@ export function PropertiesCatalog() {
         onOpenSheet={() => setFilterSheetOpen(true)}
       />
 
-      {/* Estates Grid or Empty State */}
+      {/* Estates Grid with Pagination or Empty State */}
       {filteredProperties.length > 0 ? (
-        <PropertiesGrid
-          properties={filteredProperties}
-          onInquire={(prop) => setSelectedProperty(prop)}
-        />
+        <div className="space-y-8">
+          <PropertiesGrid
+            properties={paginatedProperties}
+            onInquire={(prop) => setSelectedProperty(prop)}
+          />
+
+          <Pagination14
+            currentPage={page}
+            pageSize={pageSize}
+            totalItems={filteredProperties.length}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+            pageSizeOptions={[6, 9, 12, 18]}
+            label="Estates per page:"
+          />
+        </div>
       ) : (
         <PropertiesEmptyState
           onReset={handleReset}
