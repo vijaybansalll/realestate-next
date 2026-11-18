@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLenis } from "lenis/react";
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 import type { ShowcaseCard } from "@/types";
@@ -152,11 +153,14 @@ export function StickyShowcase({
                 imageClassName
               )}
             >
-              <img
+              <Image
                 src={card.image}
                 alt={card.alt || card.title || `Property card ${i + 1}`}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
+                priority={i === 0}
                 onLoad={() => ScrollTrigger.refresh()}
-                className="pointer-events-none h-full w-full object-cover select-none"
+                className="pointer-events-none object-cover select-none"
                 draggable={false}
               />
               {(card.title || card.subtitle) && (

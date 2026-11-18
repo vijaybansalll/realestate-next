@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState, useCallback } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
 import type { PortfolioGalleryItem } from "@/types";
 import { PORTFOLIO_GALLERY_ITEMS } from "@/data";
@@ -358,10 +359,14 @@ export function AccordionGallery({
                   mediaRefs.current[i] = el;
                 }}
               >
-                <img
+                <Image
                   src={item.image}
                   alt={item.alt || item.label || ""}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  priority={i === 0}
                   draggable={false}
+                  className="object-cover"
                 />
               </span>
               <span className="ag-panel__overlay" aria-hidden="true" />
