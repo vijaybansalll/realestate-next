@@ -7,6 +7,21 @@ export type PropertyPurpose = "buy" | "rent";
 export type PropertyType =
   "estate" | "villa" | "penthouse" | "townhouse" | "apartment";
 
+export interface PropertySpecs {
+  homeAreaSqM: number;
+  landAreaSqM: number;
+  bedrooms: number;
+  bathrooms: number;
+  livingRooms: number | string;
+  pantry: boolean | string;
+  alfrescoOutdoor: string | boolean;
+  garage: number;
+  garden: boolean | string;
+  pool?: boolean | string;
+  wineCellar?: boolean | string;
+  smartHome?: boolean | string;
+}
+
 export interface Property {
   id: string;
   title: string;
@@ -28,6 +43,7 @@ export interface Property {
   description?: string;
   features?: string[];
   featured?: boolean;
+  specs?: PropertySpecs;
 }
 
 export interface PropertyFilters {

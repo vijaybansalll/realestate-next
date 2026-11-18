@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Link from "next/link";
 import {
   Bed,
   Bath,
@@ -65,7 +66,7 @@ export function PropertyCard({
         showCounter={true}
         counterClassName="top-3 right-12"
         enableDrag={true}
-        dotsClassName="bottom-15"
+        dotsClassName="bottom-3"
       >
         {/* Top Badges & Actions */}
         <div className="pointer-events-none absolute inset-x-3 top-3 z-10 flex items-center justify-between">
@@ -131,10 +132,15 @@ export function PropertyCard({
           {/* Title & Location */}
           <div className="space-y-1">
             <h3
-              className="text-lg font-medium tracking-tight text-neutral-100 transition-colors group-hover:text-amber-400"
+              className="text-lg font-medium tracking-tight text-neutral-100 transition-colors group-hover:text-amber-400 hover:text-amber-400"
               title={property.title}
             >
-              {property.title}
+              <Link
+                href={`/properties/${property.id}`}
+                className="hover:underline"
+              >
+                {property.title}
+              </Link>
             </h3>
             <p className="flex items-center gap-1.5 text-xs text-neutral-100">
               <MapPin className="size-3.5 shrink-0 text-amber-400" />
@@ -176,31 +182,23 @@ export function PropertyCard({
               </span>
             </div>
           </div>
-
-          {/* Feature Highlights */}
-          {property.features && property.features.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {property.features.slice(0, 3).map((feature) => (
-                <span
-                  key={feature}
-                  className="rounded-md border border-neutral-700/40 bg-neutral-800/70 px-2 py-0.5 text-[11px] font-medium text-neutral-300"
-                >
-                  {feature}
-                </span>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* Actions */}
         <div className="mt-5 flex items-center gap-2 border-t border-neutral-800/60 pt-2">
+          <Link
+            href={`/properties/${property.id}`}
+            className="flex-1 rounded-xl border border-neutral-700/60 bg-neutral-800/70 py-2 text-center text-xs font-semibold text-neutral-200 transition-colors hover:border-neutral-600 hover:bg-neutral-800 hover:text-white"
+          >
+            Explore Estate
+          </Link>
           <Button
             variant="primary"
             size="sm"
             onClick={() => onInquire?.(property)}
-            className="w-full"
+            className="flex-1"
           >
-            <span>Inquire & Book Viewing</span>
+            <span>Inquire</span>
             <ArrowUpRight className="ml-1 size-3.5" />
           </Button>
         </div>

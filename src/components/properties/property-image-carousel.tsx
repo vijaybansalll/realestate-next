@@ -45,7 +45,7 @@ export function PropertyImageCarousel({
   imageClassName,
   sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw",
   priority = false,
-  dotsClassName = "bottom-15",
+  dotsClassName = "bottom-3",
   counterClassName = "top-3 right-3",
   children,
 }: PropertyImageCarouselProps) {

@@ -11,6 +11,8 @@ export { PropertiesEmptyState } from "./properties-empty-state";
 // Interactive Estate Components
 export { PropertyCard } from "./property-card";
 export { PropertyImageCarousel } from "./property-image-carousel";
+export { PropertyGridGallery } from "./property-grid-gallery";
+export { PropertySpecsGrid } from "./property-specs-grid";
 export {
   PropertyFiltersSheet,
   PropertyFiltersSheet as PropertyFiltersComponent,
