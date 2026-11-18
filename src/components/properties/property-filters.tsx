@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useLayoutEffect, useRef, useMemo } from "react";
 import {
   Search,
   X,
   SlidersHorizontal,
-  Sparkles,
   RotateCcw,
+  Building2,
+  MapPin,
+  BedDouble,
+  Bath,
 } from "lucide-react";
 import type { PropertyFilters } from "@/types";
 import { Button } from "@/components/ui/button";
@@ -15,11 +18,125 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  SheetDescription,
+  SheetFooter,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/motion/select";
+import {
+  AdaptiveStepper,
+  AdaptiveStepperDecrement,
+  AdaptiveStepperValue,
+  AdaptiveStepperIncrement,
+} from "@/components/motion/adaptive-stepper";
+import { Liquid, LiquidItem } from "@/components/motion/liquid";
 import { cn } from "@/lib/utils";
 
-interface PropertyFiltersComponentProps {
+/* -------------------------------------------------------------------------- */
+/*                     Liquid Purpose Selector Component                      */
+/* -------------------------------------------------------------------------- */
+
+interface LiquidPurposeSelectorProps {
+  value: "all" | "buy" | "rent";
+  onChange: (value: "all" | "buy" | "rent") => void;
+}
+
+function LiquidPurposeSelector({
+  value,
+  onChange,
+}: LiquidPurposeSelectorProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(400);
+
+  useLayoutEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const update = () => {
+      if (el.offsetWidth > 0) setContainerWidth(el.offsetWidth);
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const items = [
+    { id: "all", label: "All Properties" },
+    { id: "buy", label: "For Sale" },
+    { id: "rent", label: "For Lease" },
+  ] as const;
+
+  const activeIndex = items.findIndex((i) => i.id === value);
+  const padding = 4;
+  const innerWidth = Math.max(120, containerWidth - padding * 2);
+  const itemWidth = Math.floor(innerWidth / items.length);
+  const height = 36;
+  const x = padding + (activeIndex >= 0 ? activeIndex : 0) * itemWidth;
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative isolate w-full rounded-2xl border border-neutral-800 bg-neutral-900/80 p-1 select-none"
+    >
+      <Liquid
+        blur={6}
+        contrast={18}
+        fill="#262626"
+        edgeColor="#f59e0b"
+        edgeOpacity={0.25}
+        edgeWidth={1}
+        className="h-9 w-full"
+      >
+        <LiquidItem
+          x={x}
+          y={0}
+          width={itemWidth}
+          height={height}
+          radius={12}
+          transition={{ duration: 320, ease: [0.22, 1.25, 0.71, 1] }}
+        >
+          <div className="size-full rounded-xl border border-amber-400/40 bg-neutral-800 shadow-xs" />
+        </LiquidItem>
+      </Liquid>
+
+      {/* Clickable tabs */}
+      <div className="absolute inset-1 z-20 grid grid-cols-3">
+        {items.map((item) => {
+          const isSelected = item.id === value;
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => onChange(item.id)}
+              className={cn(
+                "flex cursor-pointer items-center justify-center rounded-xl text-xs font-medium transition-colors duration-200 outline-none select-none",
+                isSelected
+                  ? "font-semibold text-amber-300"
+                  : "text-neutral-400 hover:text-neutral-200"
+              )}
+            >
+              {item.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*                       Main Property Filters Component                       */
+/* -------------------------------------------------------------------------- */
+
+export interface PropertyFiltersComponentProps {
   filters: PropertyFilters;
   onFilterChange: <K extends keyof PropertyFilters>(
     key: K,
@@ -28,6 +145,9 @@ interface PropertyFiltersComponentProps {
   onReset: () => void;
   totalCount: number;
   filteredCount: number;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  trigger?: React.ReactNode;
   className?: string;
 }
 
@@ -37,423 +157,515 @@ export function PropertyFiltersComponent({
   onReset,
   totalCount,
   filteredCount,
+  open: openProp,
+  onOpenChange,
+  trigger,
   className,
 }: PropertyFiltersComponentProps) {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
+  const isControlled = openProp !== undefined;
+  const isOpen = isControlled ? openProp : uncontrolledOpen;
+  const setIsOpen = isControlled
+    ? (onOpenChange ?? (() => {}))
+    : setUncontrolledOpen;
 
-  const activeFiltersCount = [
-    filters.purpose !== "all",
-    filters.bhk !== "all",
-    filters.search.trim().length > 0,
-    filters.luxuryOnly,
-    filters.minBudget > 0,
-    filters.maxBudget < 50000000,
-    filters.minHomeArea > 0,
-    filters.maxHomeArea < 2000,
-    filters.minLandArea > 0,
-    filters.maxLandArea < 10000,
-  ].filter(Boolean).length;
+  // Active filter count calculation
+  const activeFiltersCount = useMemo(() => {
+    return [
+      filters.purpose !== "all",
+      filters.bhk !== "all",
+      filters.search.trim().length > 0,
+      filters.propertyType !== "all",
+      filters.location !== "all",
+      filters.bathrooms > 0,
+      filters.luxuryOnly,
+      filters.minBudget > 0,
+      filters.purpose === "rent"
+        ? filters.maxBudget < 50000
+        : filters.maxBudget < 50000000,
+      filters.minHomeArea > 0,
+      filters.maxHomeArea < 2000,
+      filters.minLandArea > 0,
+      filters.maxLandArea < 10000,
+    ].filter(Boolean).length;
+  }, [filters]);
 
-  // Reusable Filter Form Content
-  const filterControls = (
-    <div className="space-y-6">
-      {/* 1. Purpose: Buy / Rent / All */}
-      <div className="space-y-2">
-        <label className="block text-xs font-semibold tracking-wider text-neutral-300 uppercase">
-          Purpose
-        </label>
-        <div className="grid grid-cols-3 gap-1 rounded-xl border border-neutral-800 bg-neutral-900 p-1">
-          {(["all", "buy", "rent"] as const).map((mode) => (
-            <button
-              key={mode}
-              type="button"
-              onClick={() => onFilterChange("purpose", mode)}
-              className={cn(
-                "rounded-lg py-2 text-xs font-medium capitalize transition-all select-none",
-                filters.purpose === mode
-                  ? "bg-neutral-800 font-semibold text-neutral-100 shadow-sm"
-                  : "text-neutral-400 hover:text-neutral-200"
-              )}
-            >
-              {mode === "all" ? "All" : mode === "buy" ? "Buy" : "Rent"}
-            </button>
-          ))}
-        </div>
-      </div>
+  // Handle Purpose change with adaptive budget adjustments
+  const handlePurposeChange = (mode: "all" | "buy" | "rent") => {
+    onFilterChange("purpose", mode);
+    if (mode === "rent" && filters.maxBudget > 100000) {
+      onFilterChange("minBudget", 0);
+      onFilterChange("maxBudget", 50000);
+    } else if (
+      (mode === "buy" || mode === "all") &&
+      filters.maxBudget <= 50000
+    ) {
+      onFilterChange("minBudget", 0);
+      onFilterChange("maxBudget", 50000000);
+    }
+  };
 
-      {/* 2. Search by Property Name */}
-      <div className="space-y-2">
-        <label className="block text-xs font-semibold tracking-wider text-neutral-300 uppercase">
-          Search Property Name
-        </label>
-        <div className="relative">
-          <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-500" />
-          <input
-            type="text"
-            value={filters.search}
-            onChange={(e) => onFilterChange("search", e.target.value)}
-            placeholder="e.g. Villa Lumina, Penthouse..."
-            className="w-full rounded-xl border border-neutral-800 bg-neutral-900 py-2.5 pr-9 pl-9 text-xs text-neutral-100 transition-all placeholder:text-neutral-500 focus:border-amber-400/80 focus:ring-1 focus:ring-amber-400/80 focus:outline-none"
-          />
-          {filters.search && (
-            <button
-              type="button"
-              onClick={() => onFilterChange("search", "")}
-              className="absolute top-1/2 right-3 -translate-y-1/2 text-neutral-400 hover:text-neutral-200"
-              aria-label="Clear search"
-            >
-              <X className="size-3.5" />
-            </button>
-          )}
-        </div>
-      </div>
+  // Convert BHK string to numeric value for AdaptiveStepper
+  const bhkNumber = useMemo(() => {
+    if (filters.bhk === "all") return 0;
+    if (filters.bhk === "5+") return 5;
+    const n = parseInt(filters.bhk, 10);
+    return Number.isNaN(n) ? 0 : n;
+  }, [filters.bhk]);
 
-      {/* 3. BHK Configuration */}
-      <div className="space-y-2">
-        <label className="block text-xs font-semibold tracking-wider text-neutral-300 uppercase">
-          Bedrooms (BHK)
-        </label>
-        <div className="grid grid-cols-6 gap-1">
-          {["all", "1", "2", "3", "4", "5+"].map((bhkVal) => (
-            <button
-              key={bhkVal}
-              type="button"
-              onClick={() => onFilterChange("bhk", bhkVal)}
-              className={cn(
-                "rounded-lg border py-2 text-center text-xs font-medium transition-all select-none",
-                filters.bhk === bhkVal
-                  ? "border-amber-400/60 bg-amber-400/15 font-semibold text-amber-300 shadow-xs"
-                  : "border-neutral-800 bg-neutral-900 text-neutral-400 hover:border-neutral-700 hover:text-neutral-200"
-              )}
-            >
-              {bhkVal === "all" ? "All" : `${bhkVal}`}
-            </button>
-          ))}
-        </div>
-      </div>
+  const handleBhkChange = (val: number) => {
+    if (val === 0) onFilterChange("bhk", "all");
+    else if (val >= 5) onFilterChange("bhk", "5+");
+    else onFilterChange("bhk", String(val));
+  };
 
-      {/* 4. Luxury Properties Toggle */}
-      <div className="flex items-center justify-between rounded-xl border border-neutral-800 bg-neutral-900/80 p-3.5">
-        <div className="flex items-center gap-2">
-          <div className="flex size-7 items-center justify-center rounded-lg border border-amber-400/20 bg-amber-400/10 text-amber-400">
-            <Sparkles className="size-3.5" />
-          </div>
-          <div>
-            <p className="text-xs font-medium text-neutral-200">
-              Luxury Properties
-            </p>
-            <p className="text-[11px] text-neutral-500">
-              Signature architectural estates only
-            </p>
-          </div>
-        </div>
-        <button
-          type="button"
-          role="switch"
-          aria-checked={filters.luxuryOnly}
-          onClick={() => onFilterChange("luxuryOnly", !filters.luxuryOnly)}
-          className={cn(
-            "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none",
-            filters.luxuryOnly ? "bg-amber-400" : "bg-neutral-800"
-          )}
-        >
-          <span
-            className={cn(
-              "pointer-events-none inline-block size-5 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out",
-              filters.luxuryOnly ? "translate-x-5" : "translate-x-0"
-            )}
-          />
-        </button>
-      </div>
+  // Budget Slider logic
+  const isRent = filters.purpose === "rent";
+  const budgetMin = 0;
+  const budgetMax = isRent ? 50000 : 50000000;
+  const budgetStep = isRent ? 1000 : 500000;
 
-      {/* 5. Budget Range */}
-      <div className="space-y-2.5">
-        <div className="flex items-center justify-between">
-          <label className="text-xs font-semibold tracking-wider text-neutral-300 uppercase">
-            Budget
-          </label>
-          <span className="text-[11px] text-neutral-400">
-            {filters.purpose === "rent"
-              ? `$${filters.minBudget.toLocaleString()} - $${filters.maxBudget.toLocaleString()}/mo`
-              : `$${(filters.minBudget / 1000000).toFixed(1)}M - $${(filters.maxBudget / 1000000).toFixed(1)}M`}
-          </span>
-        </div>
+  const currentBudgetRange: [number, number] = [
+    Math.min(filters.minBudget, budgetMax),
+    Math.min(filters.maxBudget, budgetMax),
+  ];
 
-        <div className="grid grid-cols-2 gap-2">
-          <div>
-            <span className="mb-1 block text-[10px] tracking-wider text-neutral-500 uppercase">
-              Min ($)
-            </span>
-            <input
-              type="number"
-              value={filters.minBudget}
-              onChange={(e) =>
-                onFilterChange(
-                  "minBudget",
-                  Math.max(0, Number(e.target.value) || 0)
-                )
-              }
-              step={filters.purpose === "rent" ? 1000 : 500000}
-              className="w-full rounded-lg border border-neutral-800 bg-neutral-900 px-3 py-1.5 text-xs text-neutral-100 focus:border-amber-400/80 focus:outline-none"
-            />
-          </div>
-          <div>
-            <span className="mb-1 block text-[10px] tracking-wider text-neutral-500 uppercase">
-              Max ($)
-            </span>
-            <input
-              type="number"
-              value={filters.maxBudget}
-              onChange={(e) =>
-                onFilterChange(
-                  "maxBudget",
-                  Math.max(0, Number(e.target.value) || 0)
-                )
-              }
-              step={filters.purpose === "rent" ? 1000 : 500000}
-              className="w-full rounded-lg border border-neutral-800 bg-neutral-900 px-3 py-1.5 text-xs text-neutral-100 focus:border-amber-400/80 focus:outline-none"
-            />
-          </div>
-        </div>
+  const handleBudgetChange = (val: number | readonly number[]) => {
+    if (Array.isArray(val) && val.length === 2) {
+      onFilterChange("minBudget", val[0]);
+      onFilterChange("maxBudget", val[1]);
+    }
+  };
 
-        {/* Quick Budget Presets */}
-        <div className="flex flex-wrap gap-1.5 pt-1">
-          {filters.purpose === "rent" ? (
-            <>
-              {[
-                { label: "Under $10k", min: 0, max: 10000 },
-                { label: "$10k - $25k", min: 10000, max: 25000 },
-                { label: "$25k+", min: 25000, max: 50000 },
-              ].map((p) => (
-                <button
-                  key={p.label}
-                  type="button"
-                  onClick={() => {
-                    onFilterChange("minBudget", p.min);
-                    onFilterChange("maxBudget", p.max);
-                  }}
-                  className="rounded-md border border-neutral-800 bg-neutral-900/60 px-2 py-1 text-[10px] text-neutral-400 hover:border-neutral-700 hover:text-neutral-200"
-                >
-                  {p.label}
-                </button>
-              ))}
-            </>
-          ) : (
-            <>
-              {[
-                { label: "< $5M", min: 0, max: 5000000 },
-                { label: "$5M - $15M", min: 5000000, max: 15000000 },
-                { label: "$15M+", min: 15000000, max: 50000000 },
-              ].map((p) => (
-                <button
-                  key={p.label}
-                  type="button"
-                  onClick={() => {
-                    onFilterChange("minBudget", p.min);
-                    onFilterChange("maxBudget", p.max);
-                  }}
-                  className="rounded-md border border-neutral-800 bg-neutral-900/60 px-2 py-1 text-[10px] text-neutral-400 hover:border-neutral-700 hover:text-neutral-200"
-                >
-                  {p.label}
-                </button>
-              ))}
-            </>
-          )}
-        </div>
-      </div>
+  // Home Area Slider logic (m²)
+  const handleHomeAreaChange = (val: number | readonly number[]) => {
+    if (Array.isArray(val) && val.length === 2) {
+      onFilterChange("minHomeArea", val[0]);
+      onFilterChange("maxHomeArea", val[1]);
+    }
+  };
 
-      {/* 6. Home Area (m²) */}
-      <div className="space-y-2.5">
-        <div className="flex items-center justify-between">
-          <label className="text-xs font-semibold tracking-wider text-neutral-300 uppercase">
-            Home Area (m²)
-          </label>
-          <span className="text-[11px] text-neutral-400">
-            {filters.minHomeArea} m² - {filters.maxHomeArea} m²
-          </span>
-        </div>
+  // Land Area Slider logic (m²)
+  const handleLandAreaChange = (val: number | readonly number[]) => {
+    if (Array.isArray(val) && val.length === 2) {
+      onFilterChange("minLandArea", val[0]);
+      onFilterChange("maxLandArea", val[1]);
+    }
+  };
 
-        <div className="grid grid-cols-2 gap-2">
-          <div>
-            <span className="mb-1 block text-[10px] tracking-wider text-neutral-500 uppercase">
-              Min m²
-            </span>
-            <input
-              type="number"
-              value={filters.minHomeArea}
-              onChange={(e) =>
-                onFilterChange(
-                  "minHomeArea",
-                  Math.max(0, Number(e.target.value) || 0)
-                )
-              }
-              step={50}
-              className="w-full rounded-lg border border-neutral-800 bg-neutral-900 px-3 py-1.5 text-xs text-neutral-100 focus:border-amber-400/80 focus:outline-none"
-            />
-          </div>
-          <div>
-            <span className="mb-1 block text-[10px] tracking-wider text-neutral-500 uppercase">
-              Max m²
-            </span>
-            <input
-              type="number"
-              value={filters.maxHomeArea}
-              onChange={(e) =>
-                onFilterChange(
-                  "maxHomeArea",
-                  Math.max(0, Number(e.target.value) || 0)
-                )
-              }
-              step={50}
-              className="w-full rounded-lg border border-neutral-800 bg-neutral-900 px-3 py-1.5 text-xs text-neutral-100 focus:border-amber-400/80 focus:outline-none"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* 7. Land Area (m²) */}
-      <div className="space-y-2.5">
-        <div className="flex items-center justify-between">
-          <label className="text-xs font-semibold tracking-wider text-neutral-300 uppercase">
-            Land Area (m²)
-          </label>
-          <span className="text-[11px] text-neutral-400">
-            {filters.minLandArea} m² - {filters.maxLandArea} m²
-          </span>
-        </div>
-
-        <div className="grid grid-cols-2 gap-2">
-          <div>
-            <span className="mb-1 block text-[10px] tracking-wider text-neutral-500 uppercase">
-              Min m²
-            </span>
-            <input
-              type="number"
-              value={filters.minLandArea}
-              onChange={(e) =>
-                onFilterChange(
-                  "minLandArea",
-                  Math.max(0, Number(e.target.value) || 0)
-                )
-              }
-              step={100}
-              className="w-full rounded-lg border border-neutral-800 bg-neutral-900 px-3 py-1.5 text-xs text-neutral-100 focus:border-amber-400/80 focus:outline-none"
-            />
-          </div>
-          <div>
-            <span className="mb-1 block text-[10px] tracking-wider text-neutral-500 uppercase">
-              Max m²
-            </span>
-            <input
-              type="number"
-              value={filters.maxLandArea}
-              onChange={(e) =>
-                onFilterChange(
-                  "maxLandArea",
-                  Math.max(0, Number(e.target.value) || 0)
-                )
-              }
-              step={100}
-              className="w-full rounded-lg border border-neutral-800 bg-neutral-900 px-3 py-1.5 text-xs text-neutral-100 focus:border-amber-400/80 focus:outline-none"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Reset Action */}
-      <div className="pt-2">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={onReset}
-          className="w-full gap-1.5 border-neutral-800 bg-neutral-900 text-xs text-neutral-300 hover:bg-neutral-800 hover:text-white"
-        >
-          <RotateCcw className="size-3.5" />
-          <span>Reset All Filters</span>
-        </Button>
-      </div>
-    </div>
-  );
+  // Formatted Budget string for display
+  const formattedBudgetDisplay = useMemo(() => {
+    if (isRent) {
+      return `$${filters.minBudget.toLocaleString()} - $${filters.maxBudget.toLocaleString()} / mo`;
+    }
+    const minM = (filters.minBudget / 1000000).toFixed(1);
+    const maxM = (filters.maxBudget / 1000000).toFixed(1);
+    return `$${minM}M - $${maxM}M`;
+  }, [filters.minBudget, filters.maxBudget, isRent]);
 
   return (
-    <>
-      {/* Desktop Filters Panel */}
-      <aside
-        className={cn(
-          "sticky top-28 hidden w-80 shrink-0 self-start rounded-2xl border border-neutral-800 bg-neutral-950/80 p-5 shadow-xl backdrop-blur-xl lg:block",
-          className
-        )}
-      >
-        <div className="mb-5 flex items-center justify-between border-b border-neutral-800/80 pb-4">
-          <div className="flex items-center gap-2">
-            <SlidersHorizontal className="size-4 text-amber-400" />
-            <h2 className="text-sm font-semibold tracking-wide text-neutral-100">
-              Filter Properties
-            </h2>
-          </div>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      {/* Trigger: User supplied or Default Button */}
+      {trigger ? (
+        <SheetTrigger render={<div>{trigger}</div>} />
+      ) : (
+        <SheetTrigger
+          render={
+            <Button
+              variant="outline"
+              className={cn(
+                "group relative flex items-center gap-2 rounded-xl border border-neutral-800 bg-neutral-900/90 px-4 py-2.5 text-xs font-medium text-neutral-200 transition-all hover:border-amber-400/50 hover:bg-neutral-800/80 hover:text-white",
+                className
+              )}
+            />
+          }
+        >
+          <SlidersHorizontal className="size-3.5 text-amber-400 transition-transform group-hover:scale-110" />
+          <span>Filters</span>
           {activeFiltersCount > 0 && (
-            <button
-              type="button"
-              onClick={onReset}
-              className="text-[11px] font-medium text-amber-400 hover:text-amber-300"
-            >
-              Clear ({activeFiltersCount})
-            </button>
+            <span className="flex size-5 items-center justify-center rounded-full bg-amber-400 text-[10px] font-bold text-neutral-950 shadow-xs">
+              {activeFiltersCount}
+            </span>
           )}
-        </div>
+        </SheetTrigger>
+      )}
 
-        {filterControls}
-      </aside>
-
-      {/* Mobile Filters Trigger & Sheet */}
-      <div className="mb-6 flex w-full items-center justify-between gap-3 lg:hidden">
-        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-          <SheetTrigger
-            render={
-              <Button
-                variant="outline"
-                className="flex items-center gap-2 rounded-xl border-neutral-800 bg-neutral-900/90 px-4 py-2 text-xs text-neutral-200"
-              />
-            }
-          >
-            <SlidersHorizontal className="size-4 text-amber-400" />
-            <span>Filters</span>
-            {activeFiltersCount > 0 && (
-              <span className="flex size-4 items-center justify-center rounded-full bg-amber-400 text-[10px] font-bold text-neutral-950">
-                {activeFiltersCount}
-              </span>
-            )}
-          </SheetTrigger>
-
-          <SheetContent
-            side="left"
-            className="w-[90%] max-w-md overflow-y-auto border-r border-neutral-800 bg-neutral-950 p-6 text-neutral-100"
-          >
-            <SheetHeader className="mb-6 border-b border-neutral-800 pb-4">
-              <SheetTitle className="flex items-center gap-2 text-base font-semibold text-neutral-100">
-                <SlidersHorizontal className="size-4 text-amber-400" />
+      {/* Filter Drawer Sheet Content */}
+      <SheetContent
+        side="right"
+        className="flex h-dvh max-h-screen w-full flex-col overflow-hidden border-l border-neutral-800 bg-neutral-950 p-0 text-neutral-100 shadow-2xl sm:max-w-lg data-[side=right]:sm:max-w-lg"
+      >
+        {/* Header */}
+        <SheetHeader className="shrink-0 border-b border-neutral-800/80 px-6 py-5">
+          <div className="flex items-center gap-2.5 pr-8">
+            <div className="flex size-8 items-center justify-center rounded-xl border border-amber-400/30 bg-amber-400/10 text-amber-400">
+              <SlidersHorizontal className="size-4" />
+            </div>
+            <div>
+              <SheetTitle className="text-base font-semibold text-neutral-100">
                 Filter Properties
               </SheetTitle>
-            </SheetHeader>
-
-            {filterControls}
-
-            <div className="mt-8 border-t border-neutral-800 pt-4">
-              <Button
-                className="w-full rounded-xl bg-neutral-100 py-3 text-xs font-semibold text-neutral-950 hover:bg-neutral-200"
-                onClick={() => setMobileOpen(false)}
-              >
-                Show {filteredCount} Properties
-              </Button>
+              <SheetDescription className="text-xs text-neutral-400">
+                Refine architectural estates and luxury leases
+              </SheetDescription>
             </div>
-          </SheetContent>
-        </Sheet>
+          </div>
+        </SheetHeader>
 
-        <span className="text-xs font-medium text-neutral-400">
-          Showing {filteredCount} of {totalCount} estates
-        </span>
-      </div>
-    </>
+        {/* Scrollable Filters Body */}
+        <div
+          data-lenis-prevent
+          onWheel={(e) => e.stopPropagation()}
+          className="custom-scrollbar min-h-0 flex-1 space-y-6 overflow-y-auto overscroll-contain px-6 py-5 pr-4"
+        >
+          {/* 1. Transaction Type (Liquid Component) */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-medium text-neutral-300">
+                Acquisition Purpose
+              </label>
+              <span className="text-xs font-medium text-amber-400">
+                {filters.purpose === "all"
+                  ? "All Modes"
+                  : filters.purpose === "buy"
+                    ? "Purchase Only"
+                    : "Lease Only"}
+              </span>
+            </div>
+            <LiquidPurposeSelector
+              value={filters.purpose}
+              onChange={handlePurposeChange}
+            />
+          </div>
+
+          {/* 2. Keyword Search */}
+          <div className="space-y-2">
+            <div>
+              <label className="text-xs font-medium text-neutral-300">
+                Search Keyword
+              </label>
+            </div>
+            <div className="relative">
+              <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-neutral-500" />
+              <input
+                type="text"
+                value={filters.search}
+                onChange={(e) => onFilterChange("search", e.target.value)}
+                placeholder="Search title, location, architectural features..."
+                className="w-full rounded-xl border border-neutral-800 bg-neutral-900/70 py-2.5 pr-9 pl-9 text-xs text-neutral-100 transition-all placeholder:text-neutral-500 focus:border-amber-400/80 focus:ring-1 focus:ring-amber-400/80 focus:outline-none"
+              />
+              {filters.search && (
+                <button
+                  type="button"
+                  onClick={() => onFilterChange("search", "")}
+                  className="absolute top-1/2 right-3 -translate-y-1/2 text-neutral-400 hover:text-neutral-200"
+                  aria-label="Clear search"
+                >
+                  <X className="size-3.5" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* 3. Classification & Region (Motion Select Components) */}
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {/* Property Type Select */}
+            <div className="space-y-1.5">
+              <label className="flex items-center gap-1.5 text-xs font-medium text-neutral-300">
+                <Building2 className="size-3.5 text-amber-400" />
+                <span>Property Type</span>
+              </label>
+              <Select
+                value={filters.propertyType}
+                onValueChange={(val) =>
+                  onFilterChange(
+                    "propertyType",
+                    val as PropertyFilters["propertyType"]
+                  )
+                }
+              >
+                <SelectTrigger className="w-full rounded-xl border-neutral-800 bg-neutral-900/80 py-2 text-xs text-neutral-200 hover:border-neutral-700">
+                  <SelectValue placeholder="All Property Types" />
+                </SelectTrigger>
+                <SelectContent className="z-50 rounded-xl border-neutral-800 bg-neutral-900 text-xs text-neutral-200 shadow-2xl">
+                  <SelectItem value="all">All Property Types</SelectItem>
+                  <SelectItem value="estate">Signature Estate</SelectItem>
+                  <SelectItem value="villa">Luxury Villa</SelectItem>
+                  <SelectItem value="penthouse">
+                    Architectural Penthouse
+                  </SelectItem>
+                  <SelectItem value="townhouse">Modern Townhouse</SelectItem>
+                  <SelectItem value="apartment">Luxury Apartment</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Region Select */}
+            <div className="space-y-1.5">
+              <label className="flex items-center gap-1.5 text-xs font-medium text-neutral-300">
+                <MapPin className="size-3.5 text-amber-400" />
+                <span>Region / Location</span>
+              </label>
+              <Select
+                value={filters.location}
+                onValueChange={(val) => onFilterChange("location", val)}
+              >
+                <SelectTrigger className="w-full rounded-xl border-neutral-800 bg-neutral-900/80 py-2 text-xs text-neutral-200 hover:border-neutral-700">
+                  <SelectValue placeholder="All Locations" />
+                </SelectTrigger>
+                <SelectContent className="z-50 rounded-xl border-neutral-800 bg-neutral-900 text-xs text-neutral-200 shadow-2xl">
+                  <SelectItem value="all">All Locations</SelectItem>
+                  <SelectItem value="california">
+                    California (Malibu, Beverly Hills)
+                  </SelectItem>
+                  <SelectItem value="florida">
+                    Florida (Miami, Palm Beach)
+                  </SelectItem>
+                  <SelectItem value="colorado">Colorado (Aspen)</SelectItem>
+                  <SelectItem value="new york">
+                    New York (Tribeca, Manhattan)
+                  </SelectItem>
+                  <SelectItem value="texas">Texas (Austin)</SelectItem>
+                  <SelectItem value="arizona">Arizona (Scottsdale)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* 4. Bedrooms & Bathrooms (Small Adaptive Stepper Components) */}
+          <div className="space-y-2.5">
+            <div>
+              <label className="text-xs font-medium text-neutral-300">
+                Bedrooms & Bathrooms
+              </label>
+            </div>
+            <div className="space-y-3.5 rounded-2xl border border-neutral-800 bg-neutral-900/40 p-4">
+              {/* Bedrooms Row */}
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex size-7 items-center justify-center rounded-lg border border-amber-400/20 bg-amber-400/10 text-amber-400">
+                    <BedDouble className="size-3.5" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-neutral-200">
+                      Bedrooms
+                    </p>
+                    <p className="text-[11px] text-neutral-500">
+                      {filters.bhk === "all"
+                        ? "Any bedroom count"
+                        : `Minimum ${filters.bhk} BHK`}
+                    </p>
+                  </div>
+                </div>
+                <AdaptiveStepper
+                  size="sm"
+                  value={bhkNumber}
+                  onValueChange={handleBhkChange}
+                  min={0}
+                  max={5}
+                  fill="#262626"
+                >
+                  <AdaptiveStepperDecrement />
+                  <AdaptiveStepperValue>
+                    {(val) =>
+                      val === 0 ? "Any" : val >= 5 ? "5+ BHK" : `${val} BHK`
+                    }
+                  </AdaptiveStepperValue>
+                  <AdaptiveStepperIncrement />
+                </AdaptiveStepper>
+              </div>
+
+              {/* Subtle Divider */}
+              <div className="h-px bg-neutral-800/70" />
+
+              {/* Bathrooms Row */}
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex size-7 items-center justify-center rounded-lg border border-amber-400/20 bg-amber-400/10 text-amber-400">
+                    <Bath className="size-3.5" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-neutral-200">
+                      Bathrooms
+                    </p>
+                    <p className="text-[11px] text-neutral-500">
+                      {filters.bathrooms === 0
+                        ? "Any bathroom count"
+                        : `Minimum ${filters.bathrooms}+ baths`}
+                    </p>
+                  </div>
+                </div>
+                <AdaptiveStepper
+                  size="sm"
+                  value={filters.bathrooms}
+                  onValueChange={(val) => onFilterChange("bathrooms", val)}
+                  min={0}
+                  max={6}
+                  fill="#262626"
+                >
+                  <AdaptiveStepperDecrement />
+                  <AdaptiveStepperValue>
+                    {(val) => (val === 0 ? "Any" : `${val}+ Baths`)}
+                  </AdaptiveStepperValue>
+                  <AdaptiveStepperIncrement />
+                </AdaptiveStepper>
+              </div>
+            </div>
+          </div>
+
+          {/* 5. Budget / Price Range (Slider Component) */}
+          <div className="space-y-3 rounded-2xl border border-neutral-800 bg-neutral-900/40 p-4">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-medium text-neutral-300">
+                Budget Range
+              </label>
+              <span className="rounded-md bg-amber-400/10 px-2 py-0.5 text-xs font-medium text-amber-300 tabular-nums">
+                {formattedBudgetDisplay}
+              </span>
+            </div>
+
+            <div className="pt-2 pb-1">
+              <Slider
+                min={budgetMin}
+                max={budgetMax}
+                step={budgetStep}
+                value={currentBudgetRange}
+                onValueChange={handleBudgetChange}
+              />
+            </div>
+
+            {/* Quick Presets */}
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              {isRent ? (
+                <>
+                  {[
+                    { label: "Under $10k", min: 0, max: 10000 },
+                    { label: "$10k - $25k", min: 10000, max: 25000 },
+                    { label: "$25k - $50k", min: 25000, max: 50000 },
+                  ].map((p) => (
+                    <button
+                      key={p.label}
+                      type="button"
+                      onClick={() => {
+                        onFilterChange("minBudget", p.min);
+                        onFilterChange("maxBudget", p.max);
+                      }}
+                      className="cursor-pointer rounded-lg border border-neutral-800 bg-neutral-900/80 px-2.5 py-1 text-[10px] font-medium text-neutral-400 transition-colors hover:border-amber-400/50 hover:text-neutral-200"
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </>
+              ) : (
+                <>
+                  {[
+                    { label: "< $5M", min: 0, max: 5000000 },
+                    { label: "$5M - $15M", min: 5000000, max: 15000000 },
+                    { label: "$15M - $30M", min: 15000000, max: 30000000 },
+                    { label: "$30M+", min: 30000000, max: 50000000 },
+                  ].map((p) => (
+                    <button
+                      key={p.label}
+                      type="button"
+                      onClick={() => {
+                        onFilterChange("minBudget", p.min);
+                        onFilterChange("maxBudget", p.max);
+                      }}
+                      className="cursor-pointer rounded-lg border border-neutral-800 bg-neutral-900/80 px-2.5 py-1 text-[10px] font-medium text-neutral-400 transition-colors hover:border-amber-400/50 hover:text-neutral-200"
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* 6. Area Specifications: Home Area & Land Area Sliders */}
+          <div className="space-y-4 rounded-2xl border border-neutral-800 bg-neutral-900/40 p-4">
+            {/* Home Living Area */}
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-medium text-neutral-300">
+                  Home Living Area
+                </label>
+                <span className="text-xs font-medium text-neutral-200 tabular-nums">
+                  {filters.minHomeArea} m² - {filters.maxHomeArea} m²
+                </span>
+              </div>
+              <div className="pt-1 pb-1">
+                <Slider
+                  min={0}
+                  max={2000}
+                  step={25}
+                  value={[filters.minHomeArea, filters.maxHomeArea]}
+                  onValueChange={handleHomeAreaChange}
+                />
+              </div>
+            </div>
+
+            <div className="h-px bg-neutral-800/70" />
+
+            {/* Land Parcel Area */}
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-medium text-neutral-300">
+                  Land Parcel Area
+                </label>
+                <span className="text-xs font-medium text-neutral-200 tabular-nums">
+                  {filters.minLandArea} m² - {filters.maxLandArea} m²
+                </span>
+              </div>
+              <div className="pt-1 pb-1">
+                <Slider
+                  min={0}
+                  max={10000}
+                  step={100}
+                  value={[filters.minLandArea, filters.maxLandArea]}
+                  onValueChange={handleLandAreaChange}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* 7. Luxury Portfolio Only (Switch Component) */}
+          <div className="flex items-center justify-between rounded-2xl border border-neutral-800 bg-neutral-900/40 p-4">
+            <span className="text-xs font-medium text-neutral-200">
+              Luxury Portfolio Only
+            </span>
+            <Switch
+              checked={filters.luxuryOnly}
+              onCheckedChange={(checked) =>
+                onFilterChange("luxuryOnly", Boolean(checked))
+              }
+            />
+          </div>
+        </div>
+
+        {/* Footer Actions */}
+        <SheetFooter className="shrink-0 border-t border-neutral-800/80 bg-neutral-950/90 px-6 py-4 backdrop-blur-md">
+          <div className="flex w-full items-center gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onReset}
+              className="flex-1 gap-1.5 rounded-xl border-neutral-800 bg-neutral-900 py-3 text-xs font-medium text-neutral-300 transition-colors hover:bg-neutral-800 hover:text-white"
+            >
+              <RotateCcw className="size-3.5" />
+              <span>Reset All</span>
+            </Button>
+            <Button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="flex-1 rounded-xl bg-amber-400 py-3 text-xs font-semibold text-neutral-950 transition-all hover:bg-amber-300"
+            >
+              Show {filteredCount}{" "}
+              {filteredCount === 1 ? "Property" : "Properties"}
+            </Button>
+          </div>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
   );
 }
 

@@ -33,7 +33,12 @@ export interface PropertyFilters {
   purpose: "all" | PropertyPurpose;
   bhk: string; // "all" | "1" | "2" | "3" | "4" | "5+"
   search: string;
+  propertyType: "all" | PropertyType;
+  location: string;
+  bathrooms: number; // 0 = any, 1, 2, 3, 4, 5, 6+
   luxuryOnly: boolean;
+  featuredOnly: boolean;
+  hasPool: boolean;
   minBudget: number;
   maxBudget: number;
   minHomeArea: number;
