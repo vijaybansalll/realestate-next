@@ -158,10 +158,10 @@ export function PropertyCard({
         {/* Actions */}
         <div className="mt-5 flex items-center gap-2 border-t border-neutral-800/60 pt-2">
           <Button
-            variant="default"
+            variant="primary"
             size="sm"
             onClick={() => onInquire?.(property)}
-            className="w-full bg-neutral-100 text-xs font-semibold tracking-wide text-neutral-950 transition-all hover:bg-neutral-200 active:scale-95"
+            className="w-full"
           >
             <span>Inquire & Book Viewing</span>
             <ArrowUpRight className="ml-1 size-3.5" />

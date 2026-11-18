@@ -14,17 +14,13 @@ import {
 import { Logo } from "@/components/layout/logo";
 import { NAV_ITEMS } from "@/data";
 import type { NavItem } from "@/types";
-import { cn } from "@/lib/utils";
 
 interface NavigationSheetProps {
   isScrolled?: boolean;
   items?: NavItem[];
 }
 
-export function NavigationSheet({
-  isScrolled = false,
-  items = NAV_ITEMS,
-}: NavigationSheetProps) {
+export function NavigationSheet({ items = NAV_ITEMS }: NavigationSheetProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -37,14 +33,9 @@ export function NavigationSheet({
         render={
           <Button
             size="icon"
-            variant="ghost"
+            variant="secondary"
             aria-label="Open menu"
-            className={cn(
-              "rounded-full transition-colors",
-              isScrolled
-                ? "text-neutral-200 hover:bg-neutral-800 hover:text-neutral-100"
-                : "text-neutral-100 hover:bg-neutral-100/10"
-            )}
+            className="rounded-full"
           />
         }
       >
@@ -81,14 +72,15 @@ export function NavigationSheet({
         </div>
 
         <div className="border-t border-neutral-800/80 pt-6">
-          <Link
-            href="#contact"
-            onClick={() => setOpen(false)}
-            className="flex w-full items-center justify-center gap-2 rounded-full bg-neutral-100 px-5 py-3 text-sm font-semibold text-neutral-950 shadow-lg shadow-neutral-100/5 transition-all hover:bg-neutral-200 active:scale-95"
+          <Button
+            variant="primary"
+            size="lg"
+            className="w-full rounded-full"
+            render={<Link href="#contact" onClick={() => setOpen(false)} />}
           >
             <span>Get in touch</span>
             <ArrowUpRight className="size-4" />
-          </Link>
+          </Button>
         </div>
       </SheetContent>
     </Sheet>

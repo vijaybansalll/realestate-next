@@ -42,7 +42,7 @@ export function FeaturedProperties({
         <Button
           className="max-sm:hidden"
           size="sm"
-          variant="outline"
+          variant="secondary"
           render={<Link href="#contact" />}
         >
           Inquire on Estates
@@ -125,7 +125,7 @@ export function FeaturedProperties({
           <Button
             className="sm:hidden"
             size="sm"
-            variant="outline"
+            variant="secondary"
             render={<Link href="#contact" />}
           >
             Inquire on Estates

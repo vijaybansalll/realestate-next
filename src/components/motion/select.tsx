@@ -140,7 +140,7 @@ export function Select({
       if (!openControlled) setInternalOpen(next);
       onOpenChange?.(next);
     },
-    [onOpenChange, openControlled],
+    [onOpenChange, openControlled]
   );
 
   // The panel turns inert as it closes, which would drop focus held inside it
@@ -161,16 +161,19 @@ export function Select({
       onValueChange?.(next);
       close();
     },
-    [controlled, onValueChange, close],
+    [controlled, onValueChange, close]
   );
 
-  const register = useCallback((v: string, label: string, disabled: boolean) => {
-    setLabels((m) => {
-      const entry = m.get(v);
-      if (entry?.label === label && entry.disabled === disabled) return m;
-      return new Map(m).set(v, { label, disabled });
-    });
-  }, []);
+  const register = useCallback(
+    (v: string, label: string, disabled: boolean) => {
+      setLabels((m) => {
+        const entry = m.get(v);
+        if (entry?.label === label && entry.disabled === disabled) return m;
+        return new Map(m).set(v, { label, disabled });
+      });
+    },
+    []
+  );
   const unregister = useCallback((v: string) => {
     setLabels((m) => {
       if (!m.has(v)) return m;
@@ -185,7 +188,7 @@ export function Select({
     const animation = animate(
       progress,
       open ? 1 : 0,
-      reduce ? { duration: 0.12 } : open ? UNFOLD_SPRING : UNFOLD_EXIT,
+      reduce ? { duration: 0.12 } : open ? UNFOLD_SPRING : UNFOLD_EXIT
     );
     return () => animation.stop();
   }, [open, progress, reduce]);
@@ -213,7 +216,7 @@ export function Select({
         label: entry.label,
         disabled: entry.disabled,
       })),
-    [labels],
+    [labels]
   );
 
   const ctx = useMemo<SelectContextValue>(
@@ -250,12 +253,15 @@ export function Select({
       baseId,
       disabled,
       placement,
-    ],
+    ]
   );
 
   return (
     <SelectContext.Provider value={ctx}>
-      <div ref={rootRef} className={cn("relative", className)}>
+      <div
+        ref={rootRef}
+        className={cn("relative", open ? "z-50" : undefined, className)}
+      >
         {children}
       </div>
     </SelectContext.Provider>
@@ -276,10 +282,10 @@ export function SelectTrigger({ className, children }: SelectTriggerProps) {
   const nearRadius = useTransform(
     ctx.progress,
     [0, 0.2, 0.4, 1],
-    [RADIUS, 0, 0, RADIUS],
+    [RADIUS, 0, 0, RADIUS]
   );
   const rotate = useTransform(ctx.progress, (p) =>
-    ctx.reduce ? (ctx.open ? 180 : 0) : Math.min(1, Math.max(0, p)) * 180,
+    ctx.reduce ? (ctx.open ? 180 : 0) : Math.min(1, Math.max(0, p)) * 180
   );
   return (
     <motion.button
@@ -306,10 +312,10 @@ export function SelectTrigger({ className, children }: SelectTriggerProps) {
         borderBottomRightRadius: ctx.reduce || isTop ? RADIUS : nearRadius,
       }}
       className={cn(
-        "relative z-10 flex w-full items-center justify-between gap-2 border border-border bg-background px-3 py-2 text-sm text-foreground outline-none transition-colors",
+        "relative z-10 flex w-full items-center justify-between gap-2 border border-border bg-background px-3 py-2 text-sm text-foreground transition-colors outline-none",
         "hover:border-(--color-border-strong) focus-visible:ring-2 focus-visible:ring-foreground/20",
         "disabled:pointer-events-none disabled:opacity-50",
-        className,
+        className
       )}
     >
       {children}
@@ -334,7 +340,10 @@ export function SelectValue({ placeholder, className }: SelectValueProps) {
   const label = ctx.labelFor(ctx.value);
   return (
     <span
-      className={cn(label ? "text-foreground" : "text-muted-foreground", className)}
+      className={cn(
+        label ? "text-foreground" : "text-muted-foreground",
+        className
+      )}
     >
       {label ?? placeholder ?? "Select"}
     </span>
@@ -410,21 +419,24 @@ export function SelectContent({ className, children }: SelectContentProps) {
   const borderRadius = useTransform(nearRadius, (near) =>
     isTop
       ? `${RADIUS}px ${RADIUS}px ${near}px ${near}px`
-      : `${near}px ${near}px ${RADIUS}px ${RADIUS}px`,
+      : `${near}px ${near}px ${RADIUS}px ${RADIUS}px`
   );
-  const clipPath = useTransform([progress, nearRadius], ([p, near]: number[]) => {
-    if (!ready) return "none";
-    // Clamp overshoot so the clip never extends into the trigger or exposes
-    // overflowing children. At rest remove it so the native shadow is whole.
-    const reveal = Math.min(1, Math.max(0, p));
-    if (reveal === 1) return "none";
-    const hidden = Math.max(0, (height - LIP) * (1 - reveal));
-    const inset = isTop ? `${hidden}px 0 0 0` : `0 0 ${hidden}px 0`;
-    const corners = isTop
-      ? `${RADIUS}px ${RADIUS}px ${near}px ${near}px`
-      : `${near}px ${near}px ${RADIUS}px ${RADIUS}px`;
-    return `inset(${inset} round ${corners})`;
-  });
+  const clipPath = useTransform(
+    [progress, nearRadius],
+    ([p, near]: number[]) => {
+      if (!ready) return "none";
+      // Clamp overshoot so the clip never extends into the trigger or exposes
+      // overflowing children. At rest remove it so the native shadow is whole.
+      const reveal = Math.min(1, Math.max(0, p));
+      if (reveal === 1) return "none";
+      const hidden = Math.max(0, (height - LIP) * (1 - reveal));
+      const inset = isTop ? `${hidden}px 0 0 0` : `0 0 ${hidden}px 0`;
+      const corners = isTop
+        ? `${RADIUS}px ${RADIUS}px ${near}px ${near}px`
+        : `${near}px ${near}px ${RADIUS}px ${RADIUS}px`;
+      return `inset(${inset} round ${corners})`;
+    }
+  );
   // The surface materialises over its first frames rather than popping in as
   // a lip; with reduced motion the fade is the whole entrance.
   const opacity = useTransform(progress, reduce ? [0, 1] : [0, 0.12], [0, 1]);
@@ -458,9 +470,9 @@ export function SelectContent({ className, children }: SelectContentProps) {
       // flush against the trigger, then separates into its own rounded pill;
       // sits above or below depending on available space
       className={cn(
-        "absolute left-0 right-0 z-20 overflow-hidden border border-border bg-background shadow-lg",
+        "absolute right-0 left-0 z-50 overflow-hidden border border-border bg-background shadow-lg",
         isTop ? "bottom-full" : "top-full",
-        className,
+        className
       )}
     >
       <ActiveOptionContext.Provider value={activeId}>
@@ -511,12 +523,12 @@ export function SelectItem({
         data-listbox-id={value}
         onClick={() => ctx.select(value)}
         className={cn(
-          "flex w-full items-center justify-between gap-2 rounded-lg px-2.5 py-1.5 text-left text-sm outline-none transition-colors",
+          "flex w-full items-center justify-between gap-2 rounded-lg px-2.5 py-1.5 text-left text-sm transition-colors outline-none",
           selected
             ? "bg-muted text-foreground"
             : "text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:bg-muted",
           "disabled:pointer-events-none disabled:opacity-50",
-          className,
+          className
         )}
       >
         {children}

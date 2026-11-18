@@ -1,4 +1,5 @@
 import { Logo } from "@/components/layout/logo";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { FOOTER_SECTIONS } from "@/data";
 import { siteConfig } from "@/config/site";
@@ -86,34 +87,52 @@ export function Footer() {
                 </p>
 
                 {/* Social links */}
-                <div className="flex items-center gap-4">
-                  <a
-                    href={siteConfig.social.twitter}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label="Twitter"
-                    className="text-muted-foreground transition-colors hover:text-foreground"
+                <div className="flex items-center gap-2.5">
+                  <Button
+                    variant="secondary"
+                    size="icon-sm"
+                    className="rounded-full"
+                    render={
+                      <a
+                        href={siteConfig.social.twitter}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label="Twitter"
+                      />
+                    }
                   >
                     <TwitterIcon />
-                  </a>
-                  <a
-                    href={siteConfig.social.linkedin}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label="LinkedIn"
-                    className="text-muted-foreground transition-colors hover:text-foreground"
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="icon-sm"
+                    className="rounded-full"
+                    render={
+                      <a
+                        href={siteConfig.social.linkedin}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label="LinkedIn"
+                      />
+                    }
                   >
                     <LinkedinIcon />
-                  </a>
-                  <a
-                    href={siteConfig.social.instagram}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label="Instagram"
-                    className="text-muted-foreground transition-colors hover:text-foreground"
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="icon-sm"
+                    className="rounded-full"
+                    render={
+                      <a
+                        href={siteConfig.social.instagram}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label="Instagram"
+                      />
+                    }
                   >
                     <InstagramIcon />
-                  </a>
+                  </Button>
                 </div>
               </div>
             </div>

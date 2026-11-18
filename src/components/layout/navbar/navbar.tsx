@@ -5,6 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { useLenis } from "lenis/react";
 import { Logo } from "@/components/layout/logo";
+import { Button } from "@/components/ui/button";
 import { NavMenu } from "./nav-menu";
 import { NavigationSheet } from "./navigation-sheet";
 import { cn } from "@/lib/utils";
@@ -57,18 +58,14 @@ export function Navbar() {
         {/* Right CTA / Mobile Trigger */}
         <div className="flex items-center gap-3">
           {/* CTA Button */}
-          <Link
-            href="#contact"
-            className={cn(
-              "hidden items-center gap-2 rounded-full px-5 py-2 text-sm font-semibold tracking-wide transition-all duration-300 active:scale-95 sm:inline-flex",
-              isScrolled
-                ? "bg-neutral-100 text-neutral-950 shadow-md shadow-black/20 hover:bg-neutral-200"
-                : "bg-neutral-100 text-neutral-950 shadow-lg shadow-black/40 hover:bg-neutral-200 hover:shadow-neutral-100/10"
-            )}
+          <Button
+            variant="primary"
+            className="hidden rounded-full px-5 sm:inline-flex"
+            render={<Link href="#contact" />}
           >
             <span>Get in touch</span>
             <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </Link>
+          </Button>
 
           {/* Mobile Navigation Sheet */}
           <div className="md:hidden">

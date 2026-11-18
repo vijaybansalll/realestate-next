@@ -11,10 +11,10 @@ import { Button } from "@/components/ui/button";
 export function CTA() {
   return (
     <section id="contact" className="px-4 py-12 sm:px-6 sm:py-16">
-      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-2xl border border-border/60 p-6 sm:p-10 md:p-14 dark:bg-foreground">
+      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/90 p-6 shadow-2xl backdrop-blur-xl sm:p-10 md:p-14">
         {/* Aurora Silk Fade Gradient */}
         <div
-          className="absolute inset-0 z-0 opacity-70"
+          className="absolute inset-0 z-0 opacity-25"
           style={{
             background:
               "linear-gradient(150deg, #FFAB91 0%, #FFCDD2 20%, #FCE4EC 40%, #e2daf1 60%, #b39ddb 80%, #8b6ac8 100%)",
@@ -71,27 +71,28 @@ export function CTA() {
         </div>
 
         <div className="relative isolate">
-          <h2 className="text-2xl font-medium tracking-tight text-balance text-neutral-900 sm:text-3xl md:text-4xl md:leading-tight lg:text-[2.75rem]">
+          <h2 className="text-2xl font-medium tracking-tight text-balance text-neutral-100 sm:text-3xl md:text-4xl md:leading-tight lg:text-[2.75rem]">
             Turn your architectural vision into reality
           </h2>
-          <p className="mt-3 text-sm/relaxed text-balance text-neutral-700 sm:mt-4 sm:text-base/relaxed md:text-xl/normal">
+          <p className="mt-3 text-sm/relaxed text-balance text-neutral-300 sm:mt-4 sm:text-base/relaxed md:text-xl/normal">
             Connect with our private client advisory team to schedule an
             exclusive viewing or commission a bespoke estate tailored to your
             lifestyle.
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:mt-9 sm:flex-row">
             <Button
-              className="w-full bg-neutral-950 text-neutral-100 hover:bg-neutral-900 sm:w-auto"
+              variant="primary"
               size="lg"
+              className="w-full sm:w-auto"
               render={<Link href="#contact" />}
             >
               <span>Schedule Private Tour</span>
               <ArrowUpRight className="ml-1 size-4" />
             </Button>
             <Button
-              className="w-full border-neutral-400/60 bg-neutral-100/50 text-neutral-950 hover:bg-neutral-100/80 sm:w-auto dark:border-neutral-400/60 dark:bg-neutral-100/50 dark:text-neutral-950 dark:hover:bg-neutral-100/80"
+              variant="secondary"
               size="lg"
-              variant="outline"
+              className="w-full sm:w-auto"
               render={<Link href="#properties" />}
             >
               Explore Portfolio

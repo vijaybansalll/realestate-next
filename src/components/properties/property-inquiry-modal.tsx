@@ -198,7 +198,9 @@ export function PropertyInquiryModal({
               <div className="pt-2">
                 <Button
                   type="submit"
-                  className="w-full rounded-xl bg-neutral-100 py-3 text-xs font-semibold text-neutral-950 transition-all hover:bg-neutral-200 active:scale-95"
+                  variant="primary"
+                  size="lg"
+                  className="w-full"
                 >
                   Request Private Tour
                 </Button>
