@@ -3,27 +3,31 @@ import type { NavItem, FooterSection } from "@/types";
 export const NAV_ITEMS: NavItem[] = [
   {
     title: "Home",
-    href: "#",
+    href: "/",
+  },
+  {
+    title: "All Properties",
+    href: "/properties",
   },
   {
     title: "Walkthrough",
-    href: "#walkthrough",
+    href: "/#walkthrough",
   },
   {
     title: "Portfolio",
-    href: "#properties",
+    href: "/#properties",
   },
   {
     title: "Residences",
-    href: "#residences",
+    href: "/#residences",
   },
   {
     title: "Showcase",
-    href: "#showcase",
+    href: "/#showcase",
   },
   {
     title: "Contact",
-    href: "#contact",
+    href: "/#contact",
   },
 ];
 
@@ -32,20 +36,24 @@ export const FOOTER_SECTIONS: FooterSection[] = [
     title: "Estates & Portfolio",
     links: [
       {
+        title: "All Properties Catalog",
+        href: "/properties",
+      },
+      {
         title: "Featured Estates",
-        href: "#properties",
+        href: "/#properties",
       },
       {
         title: "Virtual Walkthrough",
-        href: "#walkthrough",
+        href: "/#walkthrough",
       },
       {
         title: "Interactive Showcase",
-        href: "#showcase",
+        href: "/#showcase",
       },
       {
         title: "Spatial Staging",
-        href: "#transformation",
+        href: "/#transformation",
       },
     ],
   },
@@ -54,15 +62,15 @@ export const FOOTER_SECTIONS: FooterSection[] = [
     links: [
       {
         title: "Architectural Planning",
-        href: "#",
+        href: "/#contact",
       },
       {
         title: "Interior Architecture",
-        href: "#",
+        href: "/#contact",
       },
       {
         title: "Private Commissions",
-        href: "#contact",
+        href: "/#contact",
       },
       {
         title: "Privacy & Terms",

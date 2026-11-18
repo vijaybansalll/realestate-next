@@ -3,14 +3,44 @@ export interface NavItem {
   href: string;
 }
 
+export type PropertyPurpose = "buy" | "rent";
+export type PropertyType =
+  "estate" | "villa" | "penthouse" | "townhouse" | "apartment";
+
 export interface Property {
   id: string;
   title: string;
-  size: string;
+  location: string;
+  purpose: PropertyPurpose;
+  type: PropertyType;
+  bhk: number;
   bedrooms: number;
   bathrooms: number;
   garage: number;
+  price: number;
+  formattedPrice: string;
+  isLuxury: boolean;
+  homeAreaSqM: number;
+  landAreaSqM: number;
+  size: string;
   image: string;
+  description?: string;
+  features?: string[];
+  featured?: boolean;
+}
+
+export interface PropertyFilters {
+  purpose: "all" | PropertyPurpose;
+  bhk: string; // "all" | "1" | "2" | "3" | "4" | "5+"
+  search: string;
+  luxuryOnly: boolean;
+  minBudget: number;
+  maxBudget: number;
+  minHomeArea: number;
+  maxHomeArea: number;
+  minLandArea: number;
+  maxLandArea: number;
+  sortBy: "featured" | "price-asc" | "price-desc" | "homeArea-desc";
 }
 
 export interface PortfolioGalleryItem {
