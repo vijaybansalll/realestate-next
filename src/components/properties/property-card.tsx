@@ -55,7 +55,7 @@ export function PropertyCard({
           <div className="flex flex-wrap items-center gap-1.5">
             <span
               className={cn(
-                "rounded-full px-2.5 py-1 text-xs font-semibold tracking-wider uppercase shadow-sm backdrop-blur-md",
+                "rounded-full px-2 py-1 text-xs font-semibold shadow-sm backdrop-blur-md",
                 property.purpose === "buy"
                   ? "border border-amber-500/30 bg-amber-500/20 text-amber-300"
                   : "border border-sky-500/30 bg-sky-500/20 text-sky-300"
@@ -71,36 +71,13 @@ export function PropertyCard({
               </span>
             )}
           </div>
-
-          {/* Favorite Toggle Button */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setIsFavorite(!isFavorite);
-            }}
-            aria-label={isFavorite ? "Remove from saved" : "Save property"}
-            className="pointer-events-auto flex size-8 items-center justify-center rounded-full border border-neutral-700/60 bg-neutral-950/60 text-neutral-200 backdrop-blur-md transition-all hover:scale-110 hover:text-white active:scale-95"
-          >
-            <Heart
-              className={cn(
-                "size-4 transition-colors",
-                isFavorite
-                  ? "fill-rose-500 text-rose-500"
-                  : "text-neutral-300 hover:text-white"
-              )}
-            />
-          </button>
         </div>
 
         {/* Bottom Price Tag inside image */}
         <div className="absolute right-3 bottom-3 left-3 flex items-end justify-between">
           <div className="rounded-lg border border-neutral-800/80 bg-neutral-950/80 px-3 py-1.5 shadow-lg backdrop-blur-md">
-            <span className="block text-xs font-medium tracking-wider text-neutral-400 uppercase">
-              Price
-            </span>
-            <span className="text-lg font-bold tracking-tight text-neutral-100 sm:text-xl">
+            <span className="block text-xs text-neutral-300">Price</span>
+            <span className="text-base font-semibold tracking-tight text-neutral-100 sm:text-xl md:font-bold">
               {property.formattedPrice}
             </span>
           </div>
@@ -122,7 +99,7 @@ export function PropertyCard({
             >
               {property.title}
             </h3>
-            <p className="flex items-center gap-1.5 text-xs text-neutral-400">
+            <p className="flex items-center gap-1.5 text-xs text-neutral-100">
               <MapPin className="size-3.5 shrink-0 text-amber-400" />
               <span className="truncate">{property.location}</span>
             </p>
@@ -131,9 +108,7 @@ export function PropertyCard({
           {/* Specs Matrix */}
           <div className="mt-4 grid grid-cols-4 gap-2 border-y border-neutral-800/80 py-3 text-xs text-neutral-300">
             <div className="flex flex-col">
-              <span className="text-[10px] tracking-wider text-neutral-500 uppercase">
-                Beds
-              </span>
+              <span className="text-[10px] text-neutral-100">Beds</span>
               <span className="mt-0.5 flex items-center gap-1 font-semibold text-neutral-200">
                 <Bed className="size-3.5 text-neutral-400" />
                 {property.bedrooms}
@@ -141,9 +116,7 @@ export function PropertyCard({
             </div>
 
             <div className="flex flex-col">
-              <span className="text-[10px] tracking-wider text-neutral-500 uppercase">
-                Baths
-              </span>
+              <span className="text-[10px] text-neutral-100">Baths</span>
               <span className="mt-0.5 flex items-center gap-1 font-semibold text-neutral-200">
                 <Bath className="size-3.5 text-neutral-400" />
                 {property.bathrooms}
@@ -151,9 +124,7 @@ export function PropertyCard({
             </div>
 
             <div className="flex flex-col">
-              <span className="text-[10px] tracking-wider text-neutral-500 uppercase">
-                Home Area
-              </span>
+              <span className="text-[10px] text-neutral-100">Home Area</span>
               <span className="mt-0.5 flex items-center gap-1 font-semibold text-neutral-200">
                 <Maximize2 className="size-3.5 text-neutral-400" />
                 {property.homeAreaSqM}m²
@@ -161,9 +132,7 @@ export function PropertyCard({
             </div>
 
             <div className="flex flex-col">
-              <span className="text-[10px] tracking-wider text-neutral-500 uppercase">
-                Land Area
-              </span>
+              <span className="text-[10px] text-neutral-100">Land Area</span>
               <span className="mt-0.5 flex items-center gap-1 font-semibold text-neutral-200">
                 <Layers className="size-3.5 text-neutral-400" />
                 {property.landAreaSqM}m²

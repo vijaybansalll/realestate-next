@@ -293,7 +293,7 @@ export function PropertyFiltersComponent({
       {/* Filter Drawer Sheet Content */}
       <SheetContent
         side="right"
-        className="flex h-dvh max-h-screen w-full flex-col overflow-hidden border-l border-neutral-800 bg-neutral-950 p-0 text-neutral-100 shadow-2xl sm:max-w-lg data-[side=right]:sm:max-w-lg"
+        className="flex h-dvh max-h-screen w-full! max-w-full! flex-col overflow-hidden border-l border-neutral-800 bg-neutral-950 p-0 text-neutral-100 shadow-2xl sm:max-w-lg! data-[side=right]:sm:max-w-lg!"
       >
         {/* Header */}
         <SheetHeader className="shrink-0 border-b border-neutral-800/80 px-6 py-5">
