@@ -32,38 +32,34 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="mb-10 sm:mb-16">
-            <AccordionGallery
-              items={PORTFOLIO_GALLERY_ITEMS}
-              defaultIndex={0}
-              expandRatio={0.52}
-              trigger="hover"
-              accentColor="#f5f5f5"
-              overlayColor="#0a0a0a"
-              textColor="#f5f5f5"
-              grayscale
-              showLabels
-              duration={0.6}
-              ease="power3.out"
-              parallax={0.5}
-              tilt={8}
-              stagger={0.06}
-              height={460}
-              gap={10}
-              radius={16}
-              orientation="horizontal"
-              autoPlay={true}
-              autoPlayInterval={2000}
-              pauseOnHover={true}
-            />
-          </div>
-
-          <SpatialTransformation />
+          <AccordionGallery
+            items={PORTFOLIO_GALLERY_ITEMS}
+            defaultIndex={0}
+            expandRatio={0.52}
+            trigger="hover"
+            accentColor="#f5f5f5"
+            overlayColor="#0a0a0a"
+            textColor="#f5f5f5"
+            grayscale
+            showLabels
+            duration={0.6}
+            ease="power3.out"
+            parallax={0.5}
+            tilt={8}
+            stagger={0.06}
+            height={460}
+            gap={10}
+            radius={16}
+            orientation="horizontal"
+            autoPlay={true}
+            autoPlayInterval={2000}
+            pauseOnHover={true}
+          />
         </section>
+        <Stats />
+        <SpatialTransformation />
 
         <FeaturedProperties />
-
-        <Stats />
 
         <section id="showcase" className="relative w-full py-8 sm:py-12">
           <div className="mb-4 px-4 text-center">

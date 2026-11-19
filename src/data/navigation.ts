@@ -9,10 +9,7 @@ export const NAV_ITEMS: NavItem[] = [
     title: "All Properties",
     href: "/properties",
   },
-  {
-    title: "Walkthrough",
-    href: "/#walkthrough",
-  },
+
   {
     title: "Portfolio",
     href: "/#properties",
@@ -20,10 +17,6 @@ export const NAV_ITEMS: NavItem[] = [
   {
     title: "Residences",
     href: "/#residences",
-  },
-  {
-    title: "Showcase",
-    href: "/#showcase",
   },
   {
     title: "Contact",
