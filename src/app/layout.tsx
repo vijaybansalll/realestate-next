@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Instrument_Sans, Inter } from "next/font/google";
 import { SmoothScroll } from "@/components/layout";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import "./globals.css";
@@ -52,6 +53,7 @@ export default function RootLayout({
           disableTransitionOnChange={false}
         >
           <SmoothScroll>{children}</SmoothScroll>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

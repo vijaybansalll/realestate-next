@@ -25,7 +25,20 @@ export const getSupabaseClient = (): SupabaseClient | null => {
     return null;
   }
   if (!cachedClient) {
-    cachedClient = createClient(supabaseUrl, supabaseAnonKey);
+    cachedClient = createClient(supabaseUrl, supabaseAnonKey, {
+      global: {
+        fetch: (url, options = {}) => {
+          return fetch(url, {
+            ...options,
+            cache: "no-store",
+          });
+        },
+      },
+    });
+
+    if (typeof window !== "undefined") {
+      initSupabaseRealtime();
+    }
   }
   return cachedClient;
 };
@@ -166,11 +179,168 @@ export function mapPropertyToRow(property: Partial<Property>) {
   return row;
 }
 
-// In-Memory / Local Storage Store Fallback
+// In-Memory & Local Storage Cache with Reactive Event Bus
+const CACHE_KEY = "realestate_properties_cache";
 let inMemoryProperties: Property[] = [...ALL_PROPERTIES];
 
 export function getInitialProperties(): Property[] {
+  if (typeof window !== "undefined") {
+    try {
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          inMemoryProperties = parsed;
+          return parsed;
+        }
+      }
+    } catch {
+      // Ignore JSON parse errors
+    }
+  }
   return inMemoryProperties;
+}
+
+export function savePropertiesToCache(props: Property[]) {
+  inMemoryProperties = props;
+  if (typeof window !== "undefined") {
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify(props));
+      localStorage.setItem(
+        "realestate_properties_last_updated",
+        Date.now().toString()
+      );
+    } catch {
+      // Ignore quota errors
+    }
+  }
+}
+
+// Global Reactivity & Mutation Event Bus
+export type PropertiesListener = (properties: Property[]) => void;
+const listeners = new Set<PropertiesListener>();
+
+let broadcastChannel: BroadcastChannel | null = null;
+if (typeof window !== "undefined") {
+  try {
+    if ("BroadcastChannel" in window) {
+      broadcastChannel = new BroadcastChannel("realestate_properties_sync");
+      broadcastChannel.onmessage = (event) => {
+        if (
+          event.data?.type === "PROPERTIES_UPDATED" &&
+          Array.isArray(event.data.properties)
+        ) {
+          inMemoryProperties = event.data.properties;
+          try {
+            localStorage.setItem(CACHE_KEY, JSON.stringify(inMemoryProperties));
+          } catch {}
+          listeners.forEach((fn) => {
+            try {
+              fn(inMemoryProperties);
+            } catch (err) {
+              console.error(err);
+            }
+          });
+        }
+      };
+    }
+
+    // Cross-tab fallback via storage event
+    window.addEventListener("storage", (e) => {
+      if (e.key === "realestate_properties_last_updated") {
+        const updated = getInitialProperties();
+        listeners.forEach((fn) => {
+          try {
+            fn(updated);
+          } catch (err) {
+            console.error(err);
+          }
+        });
+      }
+    });
+  } catch {
+    // Ignore init errors
+  }
+}
+
+export function subscribeToProperties(
+  listener: PropertiesListener
+): () => void {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+}
+
+export function notifyPropertiesChanged(updatedProperties?: Property[]) {
+  const props = updatedProperties || inMemoryProperties;
+  savePropertiesToCache(props);
+
+  // 1. Notify all in-app subscriber components immediately
+  listeners.forEach((fn) => {
+    try {
+      fn(props);
+    } catch (err) {
+      console.error("Error executing property listener:", err);
+    }
+  });
+
+  // 2. Dispatch DOM custom event for standard listeners
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(
+      new CustomEvent("properties-updated", { detail: props })
+    );
+
+    // 3. Broadcast across tabs
+    if (broadcastChannel) {
+      try {
+        broadcastChannel.postMessage({
+          type: "PROPERTIES_UPDATED",
+          properties: props,
+        });
+      } catch {}
+    }
+  }
+}
+
+// Supabase Realtime Postgres Changes Subscription
+let realtimeInitialized = false;
+export function initSupabaseRealtime() {
+  if (typeof window === "undefined" || realtimeInitialized) return;
+  const supabase = getSupabaseClient();
+  if (!supabase) return;
+
+  try {
+    realtimeInitialized = true;
+    supabase
+      .channel("public-properties-sync")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "properties" },
+        async (payload) => {
+          try {
+            const { data, error } = await supabase
+              .from("properties")
+              .select("*")
+              .order("created_at", { ascending: false });
+
+            if (!error && data) {
+              const mapped = data.map(mapRowToProperty);
+              notifyPropertiesChanged(mapped);
+            }
+          } catch (err) {
+            console.warn("Failed to refetch properties after realtime event:", err);
+          }
+        }
+      )
+      .subscribe((status) => {
+        if (status === "SUBSCRIBED") {
+          console.log("Subscribed to Supabase Realtime changes for properties table.");
+        }
+      });
+  } catch (err) {
+    console.warn("Could not setup Supabase realtime subscription:", err);
+  }
 }
 
 export async function fetchProperties(): Promise<{
@@ -198,7 +368,7 @@ export async function fetchProperties(): Promise<{
 
       if (!error && data) {
         const mapped = data.map(mapRowToProperty);
-        inMemoryProperties = mapped;
+        savePropertiesToCache(mapped);
         return { data: mapped, isLiveSupabase: true };
       }
     } catch (err: any) {
@@ -267,21 +437,25 @@ export async function createProperty(
 
       if (error) {
         console.warn("Supabase create failed, saving to local state:", error.message);
-        inMemoryProperties = [newProperty, ...inMemoryProperties];
+        const updated = [newProperty, ...inMemoryProperties.filter((p) => p.id !== newProperty.id)];
+        notifyPropertiesChanged(updated);
         return { data: newProperty, isLiveSupabase: false, error: error.message };
       } else if (data) {
         const saved = mapRowToProperty(data);
-        inMemoryProperties = [saved, ...inMemoryProperties];
+        const updated = [saved, ...inMemoryProperties.filter((p) => p.id !== saved.id)];
+        notifyPropertiesChanged(updated);
         return { data: saved, isLiveSupabase: true };
       }
     } catch (err: any) {
       console.warn("Supabase insert exception:", err.message);
-      inMemoryProperties = [newProperty, ...inMemoryProperties];
+      const updated = [newProperty, ...inMemoryProperties.filter((p) => p.id !== newProperty.id)];
+      notifyPropertiesChanged(updated);
       return { data: newProperty, isLiveSupabase: false, error: err.message };
     }
   }
 
-  inMemoryProperties = [newProperty, ...inMemoryProperties];
+  const updated = [newProperty, ...inMemoryProperties.filter((p) => p.id !== newProperty.id)];
+  notifyPropertiesChanged(updated);
   return { data: newProperty, isLiveSupabase: false, error: "Supabase client not configured" };
 }
 
@@ -315,7 +489,8 @@ export async function updateProperty(
         dbError = error.message;
       } else if (data) {
         const updated = mapRowToProperty(data);
-        inMemoryProperties = inMemoryProperties.map((p) => (p.id === id ? updated : p));
+        const updatedList = inMemoryProperties.map((p) => (p.id === id ? updated : p));
+        notifyPropertiesChanged(updatedList);
         return { data: updated, isLiveSupabase: true };
       }
     } catch (err: any) {
@@ -325,7 +500,7 @@ export async function updateProperty(
   }
 
   // Fallback to in-memory state update
-  inMemoryProperties = inMemoryProperties.map((p) => {
+  const updatedList = inMemoryProperties.map((p) => {
     if (p.id === id) {
       return {
         ...p,
@@ -340,8 +515,9 @@ export async function updateProperty(
     }
     return p;
   });
+  notifyPropertiesChanged(updatedList);
 
-  const updatedProperty = inMemoryProperties.find((p) => p.id === id)!;
+  const updatedProperty = updatedList.find((p) => p.id === id)!;
   return { data: updatedProperty, isLiveSupabase: false, error: dbError };
 }
 
@@ -354,21 +530,25 @@ export async function deleteProperty(
     try {
       const { error } = await supabase.from("properties").delete().eq("id", id);
       if (!error) {
-        inMemoryProperties = inMemoryProperties.filter((p) => p.id !== id);
+        const updatedList = inMemoryProperties.filter((p) => p.id !== id);
+        notifyPropertiesChanged(updatedList);
         return { success: true, isLiveSupabase: true };
       } else {
         console.warn("Supabase delete failed:", error.message);
-        inMemoryProperties = inMemoryProperties.filter((p) => p.id !== id);
+        const updatedList = inMemoryProperties.filter((p) => p.id !== id);
+        notifyPropertiesChanged(updatedList);
         return { success: true, isLiveSupabase: false, error: error.message };
       }
     } catch (err: any) {
       console.warn("Supabase delete exception:", err.message);
-      inMemoryProperties = inMemoryProperties.filter((p) => p.id !== id);
+      const updatedList = inMemoryProperties.filter((p) => p.id !== id);
+      notifyPropertiesChanged(updatedList);
       return { success: true, isLiveSupabase: false, error: err.message };
     }
   }
 
-  inMemoryProperties = inMemoryProperties.filter((p) => p.id !== id);
+  const updatedList = inMemoryProperties.filter((p) => p.id !== id);
+  notifyPropertiesChanged(updatedList);
   return { success: true, isLiveSupabase: false, error: "Supabase client not configured" };
 }
 

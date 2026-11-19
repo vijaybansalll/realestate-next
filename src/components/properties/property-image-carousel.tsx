@@ -107,6 +107,12 @@ export function PropertyImageCarousel({
     };
   }, [emblaApi, onSelect]);
 
+  useEffect(() => {
+    if (emblaApi) {
+      emblaApi.reInit();
+    }
+  }, [emblaApi, validImages]);
+
   const scrollPrev = useCallback(
     (e?: React.MouseEvent) => {
       e?.preventDefault();

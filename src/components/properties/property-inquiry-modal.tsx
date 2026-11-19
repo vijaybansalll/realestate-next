@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import type { Property } from "@/types";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/sonner";
 import {
   Sheet,
   SheetContent,
@@ -39,7 +40,11 @@ export function PropertyInquiryModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!property) return;
     setSubmitted(true);
+    toast.success("Inquiry Received", {
+      description: `Thank you, ${formData.name || "Client"}. Our concierge will contact you regarding ${property.title}.`,
+    });
     setTimeout(() => {
       // Auto close after showing thank you
       setTimeout(() => {

@@ -13,7 +13,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { fetchProperties, getInitialProperties } from "@/lib/supabase";
+import {
+  fetchProperties,
+  getInitialProperties,
+  subscribeToProperties,
+} from "@/lib/supabase";
 import type { Property } from "@/types";
 import { cn } from "@/lib/utils";
 import {
@@ -51,8 +55,28 @@ export function AdminOverview() {
       }
     }
     loadData();
+
+    // Reactive subscription to sync dashboard overview immediately
+    const unsubscribe = subscribeToProperties((updatedList) => {
+      if (isMounted) {
+        setAllProperties(updatedList);
+      }
+    });
+
+    const handleFocus = () => {
+      fetchProperties().then((res) => {
+        if (isMounted && res.data) {
+          setAllProperties(res.data);
+          setIsLiveSupabase(res.isLiveSupabase);
+        }
+      });
+    };
+    window.addEventListener("focus", handleFocus);
+
     return () => {
       isMounted = false;
+      unsubscribe();
+      window.removeEventListener("focus", handleFocus);
     };
   }, []);
 

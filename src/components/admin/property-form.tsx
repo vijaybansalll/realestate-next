@@ -32,6 +32,7 @@ import {
   AlertTriangle,
   ExternalLink,
 } from "lucide-react";
+import { toast } from "@/components/ui/sonner";
 import {
   createProperty,
   updateProperty,
@@ -101,7 +102,6 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingProperty, setIsLoadingProperty] = useState(mode === "edit");
   const [dragActive, setDragActive] = useState(false);
-  const [notification, setNotification] = useState<string | null>(null);
   const [dbStatus, setDbStatus] = useState<{
     isConnected: boolean;
     tableExists: boolean;
@@ -200,11 +200,14 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
       });
 
       if (res.error) {
-        setNotification(`Images loaded locally (Supabase storage notice: ${res.error})`);
+        toast.info("Images Loaded Locally", {
+          description: `Supabase storage notice: ${res.error}`,
+        });
       } else {
-        setNotification(`Uploaded ${res.urls.length} images successfully.`);
+        toast.success("Images Uploaded", {
+          description: `Successfully uploaded ${res.urls.length} image${res.urls.length > 1 ? "s" : ""} to storage.`,
+        });
       }
-      setTimeout(() => setNotification(null), 4000);
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) {
@@ -304,7 +307,9 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.title?.trim() || !formData.location?.trim() || !formData.price) {
-      alert("Please provide the property title, location, and price.");
+      toast.error("Validation Incomplete", {
+        description: "Please provide the property title, location, and price before saving.",
+      });
       return;
     }
 
@@ -328,14 +333,22 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
       }
 
       if (saveRes && !saveRes.isLiveSupabase) {
-        alert(
-          `⚠️ Notice: Property saved to local memory only!\n\nIt could NOT be saved to Supabase.\nReason: ${saveRes.error || "Supabase table 'public.properties' was not found"}\n\nTo save properties to Supabase permanently, run 'supabase/schema.sql' in your Supabase SQL Editor.`
-        );
+        toast.warning("Saved Locally Only", {
+          description: `Notice: ${saveRes.error || "Supabase table missing"}. Run 'supabase/schema.sql' in Supabase to sync live.`,
+          duration: 6000,
+        });
+      } else {
+        toast.success(mode === "edit" ? "Property Updated" : "Property Published", {
+          description: `"${payload.title}" is now active in the portfolio.`,
+        });
       }
 
+      router.refresh();
       router.push("/admin/properties");
     } catch (err: any) {
-      alert(`Failed to save property: ${err.message}`);
+      toast.error("Failed to Save Property", {
+        description: err.message || "An unexpected error occurred while saving.",
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -354,13 +367,6 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8 pb-16">
-      {/* Notification Toast */}
-      {notification && (
-        <div className="fixed top-5 right-5 z-50 flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-neutral-900/95 px-4 py-3 text-sm text-emerald-400 shadow-2xl backdrop-blur-md animate-in fade-in slide-in-from-top-3">
-          <CheckCircle2Icon className="size-4" />
-          <span>{notification}</span>
-        </div>
-      )}
 
       {/* Top Action Header Bar */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-neutral-200 pb-5 dark:border-neutral-800">

@@ -2,7 +2,11 @@
 
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { ALL_PROPERTIES } from "@/data";
-import { fetchProperties, getInitialProperties } from "@/lib/supabase";
+import {
+  fetchProperties,
+  getInitialProperties,
+  subscribeToProperties,
+} from "@/lib/supabase";
 import type { Property, PropertyFilters } from "@/types";
 import { INITIAL_FILTERS } from "./constants";
 
@@ -13,7 +17,10 @@ export interface ActiveChip {
 }
 
 export function usePropertyFilters(initial = INITIAL_FILTERS) {
-  const [propertiesList, setPropertiesList] = useState<Property[]>(() => getInitialProperties());
+  const [propertiesList, setPropertiesList] = useState<Property[]>(() =>
+    getInitialProperties()
+  );
+  const [isLoaded, setIsLoaded] = useState(false);
   const [filters, setFilters] = useState<PropertyFilters>(initial);
   const [filterSheetOpen, setFilterSheetOpen] = useState(false);
   const [page, setPage] = useState(1);
@@ -22,12 +29,36 @@ export function usePropertyFilters(initial = INITIAL_FILTERS) {
   useEffect(() => {
     let isMounted = true;
     fetchProperties().then((res) => {
-      if (isMounted && res.data) {
-        setPropertiesList(res.data);
+      if (isMounted) {
+        if (res.data) {
+          setPropertiesList(res.data);
+        }
+        setIsLoaded(true);
       }
     });
+
+    // Reactive subscription: auto-updates cards on add, edit, or delete operations
+    const unsubscribe = subscribeToProperties((updatedList) => {
+      if (isMounted) {
+        setPropertiesList(updatedList);
+        setIsLoaded(true);
+      }
+    });
+
+    // Refresh when user returns to this browser tab
+    const handleFocus = () => {
+      fetchProperties().then((res) => {
+        if (isMounted && res.data) {
+          setPropertiesList(res.data);
+        }
+      });
+    };
+    window.addEventListener("focus", handleFocus);
+
     return () => {
       isMounted = false;
+      unsubscribe();
+      window.removeEventListener("focus", handleFocus);
     };
   }, []);
 
@@ -67,7 +98,8 @@ export function usePropertyFilters(initial = INITIAL_FILTERS) {
 
   // Filtered & Sorted properties
   const filteredProperties = useMemo(() => {
-    const dataSource = propertiesList.length > 0 ? propertiesList : ALL_PROPERTIES;
+    const dataSource =
+      isLoaded || propertiesList.length > 0 ? propertiesList : ALL_PROPERTIES;
     return dataSource.filter((property) => {
       // 1. Purpose filter (Buy vs Rent)
       if (filters.purpose !== "all" && property.purpose !== filters.purpose) {
@@ -340,7 +372,7 @@ export function usePropertyFilters(initial = INITIAL_FILTERS) {
     totalPages,
     setPage: handlePageChange,
     setPageSize: handlePageSizeChange,
-    totalCount: propertiesList.length,
+    totalCount: (isLoaded || propertiesList.length > 0 ? propertiesList : ALL_PROPERTIES).length,
     filteredCount: filteredProperties.length,
     activeChips,
     activeFiltersCount,

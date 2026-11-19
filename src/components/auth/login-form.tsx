@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { toast } from "@/components/ui/sonner";
 
 const formSchema = z.object({
   userId: z.string().min(1, "User ID is required"),
@@ -54,20 +55,31 @@ export function LoginForm() {
           isLoading: false,
           successMessage: "Login successful! Redirecting...",
         });
+        toast.success("Welcome Back", {
+          description: "Login successful. Redirecting to your dashboard...",
+        });
         setTimeout(() => {
           router.push(callbackUrl);
           router.refresh();
         }, 600);
       } else {
+        const errorMsg = result.error || "Invalid User ID or Password.";
         setFormState({
           isLoading: false,
-          errorMessage: result.error || "Invalid User ID or Password.",
+          errorMessage: errorMsg,
+        });
+        toast.error("Authentication Failed", {
+          description: errorMsg,
         });
       }
     } catch {
+      const errorMsg = "An error occurred while logging in. Please try again.";
       setFormState({
         isLoading: false,
-        errorMessage: "An error occurred while logging in. Please try again.",
+        errorMessage: errorMsg,
+      });
+      toast.error("Login Error", {
+        description: errorMsg,
       });
     }
   };

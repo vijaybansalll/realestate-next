@@ -11,7 +11,11 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { FEATURED_PROPERTIES } from "@/data";
-import { fetchProperties, getInitialProperties } from "@/lib/supabase";
+import {
+  fetchProperties,
+  getInitialProperties,
+  subscribeToProperties,
+} from "@/lib/supabase";
 import type { Property } from "@/types";
 import { PropertyCard, PropertyInquiryModal } from "@/components/properties";
 
@@ -35,8 +39,27 @@ export function FeaturedProperties({
           setProperties(res.data);
         }
       });
+
+      // Reactive update: update carousel cards when properties are added, edited, or deleted
+      const unsubscribe = subscribeToProperties((updatedList) => {
+        if (isMounted) {
+          setProperties(updatedList);
+        }
+      });
+
+      const handleFocus = () => {
+        fetchProperties().then((res) => {
+          if (isMounted && res.data) {
+            setProperties(res.data);
+          }
+        });
+      };
+      window.addEventListener("focus", handleFocus);
+
       return () => {
         isMounted = false;
+        unsubscribe();
+        window.removeEventListener("focus", handleFocus);
       };
     }
   }, [propList]);

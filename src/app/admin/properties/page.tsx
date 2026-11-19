@@ -2,13 +2,16 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { PropertyTable } from "@/components/admin/property-table";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "@/components/ui/sonner";
 import {
   fetchProperties,
   getInitialProperties,
   deleteProperty,
+  subscribeToProperties,
   testSupabaseConnection,
 } from "@/lib/supabase";
 import type { Property } from "@/types";
@@ -23,11 +26,11 @@ import {
 import { cn } from "@/lib/utils";
 
 export default function PropertiesAdminPage() {
+  const router = useRouter();
   const [properties, setProperties] = useState<Property[]>(() =>
     getInitialProperties()
   );
   const [isLoading, setIsLoading] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isLiveDb, setIsLiveDb] = useState(false);
   const [dbStatus, setDbStatus] = useState<{
     isConnected: boolean;
@@ -37,11 +40,6 @@ export default function PropertiesAdminPage() {
     message: string;
     error?: string;
   } | null>(null);
-
-  const showToast = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 3000);
-  };
 
   const loadProperties = async (showSpinner = false) => {
     if (showSpinner) setIsLoading(true);
@@ -53,6 +51,11 @@ export default function PropertiesAdminPage() {
       setProperties(res.data);
       setIsLiveDb(res.isLiveSupabase);
       setDbStatus(status);
+      if (showSpinner) {
+        toast.success("Database Refreshed", {
+          description: `Loaded ${res.data.length} listing${res.data.length === 1 ? "" : "s"} from Supabase.`,
+        });
+      }
     } finally {
       if (showSpinner) setIsLoading(false);
     }
@@ -60,24 +63,26 @@ export default function PropertiesAdminPage() {
 
   useEffect(() => {
     loadProperties(false);
+
+    const unsubscribe = subscribeToProperties((updatedList) => {
+      setProperties(updatedList);
+    });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const handleDeleteProperty = async (id: string) => {
     await deleteProperty(id);
-    setProperties((prev) => prev.filter((p) => p.id !== id));
-    showToast("Property listing deleted successfully.");
+    router.refresh();
+    toast.success("Property Deleted", {
+      description: "Listing removed from the database successfully.",
+    });
   };
 
   return (
     <div className="space-y-6">
-      {/* Toast Notification */}
-      {toastMessage && (
-        <div className="fixed top-5 right-5 z-50 flex animate-in items-center gap-2 rounded-xl border border-emerald-500/30 bg-neutral-900/95 px-4 py-3 text-sm text-emerald-400 shadow-2xl backdrop-blur-md fade-in slide-in-from-top-3">
-          <CheckCircle2Icon className="size-4" />
-          <span>{toastMessage}</span>
-        </div>
-      )}
-
       {/* Header bar */}
       <div className="flex flex-col gap-3.5 border-b border-neutral-200 pb-4 sm:flex-row sm:items-center sm:justify-between dark:border-neutral-800">
         <div>
