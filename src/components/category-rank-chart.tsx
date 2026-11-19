@@ -15,10 +15,10 @@ import {
 	ChartLegend,
 	ChartLegendContent,
 } from "@/components/ui/chart";
+import type { Property } from "@/types";
 
 export type CategoryMixDatum = {
 	category: string;
-	/** Percent of total (0–100). Usually sums to 100. */
 	share: number;
 };
 
@@ -30,49 +30,16 @@ const SLICE_PALETTE = [
 	"var(--chart-5)",
 ] as const;
 
-/** At most four named slices; remaining share rolls into a fifth slice, “Others”. */
-const MAX_NAMED_SLICES = 4;
+const defaultEstateMix: readonly CategoryMixDatum[] = [
+	{ category: "Luxury Estates", share: 38 },
+	{ category: "Hillside Villas", share: 28 },
+	{ category: "Modern Penthouses", share: 20 },
+	{ category: "Coastal Retreats", share: 14 },
+];
 
-/** Rolling window for the mix (days). */
-const periodDays = 7;
-
-/** Demo mix (sums to 100). Replace or pass `data` on the component. */
-const data = [
-	{ category: "Apparel", share: 22 },
-	{ category: "Accessories", share: 22 },
-	{ category: "Footwear", share: 18 },
-	{ category: "Home & living", share: 14 },
-	{ category: "Beauty", share: 11 },
-	{ category: "Outlet", share: 8 },
-	{ category: "Sports", share: 5 },
-] as const satisfies readonly CategoryMixDatum[];
-
-/** Sort by share descending, keep top four, merge the rest into “Others” (max five slices). */
-function consolidateTopFourAndOthers(
-	data: readonly CategoryMixDatum[]
-): CategoryMixDatum[] {
-	if (data.length <= MAX_NAMED_SLICES) {
-		return [...data];
-	}
-
-	const sorted = [...data].sort((a, b) => b.share - a.share);
-	const head = sorted.slice(0, MAX_NAMED_SLICES);
-	const tail = sorted.slice(MAX_NAMED_SLICES);
-	const othersShare = tail.reduce((sum, row) => sum + row.share, 0);
-
-	return [...head, { category: "Others", share: othersShare }];
-}
-
-type SliceRow = {
-	key: string;
-	category: string;
-	share: number;
-	fill: string;
-};
-
-function buildSlices(data: readonly CategoryMixDatum[]): {
+function buildSlices(mixData: readonly CategoryMixDatum[]): {
 	chartConfig: ChartConfig;
-	pieData: SliceRow[];
+	pieData: Array<{ key: string; category: string; share: number; fill: string }>;
 } {
 	const chartConfig: ChartConfig = {
 		share: {
@@ -80,7 +47,7 @@ function buildSlices(data: readonly CategoryMixDatum[]): {
 		},
 	};
 
-	const pieData: SliceRow[] = data.map((row, i) => {
+	const pieData = mixData.map((row, i) => {
 		const key = `s${i}`;
 		const color = SLICE_PALETTE[i % SLICE_PALETTE.length];
 		chartConfig[key] = {
@@ -98,39 +65,78 @@ function buildSlices(data: readonly CategoryMixDatum[]): {
 	return { chartConfig, pieData };
 }
 
-export function CategoryRankChart() {
+interface CategoryRankChartProps {
+	properties?: Property[];
+}
+
+export function CategoryRankChart({ properties = [] }: CategoryRankChartProps) {
+	const activeMix = React.useMemo(() => {
+		if (!properties || properties.length === 0) {
+			return defaultEstateMix;
+		}
+
+		// Calculate distribution from actual properties
+		const counts: Record<string, number> = {};
+		for (const p of properties) {
+			const typeKey = (p.type || "estate").toLowerCase();
+			const label =
+				typeKey === "estate"
+					? "Luxury Estates"
+					: typeKey === "villa"
+					? "Hillside Villas"
+					: typeKey === "penthouse"
+					? "Penthouses"
+					: typeKey === "townhouse"
+					? "Townhouses"
+					: "Apartments";
+			counts[label] = (counts[label] || 0) + 1;
+		}
+
+		const total = properties.length;
+		const calculated = Object.entries(counts).map(([category, count]) => ({
+			category,
+			share: Math.round((count / total) * 100),
+		}));
+
+		return calculated.length > 0 ? calculated : defaultEstateMix;
+	}, [properties]);
+
 	const { chartConfig, pieData } = React.useMemo(
-		() => buildSlices(consolidateTopFourAndOthers(data)),
-		[]
+		() => buildSlices(activeMix),
+		[activeMix]
 	);
 
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle >Revenue Share by Category</CardTitle>
-				<CardDescription>Last {periodDays} days.</CardDescription>
+		<Card className="border-neutral-800/80 bg-neutral-900/50 backdrop-blur-sm shadow-xl flex flex-col justify-between">
+			<CardHeader className="pb-2">
+				<CardTitle className="text-base font-semibold text-neutral-100">
+					Portfolio Asset Allocation
+				</CardTitle>
+				<CardDescription className="text-xs text-neutral-400">
+					Estate distribution across architectural categories.
+				</CardDescription>
 			</CardHeader>
-			<CardContent className="my-auto p-0">
+			<CardContent className="my-auto p-2 pb-4">
 				<ChartContainer
-					className="aspect-auto h-72 w-full"
+					className="aspect-auto h-64 w-full"
 					config={chartConfig}
 				>
 					<PieChart accessibilityLayer>
 						<Pie
-							cornerRadius={4}
+							cornerRadius={6}
 							data={pieData}
 							dataKey="share"
-							innerRadius={50}
+							innerRadius={55}
 							nameKey="key"
 							outerRadius="88%"
 							stroke="var(--card)"
-							strokeWidth={4}
+							strokeWidth={3}
 						>
 							<LabelList
 								className="fill-background font-medium"
 								dataKey="share"
 								fill="currentColor"
-								fontWeight={500}
+								fontWeight={600}
 								formatter={(label) => {
 									const n = Number(label);
 									return Number.isFinite(n) ? `${n}%` : String(label ?? "");
@@ -142,7 +148,7 @@ export function CategoryRankChart() {
 						<ChartLegend
 							content={
 								<ChartLegendContent
-									className="flex flex-wrap gap-3 pt-2"
+									className="flex flex-wrap gap-3 pt-3 justify-center text-xs text-neutral-300"
 									nameKey="key"
 								/>
 							}
@@ -153,3 +159,5 @@ export function CategoryRankChart() {
 		</Card>
 	);
 }
+
+export default CategoryRankChart;

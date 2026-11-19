@@ -52,12 +52,12 @@ const actions = [
 
 export function QuickActions() {
 	return (
-		<Card className="border-neutral-800 bg-neutral-900/60 shadow-xl">
-			<CardHeader className="pb-3">
+		<Card className="border-neutral-800/80 bg-neutral-900/50 backdrop-blur-sm shadow-xl">
+			<CardHeader className="pb-3 border-b border-neutral-800/60">
 				<CardTitle className="text-sm font-semibold text-neutral-200">Admin Quick Actions</CardTitle>
 				<CardDescription className="text-xs text-neutral-400">Direct navigation across available modules.</CardDescription>
 			</CardHeader>
-			<CardContent className="pt-0">
+			<CardContent className="pt-2">
 				<ItemGroup className="gap-0">
 					{actions.map((a) => (
 						<Item

@@ -1,77 +1,98 @@
-import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+"use client";
+
+import { useMemo } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Delta, DeltaIcon, DeltaValue } from "@/components/delta";
+import type { Property } from "@/types";
+import { DollarSign, Building2, KeyRound, TrendingUp } from "lucide-react";
 
-type Stat = {
-	label: string;
-	value: string;
-	delta: number;
-	hint: string;
-};
-
-const stats: readonly Stat[] = [
-	{
-		label: "Portfolio Valuation",
-		value: "$28,490,000",
-		delta: 12.4,
-		hint: "vs last quarter",
-	},
-	{
-		label: "Active Listings",
-		value: "24 Estates",
-		delta: 8.5,
-		hint: "+4 new this month",
-	},
-	{
-		label: "VIP Buyer Inquiries",
-		value: "184 Inquiries",
-		delta: 18.2,
-		hint: "vs prior 30 days",
-	},
-	{
-		label: "Avg Days on Market",
-		value: "34 Days",
-		delta: -15.3,
-		hint: "faster than avg",
-	},
-] as const;
-
-export function DashboardStats() {
-	return (
-		<>
-			{stats.map((s) => (
-				<StatCard key={s.label} stat={s} />
-			))}
-		</>
-	);
+interface DashboardStatsProps {
+  properties?: Property[];
 }
 
-function StatCard({ stat }: { stat: Stat }) {
-	const { label, value, delta, hint } = stat;
-	return (
-		<Card className="border-neutral-800 bg-neutral-900/60 shadow-xl">
-			<CardHeader className="pb-2">
-				<CardTitle className="font-medium text-neutral-400 text-xs">
-					{label}
-				</CardTitle>
-			</CardHeader>
-			<CardContent className="pb-3">
-				<p className="text-balance font-bold text-2xl tabular-nums tracking-tight text-neutral-100">
-					{value}
-				</p>
-			</CardContent>
-			<CardFooter className="gap-1.5 text-xs pt-0">
-				<Delta value={delta} variant="default">
-					<DeltaIcon />
-					<DeltaValue />
-				</Delta>
-				<span className="text-pretty text-neutral-500 text-[11px]">{hint}</span>
-			</CardFooter>
-		</Card>
-	);
+export function DashboardStats({ properties = [] }: DashboardStatsProps) {
+  const stats = useMemo(() => {
+    const count = properties.length;
+    const totalValue = properties.reduce(
+      (sum, p) => sum + (Number(p.price) || 0),
+      0
+    );
+    const forSaleCount = properties.filter((p) => p.purpose === "buy").length;
+    const forLeaseCount = properties.filter((p) => p.purpose === "rent").length;
+
+    const formatCurrency = (val: number) => {
+      if (val >= 1_000_000) {
+        return `$${(val / 1_000_000).toFixed(1)}M`;
+      }
+      if (val >= 1_000) {
+        return `$${(val / 1_000).toFixed(0)}K`;
+      }
+      return `$${val.toLocaleString()}`;
+    };
+
+    return [
+      {
+        label: "Portfolio Valuation",
+        value: count > 0 ? formatCurrency(totalValue) : "$0.00",
+        delta: count > 0 ? 14.2 : 0,
+        hint: count > 0 ? "live inventory value" : "add estates to value",
+        icon: <DollarSign className="size-5 text-amber-400" />,
+      },
+      {
+        label: "Active Residences",
+        value: `${count} Estates`,
+        delta: count > 0 ? 8.5 : 0,
+        hint: count > 0 ? "live in catalog" : "awaiting first listing",
+        icon: <Building2 className="size-5 text-blue-400" />,
+      },
+      {
+        label: "Acquisition (For Sale)",
+        value: `${forSaleCount} Listed`,
+        delta: forSaleCount > 0 ? 12.0 : 0,
+        hint: "exclusive ownership",
+        icon: <KeyRound className="size-5 text-emerald-400" />,
+      },
+      {
+        label: "Lease & Rentals",
+        value: `${forLeaseCount} Available`,
+        delta: forLeaseCount > 0 ? 5.8 : 0,
+        hint: "luxury rental yields",
+        icon: <TrendingUp className="size-5 text-purple-400" />,
+      },
+    ];
+  }, [properties]);
+
+  return (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {stats.map((s) => (
+        <Card
+          key={s.label}
+          className="gap-2 border-neutral-800/80 bg-neutral-900/50 shadow-lg backdrop-blur-sm transition-all duration-300 hover:border-neutral-700/80 hover:bg-neutral-900/70"
+        >
+          <CardHeader className="flex flex-row items-center justify-between px-4">
+            <CardTitle className="text-sm font-medium text-neutral-400">
+              {s.label}
+            </CardTitle>
+            <div>{s.icon}</div>
+          </CardHeader>
+          <CardContent className="px-4 pb-0">
+            <p className="text-lg font-bold tracking-tight text-neutral-100 tabular-nums md:text-xl">
+              {s.value}
+            </p>
+            <div className="mt-0 flex items-center gap-1.5 text-xs">
+              {s.delta !== 0 ? (
+                <Delta value={s.delta} variant="default">
+                  <DeltaIcon />
+                  <DeltaValue />
+                </Delta>
+              ) : null}
+              <span className="text-xs text-neutral-400">{s.hint}</span>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
 }
+
+export default DashboardStats;

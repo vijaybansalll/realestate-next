@@ -10,40 +10,30 @@ import { NavUser } from "@/components/nav-user";
 import { BellIcon, LayoutGridIcon, BuildingIcon } from "lucide-react";
 
 export function AppHeader({ pathname }: { pathname?: string }) {
-	let activeItem = navLinks.find((item) => item.path === pathname);
+  let activeItem = navLinks.find((item) => item.path === pathname);
 
-	if (!activeItem && pathname?.includes("/edit")) {
-		activeItem = { title: "Edit Property", icon: <BuildingIcon className="size-4" /> };
-	} else if (!activeItem) {
-		activeItem =
-			navLinks.find((item) => item.path && pathname?.startsWith(item.path) && item.path !== "/admin") ||
-			{ title: "Overview", icon: <LayoutGridIcon className="size-4" /> };
-	}
+  if (!activeItem && pathname?.includes("/edit")) {
+    activeItem = {
+      title: "Edit Property",
+      icon: <BuildingIcon className="size-4" />,
+    };
+  } else if (!activeItem) {
+    activeItem = navLinks.find(
+      (item) =>
+        item.path && pathname?.startsWith(item.path) && item.path !== "/admin"
+    ) || { title: "Overview", icon: <LayoutGridIcon className="size-4" /> };
+  }
 
-	return (
-		<header
-			className={cn(
-				"mb-6 flex items-center justify-between gap-2 px-2"
-			)}
-		>
-			<div className="flex items-center gap-3">
-				<CustomSidebarTrigger />
-				<Separator
-					className="mr-2 h-4 data-[orientation=vertical]:self-center"
-					orientation="vertical"
-				/>
-				<AppBreadcrumbs page={activeItem} />
-			</div>
-			<div className="flex items-center gap-3">
-				<Button aria-label="Notifications" size="icon" variant="ghost">
-					<BellIcon />
-				</Button>
-				<Separator
-					className="h-4 data-[orientation=vertical]:self-center"
-					orientation="vertical"
-				/>
-				<NavUser />
-			</div>
-		</header>
-	);
+  return (
+    <header className={cn("mb-6 flex items-center justify-between gap-2 px-2")}>
+      <div className="flex items-center gap-3">
+        <CustomSidebarTrigger />
+        <Separator
+          className="mr-2 h-4 data-[orientation=vertical]:self-center"
+          orientation="vertical"
+        />
+        <AppBreadcrumbs page={activeItem} />
+      </div>
+    </header>
+  );
 }
