@@ -52,10 +52,10 @@ const actions = [
 
 export function QuickActions() {
 	return (
-		<Card className="border-neutral-800/80 bg-neutral-900/50 backdrop-blur-sm shadow-xl">
-			<CardHeader className="pb-3 border-b border-neutral-800/60">
-				<CardTitle className="text-sm font-semibold text-neutral-200">Admin Quick Actions</CardTitle>
-				<CardDescription className="text-xs text-neutral-400">Direct navigation across available modules.</CardDescription>
+		<Card className="border-neutral-200 bg-white shadow-md dark:border-neutral-800/80 dark:bg-neutral-900/50 dark:shadow-xl">
+			<CardHeader className="pb-3 border-b border-neutral-200 dark:border-neutral-800/60">
+				<CardTitle className="text-sm font-semibold text-neutral-900 dark:text-neutral-200">Admin Quick Actions</CardTitle>
+				<CardDescription className="text-xs text-neutral-500 dark:text-neutral-400">Direct navigation across available modules.</CardDescription>
 			</CardHeader>
 			<CardContent className="pt-2">
 				<ItemGroup className="gap-0">
@@ -63,17 +63,17 @@ export function QuickActions() {
 						<Item
 							key={a.title}
 							size="sm"
-							render={<Link href={a.href} className="hover:bg-neutral-800/40 transition-colors rounded-lg" />}
+							render={<Link href={a.href} className="hover:bg-neutral-100 transition-colors rounded-lg dark:hover:bg-neutral-800/40" />}
 						>
 							<ItemMedia variant="icon">{a.icon}</ItemMedia>
 							<ItemContent>
-								<ItemTitle className="text-xs font-semibold text-neutral-200">{a.title}</ItemTitle>
-								<ItemDescription className="line-clamp-1 text-xs text-neutral-400">
+								<ItemTitle className="text-xs font-semibold text-neutral-900 dark:text-neutral-200">{a.title}</ItemTitle>
+								<ItemDescription className="line-clamp-1 text-xs text-neutral-500 dark:text-neutral-400">
 									{a.description}
 								</ItemDescription>
 							</ItemContent>
 							<ItemActions>
-								<ChevronRightIcon aria-hidden="true" className="size-4 shrink-0 text-neutral-500" />
+								<ChevronRightIcon aria-hidden="true" className="size-4 shrink-0 text-neutral-400 dark:text-neutral-500" />
 							</ItemActions>
 						</Item>
 					))}

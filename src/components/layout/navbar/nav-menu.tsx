@@ -30,8 +30,8 @@ export function NavMenu({
               className={cn(
                 "inline-flex items-center justify-center rounded-full px-3.5 py-1.5 text-sm font-medium tracking-wide transition-all duration-200 select-none",
                 isScrolled
-                  ? "text-neutral-300 hover:bg-neutral-800/80 hover:text-neutral-100 active:bg-neutral-800"
-                  : "text-neutral-200/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] hover:bg-neutral-100/10 hover:text-neutral-100 active:bg-neutral-100/15"
+                  ? "text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 active:bg-neutral-200/80 dark:text-neutral-300 dark:hover:bg-neutral-800/80 dark:hover:text-neutral-100 dark:active:bg-neutral-800"
+                  : "text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] hover:bg-white/15 hover:text-white active:bg-white/20"
               )}
             >
               {item.title}

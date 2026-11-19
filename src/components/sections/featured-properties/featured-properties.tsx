@@ -48,13 +48,13 @@ export function FeaturedProperties({
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <span className="text-xs font-semibold tracking-[0.25em] text-amber-400 uppercase">
+          <span className="text-xs font-semibold tracking-[0.25em] text-amber-500 dark:text-amber-400 uppercase">
             Signature Residences
           </span>
-          <h2 className="mt-2 text-2xl font-medium tracking-tight text-neutral-100 sm:text-3xl">
+          <h2 className="mt-2 text-2xl font-medium tracking-tight text-neutral-900 dark:text-neutral-100 sm:text-3xl">
             Featured Architectural Estates
           </h2>
-          <p className="mt-1 text-xs leading-relaxed text-pretty text-muted-foreground sm:mt-2 sm:text-sm md:text-base">
+          <p className="mt-1 text-xs leading-relaxed text-pretty text-neutral-600 dark:text-muted-foreground sm:mt-2 sm:text-sm md:text-base">
             Explore our curated portfolio of prime coastal retreats, hill
             sanctuaries, and modern penthouses.
           </p>
@@ -70,9 +70,9 @@ export function FeaturedProperties({
       </div>
 
       {properties.length === 0 ? (
-        <div className="mt-8 rounded-xl border border-dashed border-neutral-800 bg-neutral-900/30 p-12 text-center">
-          <p className="text-sm font-medium text-neutral-300">No estates listed currently.</p>
-          <p className="mt-1 text-xs text-neutral-500">
+        <div className="mt-8 rounded-xl border border-dashed border-neutral-200 bg-neutral-100/60 p-12 text-center dark:border-neutral-800 dark:bg-neutral-900/30">
+          <p className="text-sm font-medium text-neutral-800 dark:text-neutral-300">No estates listed currently.</p>
+          <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
             Properties added in the admin console will automatically appear here.
           </p>
         </div>

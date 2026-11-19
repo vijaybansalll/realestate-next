@@ -67,16 +67,16 @@ export function DashboardStats({ properties = [] }: DashboardStatsProps) {
       {stats.map((s) => (
         <Card
           key={s.label}
-          className="gap-2 border-neutral-800/80 bg-neutral-900/50 shadow-lg backdrop-blur-sm transition-all duration-300 hover:border-neutral-700/80 hover:bg-neutral-900/70"
+          className="gap-2 border-neutral-200 bg-white shadow-sm transition-all duration-300 hover:border-neutral-300 hover:shadow-md dark:border-neutral-800/80 dark:bg-neutral-900/50 dark:shadow-lg dark:hover:border-neutral-700/80 dark:hover:bg-neutral-900/70"
         >
           <CardHeader className="flex flex-row items-center justify-between px-4">
-            <CardTitle className="text-sm font-medium text-neutral-400">
+            <CardTitle className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
               {s.label}
             </CardTitle>
             <div>{s.icon}</div>
           </CardHeader>
           <CardContent className="px-4 pb-0">
-            <p className="text-lg font-bold tracking-tight text-neutral-100 tabular-nums md:text-xl">
+            <p className="text-lg font-bold tracking-tight text-neutral-900 tabular-nums md:text-xl dark:text-neutral-100">
               {s.value}
             </p>
             <div className="mt-0 flex items-center gap-1.5 text-xs">
@@ -86,7 +86,7 @@ export function DashboardStats({ properties = [] }: DashboardStatsProps) {
                   <DeltaValue />
                 </Delta>
               ) : null}
-              <span className="text-xs text-neutral-400">{s.hint}</span>
+              <span className="text-xs text-neutral-500 dark:text-neutral-400">{s.hint}</span>
             </div>
           </CardContent>
         </Card>

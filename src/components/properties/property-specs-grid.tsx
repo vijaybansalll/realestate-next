@@ -206,13 +206,13 @@ export function PropertySpecsGrid({
   return (
     <div className={cn("space-y-4", className)}>
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold tracking-tight text-neutral-100 sm:text-xl">
+        <h3 className="text-lg font-semibold tracking-tight text-neutral-900 sm:text-xl dark:text-neutral-100">
           Property Specifications & Amenities
         </h3>
       </div>
 
       {/* Grid of Specification Tiles */}
-      <div className="grid grid-cols-1 gap-x-8 divide-y-3 divide-solid divide-neutral-800 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-8 divide-y-3 divide-solid divide-neutral-200 sm:grid-cols-2 dark:divide-neutral-800">
         {specItems.map((item) => {
           const Icon = item.icon;
 
@@ -223,23 +223,23 @@ export function PropertySpecsGrid({
             >
               {/* Header: Icon + Title */}
               <div className="flex items-center gap-3">
-                <div className="flex shrink-0 items-center justify-center text-neutral-100">
+                <div className="flex shrink-0 items-center justify-center text-neutral-900 dark:text-neutral-100">
                   <Icon className="size-5" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <span className="block text-sm text-neutral-100">
+                  <span className="block text-sm text-neutral-900 dark:text-neutral-100">
                     {item.title}
                   </span>
                 </div>
                 {item.isBoolean ? (
                   <div className="flex items-center gap-2">
                     {item.booleanValue ? (
-                      <span className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-400">
+                      <span className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-600 dark:text-emerald-400">
                         <Check className="size-4 stroke-[2.5]" />
                         <span>Yes</span>
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 text-sm font-medium text-neutral-400">
+                      <span className="inline-flex items-center gap-1 text-sm font-medium text-neutral-400 dark:text-neutral-500">
                         <X className="size-4" />
                         <span>No</span>
                       </span>
@@ -247,7 +247,7 @@ export function PropertySpecsGrid({
                   </div>
                 ) : (
                   <div>
-                    <span className="text-sm font-semibold text-neutral-100">
+                    <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
                       {item.countValue}
                     </span>
                   </div>

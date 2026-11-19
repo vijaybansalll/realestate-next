@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Instrument_Sans, Inter } from "next/font/google";
 import { SmoothScroll } from "@/components/layout";
+import { ThemeProvider } from "@/components/theme-provider";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import "./globals.css";
@@ -22,7 +23,6 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#0a0a0a",
 };
 
 export default function RootLayout({
@@ -33,16 +33,23 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={cn(
-        "dark",
         "antialiased",
         instrumentSans.variable,
         "font-sans",
         inter.variable
       )}
     >
-      <body className="min-h-screen overflow-x-clip bg-neutral-950 font-sans text-neutral-100">
-        <SmoothScroll>{children}</SmoothScroll>
+      <body className="min-h-screen overflow-x-clip bg-neutral-50 text-neutral-900 transition-colors duration-200 dark:bg-neutral-950 dark:text-neutral-100 font-sans">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange={false}
+        >
+          <SmoothScroll>{children}</SmoothScroll>
+        </ThemeProvider>
       </body>
     </html>
   );

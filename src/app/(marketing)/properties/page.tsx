@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
 export default function PropertiesPage() {
   return (
-    <main className="min-h-screen bg-neutral-950 pt-24 pb-20 text-neutral-100 selection:bg-amber-500 selection:text-neutral-950">
+    <main className="min-h-screen bg-neutral-50 pt-24 pb-20 text-neutral-900 transition-colors duration-200 dark:bg-neutral-950 dark:text-neutral-100 selection:bg-amber-500 selection:text-neutral-950">
       <PropertiesCatalog />
     </main>
   );

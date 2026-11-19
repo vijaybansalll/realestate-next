@@ -24,7 +24,7 @@ export function PropertiesActiveChips({
       {chips.map((chip) => (
         <span
           key={chip.id}
-          className="inline-flex items-center gap-1 rounded-full border border-neutral-800 bg-neutral-900 px-3 py-1 text-xs text-neutral-300"
+          className="inline-flex items-center gap-1 rounded-full border border-neutral-200 bg-white px-3 py-1 text-xs text-neutral-800 shadow-xs dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300"
         >
           <span>{chip.label}</span>
           <Button
@@ -32,7 +32,7 @@ export function PropertiesActiveChips({
             variant="secondary"
             size="icon-xs"
             onClick={chip.onRemove}
-            className="size-4 rounded-full border-0 bg-transparent p-0 hover:bg-neutral-800"
+            className="size-4 rounded-full border-0 bg-transparent p-0 hover:bg-neutral-100 dark:hover:bg-neutral-800"
             aria-label={`Remove filter ${chip.label}`}
           >
             <X className="size-3" />

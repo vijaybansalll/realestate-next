@@ -65,7 +65,7 @@ const InstagramIcon = () => (
 
 export function Footer() {
   return (
-    <footer className="border-t border-neutral-900 bg-neutral-950/80 py-8 sm:py-10">
+    <footer className="border-t border-neutral-200 bg-neutral-100/90 py-8 sm:py-10 dark:border-neutral-900 dark:bg-neutral-950/80">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-16">
         <div className="flex flex-col gap-6 sm:gap-12">
           <div className="grid grid-cols-2 gap-x-6 gap-y-10 py-8 sm:grid-cols-4 sm:gap-x-8 sm:py-12 md:grid-cols-7 lg:grid-cols-12">
@@ -73,11 +73,11 @@ export function Footer() {
               <div className="flex animate-in flex-col gap-6 delay-100 duration-1000 ease-in-out fill-mode-both slide-in-from-bottom-10 fade-in">
                 {/* Brand Logo */}
                 <a
-                  href="#"
+                  href="/"
                   className="flex items-center gap-2"
                   aria-label={siteConfig.name}
                 >
-                  <Logo className="fill-current text-neutral-100" />
+                  <Logo className="fill-current text-neutral-900 dark:text-neutral-100" />
                 </a>
 
                 <p className="text-sm leading-relaxed font-normal text-muted-foreground">

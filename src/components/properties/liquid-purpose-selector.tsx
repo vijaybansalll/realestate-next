@@ -48,18 +48,18 @@ export function LiquidPurposeSelector({
     <div
       ref={containerRef}
       className={cn(
-        "relative isolate w-full rounded-2xl border border-neutral-800 bg-neutral-900/80 p-1 select-none",
+        "relative isolate w-full rounded-2xl border border-neutral-200 bg-neutral-100 p-1 select-none dark:border-neutral-800 dark:bg-neutral-900/80",
         className
       )}
     >
       <Liquid
         blur={6}
         contrast={18}
-        fill="#262626"
+        fill="currentColor"
         edgeColor="#f59e0b"
         edgeOpacity={0.25}
         edgeWidth={1}
-        className="h-9 w-full"
+        className="h-9 w-full text-neutral-200 dark:text-neutral-800"
       >
         <LiquidItem
           x={x}
@@ -69,7 +69,7 @@ export function LiquidPurposeSelector({
           radius={12}
           transition={{ duration: 320, ease: [0.22, 1.25, 0.71, 1] }}
         >
-          <div className="size-full rounded-xl border border-amber-400/40 bg-neutral-800 shadow-xs" />
+          <div className="size-full rounded-xl border border-amber-500/40 bg-white shadow-sm dark:border-amber-400/40 dark:bg-neutral-800" />
         </LiquidItem>
       </Liquid>
 
@@ -86,8 +86,8 @@ export function LiquidPurposeSelector({
               className={cn(
                 "h-full border-0 bg-transparent text-xs shadow-none hover:bg-transparent",
                 isSelected
-                  ? "font-semibold text-amber-300"
-                  : "text-neutral-400 hover:text-neutral-200"
+                  ? "font-semibold text-amber-600 dark:text-amber-300"
+                  : "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200"
               )}
             >
               {item.label}

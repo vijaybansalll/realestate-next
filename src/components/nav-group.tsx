@@ -27,7 +27,7 @@ export function NavGroup({
   return (
     <SidebarGroup>
       {label && (
-        <SidebarGroupLabel className="text-xs font-semibold text-neutral-400">
+        <SidebarGroupLabel className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
           {label}
         </SidebarGroupLabel>
       )}
@@ -49,7 +49,7 @@ export function NavGroup({
                   render={
                     <Link
                       href={item.path || "#"}
-                      className="transition-colors hover:text-neutral-100"
+                      className="transition-colors hover:text-neutral-900 dark:hover:text-neutral-100"
                     />
                   }
                 >
@@ -90,7 +90,7 @@ export function NavGroup({
                           render={
                             <Link
                               href={subItem.path || "#"}
-                              className="transition-colors hover:text-neutral-100"
+                              className="transition-colors hover:text-neutral-900 dark:hover:text-neutral-100"
                             />
                           }
                         >

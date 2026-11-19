@@ -11,20 +11,20 @@ export function SpatialTransformation() {
     >
       <div className="flex flex-col items-center gap-8 lg:flex-row lg:gap-12">
         <div className="w-full lg:w-1/2">
-          <span className="text-xs font-semibold tracking-widest text-amber-400 uppercase">
+          <span className="text-xs font-semibold tracking-widest text-amber-500 dark:text-amber-400 uppercase">
             Transformation
           </span>
-          <h3 className="mt-2 text-2xl font-medium text-neutral-100 sm:text-3xl">
+          <h3 className="mt-2 text-2xl font-medium text-neutral-900 dark:text-neutral-100 sm:text-3xl">
             Restoration & Spatial Architecture
           </h3>
-          <p className="mt-3 text-sm leading-relaxed text-neutral-400 sm:text-base">
+          <p className="mt-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400 sm:text-base">
             Every property undergoes a comprehensive visual and architectural
             assessment. Drag the slider to witness our bespoke spatial staging
             and atmospheric illumination.
           </p>
         </div>
 
-        <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl border border-neutral-800 shadow-2xl lg:w-1/2">
+        <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl border border-neutral-200 shadow-xl dark:border-neutral-800 dark:shadow-2xl lg:w-1/2">
           <BeforeAfterSlider
             showLabels
             labels={{

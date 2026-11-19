@@ -363,28 +363,28 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
       )}
 
       {/* Top Action Header Bar */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-neutral-800 pb-5">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-neutral-200 pb-5 dark:border-neutral-800">
         <div>
           <Link
             href="/admin/properties"
-            className="inline-flex items-center gap-1.5 text-xs text-neutral-400 hover:text-neutral-100 transition-colors mb-2"
+            className="inline-flex items-center gap-1.5 text-xs text-neutral-500 hover:text-neutral-900 transition-colors mb-2 dark:text-neutral-400 dark:hover:text-neutral-100"
           >
             <ArrowLeftIcon className="size-3.5" />
             Back to Properties Directory
           </Link>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-2xl font-bold tracking-tight text-neutral-100 flex items-center gap-2">
-              <BuildingIcon className="size-6 text-amber-400" />
+            <h1 className="text-2xl font-bold tracking-tight text-neutral-900 flex items-center gap-2 dark:text-neutral-100">
+              <BuildingIcon className="size-6 text-amber-500 dark:text-amber-400" />
               {mode === "edit" ? `Edit Listing: ${formData.title || "Estate"}` : "Add New Property Listing"}
             </h1>
             <Badge
               variant="outline"
-              className="border-amber-400/30 text-amber-300 text-xs"
+              className="border-amber-500/30 text-amber-700 text-xs dark:border-amber-400/30 dark:text-amber-300"
             >
               {mode === "edit" ? "Edit Mode" : "New Listing Page"}
             </Badge>
           </div>
-          <p className="text-xs text-neutral-400 mt-1">
+          <p className="text-xs text-neutral-600 mt-1 dark:text-neutral-400">
             Fill in the architectural specifications, upload multiple photos, and publish to the live catalog.
           </p>
         </div>
@@ -394,7 +394,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
             href="/admin/properties"
             className={cn(
               buttonVariants({ variant: "outline", size: "sm" }),
-              "border-neutral-800 text-xs text-neutral-300 hover:text-white"
+              "border-neutral-200 bg-white text-xs text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:text-white"
             )}
           >
             Cancel
@@ -403,7 +403,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
           <Button
             type="submit"
             disabled={isSubmitting || isUploading}
-            className="bg-amber-400 text-neutral-950 font-semibold hover:bg-amber-300 transition-colors cursor-pointer text-xs gap-1.5"
+            className="bg-amber-500 text-neutral-950 font-semibold hover:bg-amber-400 transition-colors cursor-pointer text-xs gap-1.5 dark:bg-amber-400 dark:hover:bg-amber-300"
           >
             {isSubmitting ? (
               <>
@@ -421,28 +421,28 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
       {/* Supabase Connection / Table Missing Warning Banner */}
       {dbStatus && (dbStatus.isPermissionDenied || !dbStatus.tableExists) && (
-        <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 text-amber-200 backdrop-blur-md">
+        <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 text-amber-800 backdrop-blur-md dark:text-amber-200">
           <div className="flex items-start gap-3">
-            <AlertTriangle className="size-5 text-amber-400 shrink-0 mt-0.5" />
+            <AlertTriangle className="size-5 text-amber-500 dark:text-amber-400 shrink-0 mt-0.5" />
             <div className="space-y-1.5 flex-1">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-amber-300">
+                <h3 className="text-sm font-semibold text-amber-800 dark:text-amber-300">
                   {dbStatus.isPermissionDenied
                     ? "Supabase Permission Denied: Table 'properties' is present, but missing role permissions"
                     : "Supabase Table Missing: Property will not be saved in Supabase"}
                 </h3>
-                <Badge variant="outline" className="border-amber-400/40 text-amber-300 text-[10px]">
+                <Badge variant="outline" className="border-amber-500/40 text-amber-700 dark:border-amber-400/40 dark:text-amber-300 text-[10px]">
                   Local Store Only
                 </Badge>
               </div>
-              <p className="text-xs text-neutral-300 leading-relaxed">
+              <p className="text-xs text-neutral-700 leading-relaxed dark:text-neutral-300">
                 {dbStatus.isPermissionDenied ? (
                   <>
-                    The <code className="bg-neutral-900/80 px-1.5 py-0.5 rounded text-amber-300 font-mono">public.properties</code> table exists, but Postgres denied access to the API key role (<code className="text-neutral-400 font-mono">anon</code>, error code 42501). Table privileges (<code className="text-amber-300 font-mono">GRANT ALL</code>) and RLS policy must be granted in SQL Editor.
+                    The <code className="bg-neutral-200/80 px-1.5 py-0.5 rounded text-amber-800 font-mono dark:bg-neutral-900/80 dark:text-amber-300">public.properties</code> table exists, but Postgres denied access to the API key role (<code className="text-neutral-600 font-mono dark:text-neutral-400">anon</code>, error code 42501). Table privileges (<code className="text-amber-800 font-mono dark:text-amber-300">GRANT ALL</code>) and RLS policy must be granted in SQL Editor.
                   </>
                 ) : (
                   <>
-                    The database table <code className="bg-neutral-900/80 px-1.5 py-0.5 rounded text-amber-300 font-mono">public.properties</code> does not exist yet in your Supabase project (<code className="text-neutral-400 font-mono">wjxxmqkuhjhurpvyngxq</code>).
+                    The database table <code className="bg-neutral-200/80 px-1.5 py-0.5 rounded text-amber-800 font-mono dark:bg-neutral-900/80 dark:text-amber-300">public.properties</code> does not exist yet in your Supabase project (<code className="text-neutral-600 font-mono dark:text-neutral-400">wjxxmqkuhjhurpvyngxq</code>).
                   </>
                 )}
               </p>
@@ -451,13 +451,13 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                   href="https://supabase.com/dashboard/project/wjxxmqkuhjhurpvyngxq/sql/new"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 font-semibold text-amber-400 hover:text-amber-300 underline underline-offset-4"
+                  className="inline-flex items-center gap-1 font-semibold text-amber-600 hover:text-amber-700 underline underline-offset-4 dark:text-amber-400 dark:hover:text-amber-300"
                 >
                   Open Supabase SQL Editor <ExternalLink className="size-3" />
                 </a>
-                <span className="text-neutral-600">•</span>
-                <span className="text-neutral-400">
-                  Run <strong className="text-neutral-200">supabase/schema.sql</strong> to grant permissions and enable live Supabase CRUD.
+                <span className="text-neutral-400 dark:text-neutral-600">•</span>
+                <span className="text-neutral-600 dark:text-neutral-400">
+                  Run <strong className="text-neutral-800 dark:text-neutral-200">supabase/schema.sql</strong> to grant permissions and enable live Supabase CRUD.
                 </span>
               </div>
             </div>
@@ -469,19 +469,19 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
         {/* LEFT TWO COLUMNS: Main Details & Specs */}
         <div className="lg:col-span-2 space-y-6">
           {/* SECTION 1: MULTI-IMAGE GALLERY UPLOADER */}
-          <Card className="border-neutral-800 bg-neutral-900/60 shadow-xl backdrop-blur-md">
-            <CardHeader className="pb-3 border-b border-neutral-800/80">
+          <Card className="border-neutral-200 bg-white shadow-md dark:border-neutral-800 dark:bg-neutral-900/60 dark:shadow-xl">
+            <CardHeader className="pb-3 border-b border-neutral-200 dark:border-neutral-800/80">
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-base font-semibold text-neutral-100 flex items-center gap-2">
-                    <ImageIcon className="size-4 text-amber-400" />
+                  <CardTitle className="text-base font-semibold text-neutral-900 flex items-center gap-2 dark:text-neutral-100">
+                    <ImageIcon className="size-4 text-amber-500 dark:text-amber-400" />
                     Property Media Gallery & Cover Photo
                   </CardTitle>
-                  <CardDescription className="text-xs text-neutral-400 mt-0.5">
+                  <CardDescription className="text-xs text-neutral-500 mt-0.5 dark:text-neutral-400">
                     Upload multiple high-resolution photos. The primary cover photo will be featured across the website.
                   </CardDescription>
                 </div>
-                <Badge variant="outline" className="border-neutral-700 text-neutral-300 text-xs">
+                <Badge variant="outline" className="border-neutral-300 text-neutral-700 text-xs dark:border-neutral-700 dark:text-neutral-300">
                   {currentImages.length} {currentImages.length === 1 ? "Image" : "Images"}
                 </Badge>
               </div>
@@ -497,8 +497,8 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                 onClick={() => fileInputRef.current?.click()}
                 className={`relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 text-center transition-all cursor-pointer ${
                   dragActive
-                    ? "border-amber-400 bg-amber-400/10"
-                    : "border-neutral-800 bg-neutral-950/70 hover:border-neutral-700 hover:bg-neutral-950"
+                    ? "border-amber-500 bg-amber-500/10 dark:border-amber-400 dark:bg-amber-400/10"
+                    : "border-neutral-200 bg-neutral-50/70 hover:border-neutral-300 hover:bg-neutral-100/50 dark:border-neutral-800 dark:bg-neutral-950/70 dark:hover:border-neutral-700 dark:hover:bg-neutral-950"
                 }`}
               >
                 <input
@@ -517,14 +517,14 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                   </div>
                 ) : (
                   <div className="flex flex-col items-center gap-2">
-                    <div className="p-3.5 rounded-full bg-neutral-900 text-neutral-300 border border-neutral-800">
-                      <UploadCloudIcon className="size-7 text-amber-400" />
+                    <div className="p-3.5 rounded-full bg-neutral-100 text-neutral-700 border border-neutral-200 dark:bg-neutral-900 dark:text-neutral-300 dark:border-neutral-800">
+                      <UploadCloudIcon className="size-7 text-amber-500 dark:text-amber-400" />
                     </div>
                     <div>
-                      <span className="text-sm font-semibold text-neutral-200">
+                      <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-200">
                         Click to browse multiple photos
                       </span>{" "}
-                      <span className="text-sm text-neutral-400">or drag and drop them here</span>
+                      <span className="text-sm text-neutral-500 dark:text-neutral-400">or drag and drop them here</span>
                     </div>
                     <p className="text-xs text-neutral-500">
                       Supports JPG, PNG, WEBP. Uploads directly to Supabase Storage bucket (`realestate-bucket`).
@@ -545,14 +545,14 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                     }
                   }}
                   placeholder="Or paste an image URL (e.g. https://images.unsplash.com/...)"
-                  className="text-xs bg-neutral-950 border-neutral-800 text-neutral-100 placeholder:text-neutral-500"
+                  className="text-xs bg-white border-neutral-200 text-neutral-900 placeholder:text-neutral-400 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100 dark:placeholder:text-neutral-500"
                 />
                 <Button
                   type="button"
                   onClick={handleAddUrl}
                   size="sm"
                   variant="outline"
-                  className="border-neutral-800 text-xs text-neutral-200 shrink-0 hover:bg-neutral-800 cursor-pointer"
+                  className="border-neutral-200 text-xs text-neutral-700 shrink-0 hover:bg-neutral-100 cursor-pointer dark:border-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-800"
                 >
                   <PlusIcon className="size-3.5 mr-1" /> Add URL
                 </Button>
@@ -566,10 +566,10 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                     return (
                       <div
                         key={`${imgUrl}-${index}`}
-                        className={`group relative aspect-[4/3] rounded-xl overflow-hidden border bg-neutral-950 transition-all ${
+                        className={`group relative aspect-[4/3] rounded-xl overflow-hidden border bg-neutral-100 transition-all dark:bg-neutral-950 ${
                           isCover
-                            ? "border-amber-400 ring-2 ring-amber-400/30"
-                            : "border-neutral-800 hover:border-neutral-700"
+                            ? "border-amber-500 ring-2 ring-amber-500/30 dark:border-amber-400 dark:ring-amber-400/30"
+                            : "border-neutral-200 hover:border-neutral-300 dark:border-neutral-800 dark:hover:border-neutral-700"
                         }`}
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -582,7 +582,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                         {/* Cover Badge */}
                         {isCover && (
                           <div className="absolute top-2 left-2 z-10">
-                            <Badge className="bg-amber-400 text-neutral-950 text-[10px] font-bold px-2 py-0.5 flex items-center gap-1 shadow-lg">
+                            <Badge className="bg-amber-500 text-neutral-950 text-[10px] font-bold px-2 py-0.5 flex items-center gap-1 shadow-lg dark:bg-amber-400">
                               <StarIcon className="size-3 fill-current" /> Cover Photo
                             </Badge>
                           </div>
@@ -622,8 +622,8 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                   })}
                 </div>
               ) : (
-                <div className="rounded-xl border border-dashed border-neutral-800 bg-neutral-950/40 p-5 text-center">
-                  <p className="text-xs text-neutral-400">
+                <div className="rounded-xl border border-dashed border-neutral-200 bg-neutral-50/60 p-5 text-center dark:border-neutral-800 dark:bg-neutral-950/40">
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400">
                     No images uploaded yet. Browse files above or paste an image URL.
                   </p>
                 </div>
@@ -632,13 +632,13 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
           </Card>
 
           {/* SECTION 2: BASIC PROPERTY INFORMATION */}
-          <Card className="border-neutral-800 bg-neutral-900/60 shadow-xl backdrop-blur-md">
-            <CardHeader className="pb-3 border-b border-neutral-800/80">
-              <CardTitle className="text-base font-semibold text-neutral-100 flex items-center gap-2">
-                <BuildingIcon className="size-4 text-amber-400" />
+          <Card className="border-neutral-200 bg-white shadow-md dark:border-neutral-800 dark:bg-neutral-900/60 dark:shadow-xl">
+            <CardHeader className="pb-3 border-b border-neutral-200 dark:border-neutral-800/80">
+              <CardTitle className="text-base font-semibold text-neutral-900 flex items-center gap-2 dark:text-neutral-100">
+                <BuildingIcon className="size-4 text-amber-500 dark:text-amber-400" />
                 Primary Estate Details
               </CardTitle>
-              <CardDescription className="text-xs text-neutral-400">
+              <CardDescription className="text-xs text-neutral-500 dark:text-neutral-400">
                 Core identity, location, architecture category, and listing purpose.
               </CardDescription>
             </CardHeader>
@@ -646,39 +646,39 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
             <CardContent className="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Title */}
               <div className="space-y-1.5 sm:col-span-2">
-                <Label className="text-xs font-medium text-neutral-300">Property Title *</Label>
+                <Label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Property Title *</Label>
                 <Input
                   value={formData.title || ""}
                   onChange={(e) => handleChange("title", e.target.value)}
                   placeholder="e.g. Modern Cascading Villa on Whistler Ridge"
-                  className="bg-neutral-950 border-neutral-800 text-neutral-100 focus-visible:border-amber-400/80"
+                  className="bg-white border-neutral-200 text-neutral-900 focus-visible:border-amber-500/80 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100 dark:focus-visible:border-amber-400/80"
                   required
                 />
               </div>
 
               {/* Location */}
               <div className="space-y-1.5 sm:col-span-2">
-                <Label className="text-xs font-medium text-neutral-300">Location Address / City *</Label>
+                <Label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Location Address / City *</Label>
                 <Input
                   value={formData.location || ""}
                   onChange={(e) => handleChange("location", e.target.value)}
                   placeholder="e.g. Beverly Hills, California"
-                  className="bg-neutral-950 border-neutral-800 text-neutral-100 focus-visible:border-amber-400/80"
+                  className="bg-white border-neutral-200 text-neutral-900 focus-visible:border-amber-500/80 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100 dark:focus-visible:border-amber-400/80"
                   required
                 />
               </div>
 
               {/* Purpose */}
               <div className="space-y-1.5">
-                <Label className="text-xs font-medium text-neutral-300">Listing Purpose</Label>
+                <Label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Listing Purpose</Label>
                 <Select
                   value={formData.purpose || "buy"}
                   onValueChange={(val) => handleChange("purpose", val as PropertyPurpose)}
                 >
-                  <SelectTrigger className="w-full bg-neutral-950 border-neutral-800 text-neutral-100">
+                  <SelectTrigger className="w-full bg-white border-neutral-200 text-neutral-900 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100">
                     <SelectValue placeholder="Select purpose" />
                   </SelectTrigger>
-                  <SelectContent className="bg-neutral-900 border-neutral-800 text-neutral-100">
+                  <SelectContent className="bg-white border-neutral-200 text-neutral-900 shadow-xl dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-100">
                     <SelectItem value="buy">For Sale (Acquisition)</SelectItem>
                     <SelectItem value="rent">For Lease (Rental)</SelectItem>
                   </SelectContent>
@@ -687,15 +687,15 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
               {/* Architecture Type */}
               <div className="space-y-1.5">
-                <Label className="text-xs font-medium text-neutral-300">Property Architecture</Label>
+                <Label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Property Architecture</Label>
                 <Select
                   value={formData.type || "estate"}
                   onValueChange={(val) => handleChange("type", val as PropertyType)}
                 >
-                  <SelectTrigger className="w-full bg-neutral-950 border-neutral-800 text-neutral-100">
+                  <SelectTrigger className="w-full bg-white border-neutral-200 text-neutral-900 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100">
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
-                  <SelectContent className="bg-neutral-900 border-neutral-800 text-neutral-100">
+                  <SelectContent className="bg-white border-neutral-200 text-neutral-900 shadow-xl dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-100">
                     <SelectItem value="estate">Estate</SelectItem>
                     <SelectItem value="villa">Villa</SelectItem>
                     <SelectItem value="penthouse">Penthouse</SelectItem>
@@ -707,7 +707,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
               {/* Price */}
               <div className="space-y-1.5">
-                <Label className="text-xs font-medium text-neutral-300">Price ($ USD) *</Label>
+                <Label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Price ($ USD) *</Label>
                 <Input
                   type="number"
                   value={formData.price || 0}
@@ -716,51 +716,51 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                     handleChange("price", num);
                     handleChange("formattedPrice", `$${num.toLocaleString()}`);
                   }}
-                  className="bg-neutral-950 border-neutral-800 text-neutral-100 font-mono font-semibold text-emerald-400 focus-visible:border-amber-400/80"
+                  className="bg-white border-neutral-200 text-neutral-900 font-mono font-semibold text-emerald-600 focus-visible:border-amber-500/80 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100 dark:text-emerald-400 dark:focus-visible:border-amber-400/80"
                   required
                 />
               </div>
 
               {/* Formatted Price */}
               <div className="space-y-1.5">
-                <Label className="text-xs font-medium text-neutral-300">Display Formatted Price</Label>
+                <Label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Display Formatted Price</Label>
                 <Input
                   value={formData.formattedPrice || ""}
                   onChange={(e) => handleChange("formattedPrice", e.target.value)}
                   placeholder="e.g. $14,500,000"
-                  className="bg-neutral-950 border-neutral-800 text-neutral-100 focus-visible:border-amber-400/80"
+                  className="bg-white border-neutral-200 text-neutral-900 focus-visible:border-amber-500/80 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100 dark:focus-visible:border-amber-400/80"
                 />
               </div>
 
               {/* Description */}
               <div className="space-y-1.5 sm:col-span-2">
-                <Label className="text-xs font-medium text-neutral-300">Detailed Residence Overview</Label>
+                <Label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Detailed Residence Overview</Label>
                 <textarea
                   value={formData.description || ""}
                   onChange={(e) => handleChange("description", e.target.value)}
                   rows={4}
                   placeholder="Provide a comprehensive narrative describing the property, materials, views, and lifestyle amenities..."
-                  className="w-full rounded-md border border-neutral-800 bg-neutral-950 p-3 text-sm text-neutral-100 placeholder:text-neutral-500 focus-visible:border-amber-400/80 focus-visible:outline-none"
+                  className="w-full rounded-md border border-neutral-200 bg-white p-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus-visible:border-amber-500/80 focus-visible:outline-none dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus-visible:border-amber-400/80"
                 />
               </div>
             </CardContent>
           </Card>
 
           {/* SECTION 3: ARCHITECTURAL DIMENSIONS & SPECS */}
-          <Card className="border-neutral-800 bg-neutral-900/60 shadow-xl backdrop-blur-md">
-            <CardHeader className="pb-3 border-b border-neutral-800/80">
-              <CardTitle className="text-base font-semibold text-neutral-100 flex items-center gap-2">
-                <LayersIcon className="size-4 text-amber-400" />
+          <Card className="border-neutral-200 bg-white shadow-md dark:border-neutral-800 dark:bg-neutral-900/60 dark:shadow-xl">
+            <CardHeader className="pb-3 border-b border-neutral-200 dark:border-neutral-800/80">
+              <CardTitle className="text-base font-semibold text-neutral-900 flex items-center gap-2 dark:text-neutral-100">
+                <LayersIcon className="size-4 text-amber-500 dark:text-amber-400" />
                 Dimensions & Specifications
               </CardTitle>
-              <CardDescription className="text-xs text-neutral-400">
+              <CardDescription className="text-xs text-neutral-500 dark:text-neutral-400">
                 Bedrooms, baths, garage bays, and interior/lot areas.
               </CardDescription>
             </CardHeader>
 
             <CardContent className="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="space-y-1.5">
-                <Label className="text-xs font-medium text-neutral-300">Bedrooms</Label>
+                <Label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Bedrooms</Label>
                 <Input
                   type="number"
                   value={formData.bedrooms || 3}
@@ -769,42 +769,42 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                     handleChange("bedrooms", num);
                     handleChange("bhk", num);
                   }}
-                  className="bg-neutral-950 border-neutral-800 text-neutral-100"
+                  className="bg-white border-neutral-200 text-neutral-900 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-medium text-neutral-300">Bathrooms</Label>
+                <Label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Bathrooms</Label>
                 <Input
                   type="number"
                   value={formData.bathrooms || 2}
                   onChange={(e) => handleChange("bathrooms", Number(e.target.value))}
-                  className="bg-neutral-950 border-neutral-800 text-neutral-100"
+                  className="bg-white border-neutral-200 text-neutral-900 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-medium text-neutral-300">Garage Bays</Label>
+                <Label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Garage Bays</Label>
                 <Input
                   type="number"
                   value={formData.garage || 1}
                   onChange={(e) => handleChange("garage", Number(e.target.value))}
-                  className="bg-neutral-950 border-neutral-800 text-neutral-100"
+                  className="bg-white border-neutral-200 text-neutral-900 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-medium text-neutral-300">Living Rooms</Label>
+                <Label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Living Rooms</Label>
                 <Input
                   type="number"
                   value={formData.specs?.livingRooms || 2}
                   onChange={(e) => handleSpecChange("livingRooms", Number(e.target.value))}
-                  className="bg-neutral-950 border-neutral-800 text-neutral-100"
+                  className="bg-white border-neutral-200 text-neutral-900 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100"
                 />
               </div>
 
               <div className="space-y-1.5 col-span-2">
-                <Label className="text-xs font-medium text-neutral-300">Interior Area (m²)</Label>
+                <Label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Interior Area (m²)</Label>
                 <Input
                   type="number"
                   value={formData.homeAreaSqM || 350}
@@ -813,27 +813,27 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                     handleChange("homeAreaSqM", num);
                     handleChange("size", `${num} m² (${Math.round(num * 10.764).toLocaleString()} sq ft)`);
                   }}
-                  className="bg-neutral-950 border-neutral-800 text-neutral-100"
+                  className="bg-white border-neutral-200 text-neutral-900 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100"
                 />
               </div>
 
               <div className="space-y-1.5 col-span-2">
-                <Label className="text-xs font-medium text-neutral-300">Land Area (m²)</Label>
+                <Label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Land Area (m²)</Label>
                 <Input
                   type="number"
                   value={formData.landAreaSqM || 1000}
                   onChange={(e) => handleChange("landAreaSqM", Number(e.target.value))}
-                  className="bg-neutral-950 border-neutral-800 text-neutral-100"
+                  className="bg-white border-neutral-200 text-neutral-900 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100"
                 />
               </div>
 
               <div className="space-y-1.5 sm:col-span-4">
-                <Label className="text-xs font-medium text-neutral-300">Size Summary Label</Label>
+                <Label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Size Summary Label</Label>
                 <Input
                   value={formData.size || ""}
                   onChange={(e) => handleChange("size", e.target.value)}
                   placeholder="e.g. 650 m² (7,000 sq ft)"
-                  className="bg-neutral-950 border-neutral-800 text-neutral-100"
+                  className="bg-white border-neutral-200 text-neutral-900 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100"
                 />
               </div>
             </CardContent>
@@ -843,19 +843,19 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
         {/* RIGHT COLUMN: Settings, Features & Amenities */}
         <div className="space-y-6">
           {/* SECTION 4: VISIBILITY & BADGES */}
-          <Card className="border-neutral-800 bg-neutral-900/60 shadow-xl backdrop-blur-md">
-            <CardHeader className="pb-3 border-b border-neutral-800/80">
-              <CardTitle className="text-base font-semibold text-neutral-100 flex items-center gap-2">
-                <SparklesIcon className="size-4 text-amber-400" />
+          <Card className="border-neutral-200 bg-white shadow-md dark:border-neutral-800 dark:bg-neutral-900/60 dark:shadow-xl">
+            <CardHeader className="pb-3 border-b border-neutral-200 dark:border-neutral-800/80">
+              <CardTitle className="text-base font-semibold text-neutral-900 flex items-center gap-2 dark:text-neutral-100">
+                <SparklesIcon className="size-4 text-amber-500 dark:text-amber-400" />
                 Showcase & Tiers
               </CardTitle>
             </CardHeader>
 
             <CardContent className="pt-4 space-y-4">
-              <div className="flex items-center justify-between rounded-lg border border-neutral-800 bg-neutral-950 p-3">
+              <div className="flex items-center justify-between rounded-lg border border-neutral-200 bg-neutral-50 p-3 dark:border-neutral-800 dark:bg-neutral-950">
                 <div>
-                  <p className="text-xs font-medium text-neutral-200">Luxury Designation</p>
-                  <p className="text-[11px] text-neutral-400">Mark as ultra-luxury residence</p>
+                  <p className="text-xs font-medium text-neutral-900 dark:text-neutral-200">Luxury Designation</p>
+                  <p className="text-[11px] text-neutral-500 dark:text-neutral-400">Mark as ultra-luxury residence</p>
                 </div>
                 <Switch
                   checked={Boolean(formData.isLuxury)}
@@ -863,10 +863,10 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                 />
               </div>
 
-              <div className="flex items-center justify-between rounded-lg border border-neutral-800 bg-neutral-950 p-3">
+              <div className="flex items-center justify-between rounded-lg border border-neutral-200 bg-neutral-50 p-3 dark:border-neutral-800 dark:bg-neutral-950">
                 <div>
-                  <p className="text-xs font-medium text-neutral-200">Featured Showcase</p>
-                  <p className="text-[11px] text-neutral-400">Highlight on homepage hero</p>
+                  <p className="text-xs font-medium text-neutral-900 dark:text-neutral-200">Featured Showcase</p>
+                  <p className="text-[11px] text-neutral-500 dark:text-neutral-400">Highlight on homepage hero</p>
                 </div>
                 <Switch
                   checked={Boolean(formData.featured)}
@@ -877,13 +877,13 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
           </Card>
 
           {/* SECTION 5: FEATURES & AMENITIES LIST */}
-          <Card className="border-neutral-800 bg-neutral-900/60 shadow-xl backdrop-blur-md">
-            <CardHeader className="pb-3 border-b border-neutral-800/80">
-              <CardTitle className="text-base font-semibold text-neutral-100 flex items-center gap-2">
-                <ShieldCheckIcon className="size-4 text-emerald-400" />
+          <Card className="border-neutral-200 bg-white shadow-md dark:border-neutral-800 dark:bg-neutral-900/60 dark:shadow-xl">
+            <CardHeader className="pb-3 border-b border-neutral-200 dark:border-neutral-800/80">
+              <CardTitle className="text-base font-semibold text-neutral-900 flex items-center gap-2 dark:text-neutral-100">
+                <ShieldCheckIcon className="size-4 text-emerald-500 dark:text-emerald-400" />
                 Amenities & Features
               </CardTitle>
-              <CardDescription className="text-xs text-neutral-400">
+              <CardDescription className="text-xs text-neutral-500 dark:text-neutral-400">
                 Key selling points showcased on the property page.
               </CardDescription>
             </CardHeader>
@@ -901,13 +901,13 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                     }
                   }}
                   placeholder="e.g. Heated Infinity Pool"
-                  className="text-xs bg-neutral-950 border-neutral-800 text-neutral-100"
+                  className="text-xs bg-white border-neutral-200 text-neutral-900 placeholder:text-neutral-400 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100 dark:placeholder:text-neutral-500"
                 />
                 <Button
                   type="button"
                   onClick={handleAddFeature}
                   size="sm"
-                  className="bg-neutral-800 text-neutral-200 hover:bg-neutral-700 text-xs shrink-0 cursor-pointer"
+                  className="bg-neutral-200 text-neutral-800 hover:bg-neutral-300 text-xs shrink-0 cursor-pointer dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
                 >
                   <PlusIcon className="size-3.5" />
                 </Button>
@@ -919,15 +919,15 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                   <Badge
                     key={`${feat}-${index}`}
                     variant="outline"
-                    className="border-neutral-800 bg-neutral-950 text-neutral-300 text-xs py-1 px-2.5 flex items-center gap-1.5"
+                    className="border-neutral-200 bg-neutral-100 text-neutral-700 text-xs py-1 px-2.5 flex items-center gap-1.5 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-300"
                   >
                     <span>{feat}</span>
                     <button
                       type="button"
                       onClick={() => handleRemoveFeature(index)}
-                      className="text-neutral-500 hover:text-rose-400 cursor-pointer"
+                      className="text-neutral-400 hover:text-rose-500 cursor-pointer dark:text-neutral-500 dark:hover:text-rose-400"
                     >
-                      <XIcon className="size-3" />
+                      <XIcon className="size-3.5" />
                     </button>
                   </Badge>
                 ))}
@@ -936,51 +936,51 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
           </Card>
 
           {/* SECTION 6: ARCHITECTURAL AMENITIES */}
-          <Card className="border-neutral-800 bg-neutral-900/60 shadow-xl backdrop-blur-md">
-            <CardHeader className="pb-3 border-b border-neutral-800/80">
-              <CardTitle className="text-sm font-semibold text-neutral-100">
+          <Card className="border-neutral-200 bg-white shadow-md dark:border-neutral-800 dark:bg-neutral-900/60 dark:shadow-xl">
+            <CardHeader className="pb-3 border-b border-neutral-200 dark:border-neutral-800/80">
+              <CardTitle className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
                 Architectural Highlights
               </CardTitle>
             </CardHeader>
 
             <CardContent className="pt-4 space-y-3">
               <div className="space-y-1">
-                <Label className="text-[11px] text-neutral-400">Butler's Pantry</Label>
+                <Label className="text-[11px] text-neutral-500 dark:text-neutral-400">Butler's Pantry</Label>
                 <Input
                   value={String(formData.specs?.pantry || "")}
                   onChange={(e) => handleSpecChange("pantry", e.target.value)}
                   placeholder="e.g. Walk-in Butler's Pantry"
-                  className="text-xs bg-neutral-950 border-neutral-800 text-neutral-100"
+                  className="text-xs bg-white border-neutral-200 text-neutral-900 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100"
                 />
               </div>
 
               <div className="space-y-1">
-                <Label className="text-[11px] text-neutral-400">Pool / Spa</Label>
+                <Label className="text-[11px] text-neutral-500 dark:text-neutral-400">Pool / Spa</Label>
                 <Input
                   value={String(formData.specs?.pool || "")}
                   onChange={(e) => handleSpecChange("pool", e.target.value)}
                   placeholder="e.g. Heated Infinity Edge Pool"
-                  className="text-xs bg-neutral-950 border-neutral-800 text-neutral-100"
+                  className="text-xs bg-white border-neutral-200 text-neutral-900 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100"
                 />
               </div>
 
               <div className="space-y-1">
-                <Label className="text-[11px] text-neutral-400">Wine Cellar</Label>
+                <Label className="text-[11px] text-neutral-500 dark:text-neutral-400">Wine Cellar</Label>
                 <Input
                   value={String(formData.specs?.wineCellar || "")}
                   onChange={(e) => handleSpecChange("wineCellar", e.target.value)}
                   placeholder="e.g. 1,200-bottle Sommelier Room"
-                  className="text-xs bg-neutral-950 border-neutral-800 text-neutral-100"
+                  className="text-xs bg-white border-neutral-200 text-neutral-900 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100"
                 />
               </div>
 
               <div className="space-y-1">
-                <Label className="text-[11px] text-neutral-400">Smart Home Automation</Label>
+                <Label className="text-[11px] text-neutral-500 dark:text-neutral-400">Smart Home Automation</Label>
                 <Input
                   value={String(formData.specs?.smartHome || "")}
                   onChange={(e) => handleSpecChange("smartHome", e.target.value)}
                   placeholder="e.g. Crestron Home Automation"
-                  className="text-xs bg-neutral-950 border-neutral-800 text-neutral-100"
+                  className="text-xs bg-white border-neutral-200 text-neutral-900 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100"
                 />
               </div>
             </CardContent>
@@ -989,12 +989,12 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
       </div>
 
       {/* Bottom Action Footer */}
-      <div className="flex items-center justify-between border-t border-neutral-800 pt-6">
+      <div className="flex items-center justify-between border-t border-neutral-200 pt-6 dark:border-neutral-800">
         <Link
           href="/admin/properties"
           className={cn(
             buttonVariants({ variant: "outline", size: "sm" }),
-            "border-neutral-800 text-xs text-neutral-300 hover:text-white"
+            "border-neutral-200 bg-white text-xs text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:text-neutral-300 dark:hover:text-white"
           )}
         >
           ← Cancel and Return
@@ -1003,7 +1003,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
         <Button
           type="submit"
           disabled={isSubmitting || isUploading}
-          className="bg-amber-400 text-neutral-950 font-semibold hover:bg-amber-300 transition-colors cursor-pointer text-xs px-6 py-2"
+          className="bg-amber-500 text-neutral-950 font-semibold hover:bg-amber-400 transition-colors cursor-pointer text-xs px-6 py-2 dark:bg-amber-400 dark:hover:bg-amber-300"
         >
           {isSubmitting
             ? "Saving to Supabase..."

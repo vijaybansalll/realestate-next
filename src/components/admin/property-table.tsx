@@ -70,23 +70,23 @@ export function PropertyTable({
   };
 
   return (
-    <Card className="border-neutral-800 bg-neutral-900/60 shadow-xl backdrop-blur-md">
+    <Card className="border-neutral-200 bg-white shadow-md dark:border-neutral-800 dark:bg-neutral-900/60 dark:shadow-xl">
       <CardContent className="space-y-4">
         {/* Filters and Search Bar */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="relative max-w-md flex-1">
-            <SearchIcon className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-500" />
+            <SearchIcon className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400 dark:text-neutral-500" />
             <Input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by title, address, or location..."
-              className="border-neutral-800 bg-neutral-950 pl-9 text-neutral-100 placeholder:text-neutral-500 focus-visible:border-amber-400/80"
+              className="border-neutral-200 bg-neutral-50 pl-9 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-amber-500/80 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus-visible:border-amber-400/80"
             />
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
             {/* Purpose Filter Pills */}
-            <div className="inline-flex rounded-lg border border-neutral-800 bg-neutral-950 p-1">
+            <div className="inline-flex rounded-lg border border-neutral-200 bg-neutral-100 p-1 dark:border-neutral-800 dark:bg-neutral-950">
               {["all", "buy", "rent"].map((purpose) => (
                 <button
                   type="button"
@@ -94,8 +94,8 @@ export function PropertyTable({
                   onClick={() => setPurposeFilter(purpose)}
                   className={`cursor-pointer rounded-md px-3 py-1 text-xs font-medium capitalize transition-colors ${
                     purposeFilter === purpose
-                      ? "bg-neutral-800 text-neutral-100"
-                      : "text-neutral-400 hover:text-neutral-200"
+                      ? "bg-white text-neutral-900 shadow-xs dark:bg-neutral-800 dark:text-neutral-100"
+                      : "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200"
                   }`}
                 >
                   {purpose === "all"
@@ -108,7 +108,7 @@ export function PropertyTable({
             </div>
 
             {/* Type Filter */}
-            <div className="inline-flex rounded-lg border border-neutral-800 bg-neutral-950 p-1">
+            <div className="inline-flex rounded-lg border border-neutral-200 bg-neutral-100 p-1 dark:border-neutral-800 dark:bg-neutral-950">
               {["all", "estate", "villa", "penthouse"].map((t) => (
                 <button
                   type="button"
@@ -116,8 +116,8 @@ export function PropertyTable({
                   onClick={() => setTypeFilter(t)}
                   className={`cursor-pointer rounded-md px-2.5 py-1 text-xs font-medium capitalize transition-colors ${
                     typeFilter === t
-                      ? "bg-neutral-800 text-neutral-100"
-                      : "text-neutral-400 hover:text-neutral-200"
+                      ? "bg-white text-neutral-900 shadow-xs dark:bg-neutral-800 dark:text-neutral-100"
+                      : "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200"
                   }`}
                 >
                   {t}
@@ -133,8 +133,8 @@ export function PropertyTable({
             Loading properties from database...
           </div>
         ) : filteredProperties.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-neutral-800 bg-neutral-950/40 p-8 py-16 text-center">
-            <p className="text-sm font-medium text-neutral-300">
+          <div className="rounded-xl border border-dashed border-neutral-200 bg-neutral-50/60 p-8 py-16 text-center dark:border-neutral-800 dark:bg-neutral-950/40">
+            <p className="text-sm font-medium text-neutral-800 dark:text-neutral-300">
               No properties matched your criteria.
             </p>
             <p className="mt-1 text-xs text-neutral-500">
@@ -144,22 +144,22 @@ export function PropertyTable({
               href="/admin/properties/new"
               className={cn(
                 buttonVariants({ variant: "outline", size: "sm" }),
-                "mt-4 gap-1.5 border-neutral-800 text-neutral-200"
+                "mt-4 gap-1.5 border-neutral-200 text-neutral-700 hover:bg-neutral-100 dark:border-neutral-800 dark:text-neutral-200"
               )}
             >
               <PlusIcon className="mr-1 size-4" /> Add Property
             </Link>
           </div>
         ) : (
-          <div className="divide-y divide-neutral-800/80 overflow-hidden rounded-xl border border-neutral-800/80 bg-neutral-950/50">
+          <div className="divide-y divide-neutral-200 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50/40 dark:divide-neutral-800/80 dark:border-neutral-800/80 dark:bg-neutral-950/50">
             {filteredProperties.map((property) => (
               <div
                 key={property.id}
-                className="flex flex-col gap-4 p-4 transition-colors hover:bg-neutral-900/40 sm:flex-row sm:items-center sm:justify-between"
+                className="flex flex-col gap-4 p-4 transition-colors hover:bg-neutral-100/60 sm:flex-row sm:items-center sm:justify-between dark:hover:bg-neutral-900/40"
               >
                 {/* Left: Thumbnail & Details */}
                 <div className="flex min-w-0 items-center gap-4">
-                  <div className="relative size-16 shrink-0 overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900">
+                  <div className="relative size-16 shrink-0 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={
@@ -182,12 +182,12 @@ export function PropertyTable({
 
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h4 className="truncate text-sm font-semibold text-neutral-100">
+                      <h4 className="truncate text-sm font-semibold text-neutral-900 dark:text-neutral-100">
                         {property.title}
                       </h4>
                       <Badge
                         variant="secondary"
-                        className="bg-neutral-800 text-[10px] font-semibold tracking-wider text-neutral-300 uppercase"
+                        className="bg-neutral-200 text-[10px] font-semibold tracking-wider text-neutral-700 uppercase dark:bg-neutral-800 dark:text-neutral-300"
                       >
                         {property.type}
                       </Badge>
@@ -195,8 +195,8 @@ export function PropertyTable({
                         variant="outline"
                         className={`text-[10px] font-semibold tracking-wider uppercase ${
                           property.purpose === "buy"
-                            ? "border-emerald-500/30 text-emerald-400"
-                            : "border-sky-500/30 text-sky-400"
+                            ? "border-emerald-500/30 text-emerald-600 dark:text-emerald-400"
+                            : "border-sky-500/30 text-sky-600 dark:text-sky-400"
                         }`}
                       >
                         {property.purpose === "buy" ? "For Sale" : "For Lease"}
@@ -204,14 +204,14 @@ export function PropertyTable({
                       {property.isLuxury && (
                         <Badge
                           variant="secondary"
-                          className="flex items-center gap-1 border-amber-400/20 bg-amber-400/10 text-[10px] text-amber-300"
+                          className="flex items-center gap-1 border-amber-500/20 bg-amber-500/10 text-[10px] text-amber-700 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-300"
                         >
                           <SparklesIcon className="size-2.5" /> Luxury
                         </Badge>
                       )}
                     </div>
 
-                    <p className="mt-0.5 truncate text-xs text-neutral-400">
+                    <p className="mt-0.5 truncate text-xs text-neutral-600 dark:text-neutral-400">
                       {property.location}
                     </p>
 
@@ -233,9 +233,9 @@ export function PropertyTable({
                 </div>
 
                 {/* Right: Price & Actions */}
-                <div className="flex shrink-0 items-center justify-between gap-4 border-t border-neutral-800/60 pt-2 sm:justify-end sm:border-t-0 sm:pt-0">
+                <div className="flex shrink-0 items-center justify-between gap-4 border-t border-neutral-200 pt-2 sm:justify-end sm:border-t-0 sm:pt-0 dark:border-neutral-800/60">
                   <div className="text-left sm:text-right">
-                    <div className="text-sm font-bold text-neutral-100">
+                    <div className="text-sm font-bold text-neutral-900 dark:text-neutral-100">
                       {property.formattedPrice ||
                         `$${property.price?.toLocaleString()}`}
                     </div>
@@ -247,7 +247,7 @@ export function PropertyTable({
                   <div className="flex items-center gap-1.5">
                     <Link
                       href={`/admin/properties/${property.id}/edit`}
-                      className="inline-flex size-8 items-center justify-center rounded-lg text-neutral-400 transition-colors hover:bg-neutral-800 hover:text-neutral-100"
+                      className="inline-flex size-8 items-center justify-center rounded-lg text-neutral-500 transition-colors hover:bg-neutral-200/70 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
                       title="Edit Property (Full Page)"
                     >
                       <PencilIcon className="size-3.5" />
@@ -258,7 +258,7 @@ export function PropertyTable({
                       variant="ghost"
                       onClick={() => handleDelete(property.id, property.title)}
                       disabled={deletingId === property.id}
-                      className="size-8 text-rose-400/70 hover:bg-rose-500/10 hover:text-rose-400"
+                      className="size-8 text-rose-500/80 hover:bg-rose-500/10 hover:text-rose-600 dark:text-rose-400/70 dark:hover:text-rose-400"
                       title="Delete Property"
                     >
                       <Trash2Icon className="size-3.5" />
@@ -267,7 +267,7 @@ export function PropertyTable({
                     <Link
                       href={`/properties/${property.id}`}
                       target="_blank"
-                      className="inline-flex size-8 items-center justify-center rounded-lg text-neutral-400 transition-colors hover:bg-neutral-800 hover:text-neutral-100"
+                      className="inline-flex size-8 items-center justify-center rounded-lg text-neutral-500 transition-colors hover:bg-neutral-200/70 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
                       title="View Public Listing"
                     >
                       <ExternalLinkIcon className="size-3.5" />

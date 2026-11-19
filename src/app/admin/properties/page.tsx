@@ -79,15 +79,15 @@ export default function PropertiesAdminPage() {
       )}
 
       {/* Header bar */}
-      <div className="flex flex-col gap-4 border-b border-neutral-800 pb-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 border-b border-neutral-200 pb-5 sm:flex-row sm:items-center sm:justify-between dark:border-neutral-800">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight text-neutral-100">
-              <BuildingIcon className="size-6 text-amber-400" />
+            <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
+              <BuildingIcon className="size-6 text-amber-500 dark:text-amber-400" />
               Properties Management (CRUD)
             </h1>
           </div>
-          <p className="mt-1 text-xs text-neutral-400">
+          <p className="mt-1 text-xs text-neutral-600 dark:text-neutral-400">
             Create new listings on a dedicated page with multiple image uploads,
             update pricing, edit architectural details, and manage deletions.
           </p>
@@ -99,7 +99,7 @@ export default function PropertiesAdminPage() {
             variant="outline"
             onClick={() => loadProperties(true)}
             disabled={isLoading}
-            className="size-9 cursor-pointer border-neutral-800 text-neutral-400 hover:text-neutral-100"
+            className="size-9 cursor-pointer border-neutral-200 text-neutral-600 hover:text-neutral-900 dark:border-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-100"
             title="Refresh listings"
           >
             <RefreshCwIcon
@@ -111,7 +111,7 @@ export default function PropertiesAdminPage() {
             href="/admin/properties/new"
             className={cn(
               buttonVariants({ variant: "default", size: "sm" }),
-              "gap-1.5 bg-amber-400 text-xs font-semibold text-neutral-950 transition-colors hover:bg-amber-300"
+              "gap-1.5 bg-amber-500 text-xs font-semibold text-neutral-950 transition-colors hover:bg-amber-400 dark:bg-amber-400 dark:hover:bg-amber-300"
             )}
           >
             <PlusIcon className="mr-1.5 size-4" />

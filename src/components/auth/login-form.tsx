@@ -13,6 +13,7 @@ import { Logo } from "@/components/layout/logo";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const formSchema = z.object({
   userId: z.string().min(1, "User ID is required"),
@@ -72,12 +73,12 @@ export function LoginForm() {
   };
 
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center bg-neutral-950 font-sans text-neutral-100">
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-neutral-50 font-sans text-neutral-900 transition-colors duration-200 dark:bg-neutral-950 dark:text-neutral-100">
       {/* Back Arrow Button at the Top to go to Home Page */}
       <div className="absolute top-6 left-6 z-20">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900/80 px-4 py-2 text-sm font-medium text-neutral-300 backdrop-blur-md transition-colors hover:border-neutral-700 hover:bg-neutral-800 hover:text-white"
+          className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/80 px-4 py-2 text-sm font-medium text-neutral-700 shadow-sm backdrop-blur-md transition-colors hover:border-neutral-300 hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900/80 dark:text-neutral-300 dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white"
           aria-label="Back to home"
         >
           <ArrowLeft className="size-4" />
@@ -85,26 +86,31 @@ export function LoginForm() {
         </Link>
       </div>
 
+      {/* Theme Toggle at the Top Right */}
+      <div className="absolute top-6 right-6 z-20">
+        <ThemeToggle />
+      </div>
+
       <div className="flex min-h-screen w-full">
         {/* Left Side: Login Form Section */}
         <div className="flex w-full flex-col items-center justify-center p-6 sm:p-12 lg:w-1/2">
           <div className="relative flex w-full max-w-sm flex-col items-center p-8 outline-0 outline-border/40 outline-offset-0.5 sm:outline-2 dark:outline-border/80">
             {/* Architectural Frame Accents */}
-            <div className="absolute inset-x-0 top-0 w-[calc(100%+4rem)] -translate-x-8 border-t border-neutral-800 max-sm:hidden" />
-            <div className="absolute inset-x-0 bottom-0 w-[calc(100%+4rem)] -translate-x-8 border-b border-neutral-800 max-sm:hidden" />
-            <div className="absolute inset-y-0 left-0 h-[calc(100%+4rem)] -translate-y-8 border-s border-neutral-800 max-sm:hidden" />
-            <div className="absolute inset-y-0 right-0 h-[calc(100%+4rem)] -translate-y-8 border-e border-neutral-800 max-sm:hidden" />
+            <div className="absolute inset-x-0 top-0 w-[calc(100%+4rem)] -translate-x-8 border-t border-neutral-300 max-sm:hidden dark:border-neutral-800" />
+            <div className="absolute inset-x-0 bottom-0 w-[calc(100%+4rem)] -translate-x-8 border-b border-neutral-300 max-sm:hidden dark:border-neutral-800" />
+            <div className="absolute inset-y-0 left-0 h-[calc(100%+4rem)] -translate-y-8 border-s border-neutral-300 max-sm:hidden dark:border-neutral-800" />
+            <div className="absolute inset-y-0 right-0 h-[calc(100%+4rem)] -translate-y-8 border-e border-neutral-300 max-sm:hidden dark:border-neutral-800" />
 
-            <div className="absolute inset-x-0 -top-1 w-[calc(100%+3rem)] -translate-x-6 border-t border-neutral-800 max-sm:hidden" />
-            <div className="absolute inset-x-0 -bottom-1 w-[calc(100%+3rem)] -translate-x-6 border-b border-neutral-800 max-sm:hidden" />
-            <div className="absolute inset-y-0 -left-1 h-[calc(100%+3rem)] -translate-y-6 border-s border-neutral-800 max-sm:hidden" />
-            <div className="absolute inset-y-0 -right-1 h-[calc(100%+3rem)] -translate-y-6 border-e border-neutral-800 max-sm:hidden" />
+            <div className="absolute inset-x-0 -top-1 w-[calc(100%+3rem)] -translate-x-6 border-t border-neutral-300 max-sm:hidden dark:border-neutral-800" />
+            <div className="absolute inset-x-0 -bottom-1 w-[calc(100%+3rem)] -translate-x-6 border-b border-neutral-300 max-sm:hidden dark:border-neutral-800" />
+            <div className="absolute inset-y-0 -left-1 h-[calc(100%+3rem)] -translate-y-6 border-s border-neutral-300 max-sm:hidden dark:border-neutral-800" />
+            <div className="absolute inset-y-0 -right-1 h-[calc(100%+3rem)] -translate-y-6 border-e border-neutral-300 max-sm:hidden dark:border-neutral-800" />
 
             {/* 1. Logo */}
-            <Logo className="h-8 w-auto fill-current text-neutral-100" />
+            <Logo className="h-8 w-auto fill-current text-neutral-900 dark:text-neutral-100" />
 
             {/* 2. Login Title */}
-            <h1 className="mt-4 text-xl font-medium tracking-tight text-neutral-100">
+            <h1 className="mt-4 text-xl font-medium tracking-tight text-neutral-900 dark:text-neutral-100">
               Login
             </h1>
 
@@ -122,7 +128,7 @@ export function LoginForm() {
                     <FieldLabel>User ID</FieldLabel>
                     <Input
                       aria-invalid={fieldState.invalid}
-                      className="w-full border-neutral-800 bg-neutral-900/60 text-neutral-100 placeholder:text-neutral-500 focus-visible:border-amber-400/80 focus-visible:ring-amber-400/20"
+                      className="w-full border-neutral-200 bg-white text-neutral-900 placeholder:text-neutral-400 focus-visible:border-amber-500/80 focus-visible:ring-amber-500/20 dark:border-neutral-800 dark:bg-neutral-900/60 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus-visible:border-amber-400/80 dark:focus-visible:ring-amber-400/20"
                       placeholder="Enter user ID"
                       type="text"
                       autoComplete="username"
@@ -143,7 +149,7 @@ export function LoginForm() {
                     <FieldLabel>User Password</FieldLabel>
                     <Input
                       aria-invalid={fieldState.invalid}
-                      className="w-full border-neutral-800 bg-neutral-900/60 text-neutral-100 placeholder:text-neutral-500 focus-visible:border-amber-400/80 focus-visible:ring-amber-400/20"
+                      className="w-full border-neutral-200 bg-white text-neutral-900 placeholder:text-neutral-400 focus-visible:border-amber-500/80 focus-visible:ring-amber-500/20 dark:border-neutral-800 dark:bg-neutral-900/60 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus-visible:border-amber-400/80 dark:focus-visible:ring-amber-400/20"
                       placeholder="Enter user password"
                       type="password"
                       autoComplete="current-password"
@@ -159,7 +165,7 @@ export function LoginForm() {
               {formState.errorMessage && (
                 <div
                   role="alert"
-                  className="rounded-lg border border-red-500/20 bg-red-500/10 p-2.5 text-center text-xs text-red-400"
+                  className="rounded-lg border border-red-500/20 bg-red-500/10 p-2.5 text-center text-xs text-red-600 dark:text-red-400"
                 >
                   {formState.errorMessage}
                 </div>
@@ -168,7 +174,7 @@ export function LoginForm() {
               {formState.successMessage && (
                 <div
                   role="status"
-                  className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-2.5 text-center text-xs text-emerald-400"
+                  className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-2.5 text-center text-xs text-emerald-600 dark:text-emerald-400"
                 >
                   {formState.successMessage}
                 </div>
@@ -176,7 +182,7 @@ export function LoginForm() {
 
               {/* 5. Submit Button */}
               <Button
-                className="mt-6 w-full cursor-pointer bg-neutral-100 font-medium text-neutral-950 transition-colors hover:bg-neutral-200 disabled:opacity-50"
+                className="mt-6 w-full cursor-pointer bg-neutral-900 font-medium text-neutral-100 transition-colors hover:bg-neutral-800 disabled:opacity-50 dark:bg-neutral-100 dark:text-neutral-950 dark:hover:bg-neutral-200"
                 disabled={formState.isLoading}
                 type="submit"
               >
@@ -187,7 +193,7 @@ export function LoginForm() {
         </div>
 
         {/* Right Side: Canadian Wooden House Image Section */}
-        <div className="relative hidden w-full grow border-l border-neutral-800 bg-neutral-900 lg:block lg:w-1/2">
+        <div className="relative hidden w-full grow border-l border-neutral-200 bg-neutral-100 lg:block lg:w-1/2 dark:border-neutral-800 dark:bg-neutral-900">
           <Image
             alt="Canadian wooden house"
             className="object-cover"

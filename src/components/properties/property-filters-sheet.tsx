@@ -165,19 +165,19 @@ export function PropertyFiltersSheet({
       {/* Filter Drawer Sheet Content */}
       <SheetContent
         side="right"
-        className="flex h-dvh max-h-screen w-full! max-w-full! flex-col overflow-hidden border-l border-neutral-800 bg-neutral-950 p-0 text-neutral-100 shadow-2xl sm:max-w-lg! data-[side=right]:sm:max-w-lg!"
+        className="flex h-dvh max-h-screen w-full! max-w-full! flex-col overflow-hidden border-l border-neutral-200 bg-white p-0 text-neutral-900 shadow-2xl sm:max-w-lg! data-[side=right]:sm:max-w-lg! dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100"
       >
         {/* Header */}
-        <SheetHeader className="shrink-0 border-b border-neutral-800/80 px-6 py-5">
+        <SheetHeader className="shrink-0 border-b border-neutral-200/80 px-6 py-5 dark:border-neutral-800/80">
           <div className="flex items-center gap-2.5 pr-8">
-            <div className="flex size-8 items-center justify-center rounded-xl border border-amber-400/30 bg-amber-400/10 text-amber-400">
+            <div className="flex size-8 items-center justify-center rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-600 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-400">
               <SlidersHorizontal className="size-4" />
             </div>
             <div>
-              <SheetTitle className="text-base font-semibold text-neutral-100">
+              <SheetTitle className="text-base font-semibold text-neutral-900 dark:text-neutral-100">
                 Filter Properties
               </SheetTitle>
-              <SheetDescription className="text-xs text-neutral-400">
+              <SheetDescription className="text-xs text-neutral-600 dark:text-neutral-400">
                 Refine architectural estates and luxury leases
               </SheetDescription>
             </div>
@@ -193,10 +193,10 @@ export function PropertyFiltersSheet({
           {/* 1. Transaction Type (Liquid Component) */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-medium text-neutral-300">
+              <label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
                 Acquisition Purpose
               </label>
-              <span className="text-xs font-medium text-amber-400">
+              <span className="text-xs font-medium text-amber-600 dark:text-amber-400">
                 {filters.purpose === "all"
                   ? "All Modes"
                   : filters.purpose === "buy"
@@ -212,17 +212,17 @@ export function PropertyFiltersSheet({
 
           {/* 2. Keyword Search */}
           <div className="space-y-2">
-            <label className="text-xs font-medium text-neutral-300">
+            <label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
               Search Keyword
             </label>
             <div className="relative">
-              <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-neutral-500" />
+              <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-neutral-400 dark:text-neutral-500" />
               <input
                 type="text"
                 value={filters.search}
                 onChange={(e) => onFilterChange("search", e.target.value)}
                 placeholder="Search title, location, architectural features..."
-                className="w-full rounded-xl border border-neutral-800 bg-neutral-900/70 py-2.5 pr-9 pl-9 text-xs text-neutral-100 transition-all placeholder:text-neutral-500 focus:border-amber-400/80 focus:ring-1 focus:ring-amber-400/80 focus:outline-none"
+                className="w-full rounded-xl border border-neutral-200 bg-neutral-100/70 py-2.5 pr-9 pl-9 text-xs text-neutral-900 transition-all placeholder:text-neutral-400 focus:border-amber-500/80 focus:ring-1 focus:ring-amber-500/80 focus:outline-none dark:border-neutral-800 dark:bg-neutral-900/70 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:border-amber-400/80 dark:focus:ring-amber-400/80"
               />
               {filters.search && (
                 <Button
@@ -243,8 +243,8 @@ export function PropertyFiltersSheet({
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {/* Property Type Select */}
             <div className="space-y-1.5">
-              <label className="flex items-center gap-1.5 text-xs font-medium text-neutral-300">
-                <Building2 className="size-3.5 text-amber-400" />
+              <label className="flex items-center gap-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-300">
+                <Building2 className="size-3.5 text-amber-500 dark:text-amber-400" />
                 <span>Property Type</span>
               </label>
               <Select
@@ -256,10 +256,10 @@ export function PropertyFiltersSheet({
                   )
                 }
               >
-                <SelectTrigger className="w-full rounded-xl border-neutral-800 bg-neutral-900/80 py-2 text-xs text-neutral-200 hover:border-neutral-700">
+                <SelectTrigger className="w-full rounded-xl border-neutral-200 bg-white py-2 text-xs text-neutral-900 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900/80 dark:text-neutral-200 dark:hover:border-neutral-700">
                   <SelectValue placeholder="All Property Types" />
                 </SelectTrigger>
-                <SelectContent className="z-50 rounded-xl border-neutral-800 bg-neutral-900 text-xs text-neutral-200 shadow-2xl">
+                <SelectContent className="z-50 rounded-xl border-neutral-200 bg-white text-xs text-neutral-900 shadow-xl dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-2xl">
                   {PROPERTY_TYPE_OPTIONS.map((opt) => (
                     <SelectItem key={opt.value} value={opt.value}>
                       {opt.label}
@@ -271,18 +271,18 @@ export function PropertyFiltersSheet({
 
             {/* Region Select */}
             <div className="space-y-1.5">
-              <label className="flex items-center gap-1.5 text-xs font-medium text-neutral-300">
-                <MapPin className="size-3.5 text-amber-400" />
+              <label className="flex items-center gap-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-300">
+                <MapPin className="size-3.5 text-amber-500 dark:text-amber-400" />
                 <span>Region / Location</span>
               </label>
               <Select
                 value={filters.location}
                 onValueChange={(val) => onFilterChange("location", val)}
               >
-                <SelectTrigger className="w-full rounded-xl border-neutral-800 bg-neutral-900/80 py-2 text-xs text-neutral-200 hover:border-neutral-700">
+                <SelectTrigger className="w-full rounded-xl border-neutral-200 bg-white py-2 text-xs text-neutral-900 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900/80 dark:text-neutral-200 dark:hover:border-neutral-700">
                   <SelectValue placeholder="All Locations" />
                 </SelectTrigger>
-                <SelectContent className="z-50 rounded-xl border-neutral-800 bg-neutral-900 text-xs text-neutral-200 shadow-2xl">
+                <SelectContent className="z-50 rounded-xl border-neutral-200 bg-white text-xs text-neutral-900 shadow-xl dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-2xl">
                   {LOCATION_OPTIONS.map((opt) => (
                     <SelectItem key={opt.value} value={opt.value}>
                       {opt.label}
@@ -295,21 +295,21 @@ export function PropertyFiltersSheet({
 
           {/* 4. Bedrooms & Bathrooms */}
           <div className="space-y-2.5">
-            <label className="text-xs font-medium text-neutral-300">
+            <label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
               Bedrooms & Bathrooms
             </label>
-            <div className="space-y-3.5 rounded-2xl border border-neutral-800 bg-neutral-900/40 p-4">
+            <div className="space-y-3.5 rounded-2xl border border-neutral-200 bg-neutral-50/80 p-4 dark:border-neutral-800 dark:bg-neutral-900/40">
               {/* Bedrooms Row */}
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5">
-                  <div className="flex size-7 items-center justify-center rounded-lg border border-amber-400/20 bg-amber-400/10 text-amber-400">
+                  <div className="flex size-7 items-center justify-center rounded-lg border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-400">
                     <BedDouble className="size-3.5" />
                   </div>
                   <div>
-                    <p className="text-xs font-medium text-neutral-200">
+                    <p className="text-xs font-medium text-neutral-900 dark:text-neutral-200">
                       Bedrooms
                     </p>
-                    <p className="text-[11px] text-neutral-500">
+                    <p className="text-[11px] text-neutral-500 dark:text-neutral-400">
                       {filters.bhk === "all"
                         ? "Any bedroom count"
                         : `Minimum ${filters.bhk} BHK`}
@@ -334,19 +334,19 @@ export function PropertyFiltersSheet({
                 </AdaptiveStepper>
               </div>
 
-              <div className="h-px bg-neutral-800/70" />
+              <div className="h-px bg-neutral-200 dark:bg-neutral-800/70" />
 
               {/* Bathrooms Row */}
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5">
-                  <div className="flex size-7 items-center justify-center rounded-lg border border-amber-400/20 bg-amber-400/10 text-amber-400">
+                  <div className="flex size-7 items-center justify-center rounded-lg border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-400">
                     <Bath className="size-3.5" />
                   </div>
                   <div>
-                    <p className="text-xs font-medium text-neutral-200">
+                    <p className="text-xs font-medium text-neutral-900 dark:text-neutral-200">
                       Bathrooms
                     </p>
-                    <p className="text-[11px] text-neutral-500">
+                    <p className="text-[11px] text-neutral-500 dark:text-neutral-400">
                       {filters.bathrooms === 0
                         ? "Any bathroom count"
                         : `Minimum ${filters.bathrooms}+ baths`}
@@ -372,12 +372,12 @@ export function PropertyFiltersSheet({
           </div>
 
           {/* 5. Budget Range Slider */}
-          <div className="space-y-3 rounded-2xl border border-neutral-800 bg-neutral-900/40 p-4">
+          <div className="space-y-3 rounded-2xl border border-neutral-200 bg-neutral-50/80 p-4 dark:border-neutral-800 dark:bg-neutral-900/40">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-medium text-neutral-300">
+              <label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
                 Budget Range
               </label>
-              <span className="rounded-md bg-amber-400/10 px-2 py-0.5 text-xs font-medium text-amber-300 tabular-nums">
+              <span className="rounded-md bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-700 tabular-nums dark:bg-amber-400/10 dark:text-amber-300">
                 {formattedBudgetDisplay}
               </span>
             </div>
@@ -416,14 +416,14 @@ export function PropertyFiltersSheet({
           </div>
 
           {/* 6. Area Specifications */}
-          <div className="space-y-4 rounded-2xl border border-neutral-800 bg-neutral-900/40 p-4">
+          <div className="space-y-4 rounded-2xl border border-neutral-200 bg-neutral-50/80 p-4 dark:border-neutral-800 dark:bg-neutral-900/40">
             {/* Home Living Area */}
             <div className="space-y-2.5">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-medium text-neutral-300">
+                <label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
                   Home Living Area
                 </label>
-                <span className="text-xs font-medium text-neutral-200 tabular-nums">
+                <span className="text-xs font-medium text-neutral-900 tabular-nums dark:text-neutral-200">
                   {filters.minHomeArea} m² - {filters.maxHomeArea} m²
                 </span>
               </div>
@@ -438,15 +438,15 @@ export function PropertyFiltersSheet({
               </div>
             </div>
 
-            <div className="h-px bg-neutral-800/70" />
+            <div className="h-px bg-neutral-200 dark:bg-neutral-800/70" />
 
             {/* Land Parcel Area */}
             <div className="space-y-2.5">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-medium text-neutral-300">
+                <label className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
                   Land Parcel Area
                 </label>
-                <span className="text-xs font-medium text-neutral-200 tabular-nums">
+                <span className="text-xs font-medium text-neutral-900 tabular-nums dark:text-neutral-200">
                   {filters.minLandArea} m² - {filters.maxLandArea} m²
                 </span>
               </div>
@@ -463,8 +463,8 @@ export function PropertyFiltersSheet({
           </div>
 
           {/* 7. Luxury Only Switch */}
-          <div className="flex items-center justify-between rounded-2xl border border-neutral-800 bg-neutral-900/40 p-4">
-            <span className="text-xs font-medium text-neutral-200">
+          <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-50/80 p-4 dark:border-neutral-800 dark:bg-neutral-900/40">
+            <span className="text-xs font-medium text-neutral-900 dark:text-neutral-200">
               Luxury Portfolio Only
             </span>
             <Switch
@@ -477,7 +477,7 @@ export function PropertyFiltersSheet({
         </div>
 
         {/* Footer Actions */}
-        <SheetFooter className="shrink-0 border-t border-neutral-800/80 bg-neutral-950/90 px-6 py-4 backdrop-blur-md">
+        <SheetFooter className="shrink-0 border-t border-neutral-200/80 bg-white/95 px-6 py-4 backdrop-blur-md dark:border-neutral-800/80 dark:bg-neutral-950/90">
           <div className="flex w-full items-center gap-3">
             <Button
               type="button"

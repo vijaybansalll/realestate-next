@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --color-background: var(--background);
@@ -189,7 +189,7 @@ body,
 .custom-scrollbar,
 [data-slot="sheet-content"] {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+  scrollbar-color: rgba(150, 150, 150, 0.25) transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar,
@@ -205,7 +205,7 @@ body,
 
 .custom-scrollbar::-webkit-scrollbar-thumb,
 [data-slot="sheet-content"] ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(150, 150, 150, 0.25);
   border-radius: 9999px;
   transition: background-color 0.2s ease;
 }

@@ -9,6 +9,8 @@ import { navLinks } from "@/components/app-shared";
 import { NavUser } from "@/components/nav-user";
 import { BellIcon, LayoutGridIcon, BuildingIcon } from "lucide-react";
 
+import { ThemeToggle } from "@/components/theme-toggle";
+
 export function AppHeader({ pathname }: { pathname?: string }) {
   let activeItem = navLinks.find((item) => item.path === pathname);
 
@@ -33,6 +35,10 @@ export function AppHeader({ pathname }: { pathname?: string }) {
           orientation="vertical"
         />
         <AppBreadcrumbs page={activeItem} />
+      </div>
+
+      <div className="flex items-center gap-3">
+        <ThemeToggle />
       </div>
     </header>
   );
