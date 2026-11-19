@@ -54,7 +54,7 @@ function NavbarContent() {
           >
             <Logo
               className={cn(
-                "fill-current transition-colors",
+                "h-8 sm:h-9 w-auto transition-colors",
                 isTransparent
                   ? "text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]"
                   : "text-neutral-900 dark:text-neutral-100"
@@ -104,7 +104,7 @@ export function Navbar() {
                 className="group flex items-center gap-2"
                 aria-label="Home"
               >
-                <Logo className="fill-current text-neutral-900 dark:text-neutral-100" />
+                <Logo className="h-8 sm:h-9 w-auto text-neutral-900 dark:text-neutral-100" />
               </Link>
             </div>
             <div className="flex items-center gap-2 sm:gap-3">

@@ -59,7 +59,7 @@ export function NavigationSheet({
         <div>
           <div className="flex items-center justify-between border-b border-neutral-200/80 pr-8 pb-5 dark:border-neutral-800/80">
             <Link href="/" onClick={() => setOpen(false)}>
-              <Logo className="fill-current text-neutral-900 dark:text-neutral-100" />
+              <Logo className="h-8 w-auto text-neutral-900 dark:text-neutral-100" />
             </Link>
             <ThemeToggle size="icon-sm" />
           </div>

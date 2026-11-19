@@ -116,7 +116,7 @@ export function LoginForm() {
             <div className="absolute inset-y-0 -right-1 h-[calc(100%+3rem)] -translate-y-6 border-e border-neutral-300 max-sm:hidden dark:border-neutral-800" />
 
             {/* 1. Logo */}
-            <Logo className="h-8 w-auto fill-current text-neutral-900 dark:text-neutral-100" />
+            <Logo className="h-8 w-auto text-neutral-900 dark:text-neutral-100" />
 
             {/* 2. Login Title */}
             <h1 className="mt-4 text-xl sm:text-2xl font-medium tracking-tight text-neutral-900 dark:text-neutral-100">

@@ -78,7 +78,7 @@ export function Footer() {
                   className="flex items-center gap-2"
                   aria-label={siteConfig.name}
                 >
-                  <Logo className="fill-current text-neutral-900 dark:text-neutral-100" />
+                  <Logo className="h-8 sm:h-9 w-auto text-neutral-900 dark:text-neutral-100" />
                 </Link>
 
                 <p className="text-sm leading-relaxed font-normal text-muted-foreground">
