@@ -54,42 +54,6 @@ export function AppSidebar({ pathname, onAddProperty }: AppSidebarProps) {
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarMenuItem className="flex items-center gap-2">
-            {onAddProperty ? (
-              <SidebarMenuButton
-                onClick={onAddProperty}
-                className="min-w-8 bg-neutral-100 text-neutral-950 duration-200 ease-linear hover:bg-neutral-200 active:bg-neutral-300 font-medium cursor-pointer"
-                tooltip="Add Property"
-              >
-                <PlusIcon className="size-4" />
-                <span>Add Property</span>
-              </SidebarMenuButton>
-            ) : (
-              <SidebarMenuButton
-                render={<Link href="/admin/properties/new" />}
-                className="min-w-8 bg-neutral-100 text-neutral-950 duration-200 ease-linear hover:bg-neutral-200 active:bg-neutral-300 font-medium cursor-pointer"
-                tooltip="Add Property"
-              >
-                <PlusIcon className="size-4" />
-                <span>Add Property</span>
-              </SidebarMenuButton>
-            )}
-            <Link
-              href="/properties"
-              aria-label="View Catalog"
-              className={cn(
-                buttonVariants({ variant: "outline", size: "icon" }),
-                "size-8 group-data-[collapsible=icon]:opacity-0 border-neutral-800"
-              )}
-              title="Public Catalog"
-            >
-              <CompassIcon className="size-4 text-neutral-400" />
-              <span className="sr-only">View Catalog</span>
-            </Link>
-          </SidebarMenuItem>
-        </SidebarGroup>
-
         {navGroups.map((group, index) => (
           <NavGroup
             key={`sidebar-group-${index}`}
@@ -106,7 +70,7 @@ export function AppSidebar({ pathname, onAddProperty }: AppSidebarProps) {
               onClick={handleLogout}
               disabled={isLoggingOut}
               tooltip="Log out"
-              className="text-neutral-400 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer w-full flex items-center gap-2"
+              className="flex w-full cursor-pointer items-center gap-2 text-neutral-400 transition-colors hover:bg-red-500/10 hover:text-red-400"
             >
               <LogOut className="size-4 shrink-0 text-red-400/90" />
               <span>{isLoggingOut ? "Logging out..." : "Log out"}</span>
