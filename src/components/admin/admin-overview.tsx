@@ -70,16 +70,6 @@ export function AdminOverview() {
                 <Building2 className="size-7 shrink-0 text-amber-400" />
                 Dashboard
               </h1>
-              <Badge
-                variant="outline"
-                className={
-                  isLiveSupabase
-                    ? "border-emerald-500/30 text-emerald-400 text-xs"
-                    : "border-amber-500/30 text-amber-400 text-xs"
-                }
-              >
-                {isLiveSupabase ? "Supabase Live" : "Local Demo Store"}
-              </Badge>
             </div>
           </div>
 

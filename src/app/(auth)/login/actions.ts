@@ -11,19 +11,8 @@ export async function loginAction(credentials: {
   userId: string;
   userPassword: string;
 }): Promise<LoginResult> {
-  const envUserId = (
-    process.env.USERID ||
-    process.env.USER_ID ||
-    process.env.USERNAME ||
-    "admin"
-  ).trim();
-
-  const envUserPassword = (
-    process.env.USERPASSWORD ||
-    process.env.USER_PASSWORD ||
-    process.env.PASSWORD ||
-    "password123"
-  ).trim();
+  const envUserId = (process.env.USERID || "admin").trim();
+  const envUserPassword = (process.env.USERPASSWORD || "password123").trim();
 
   const inputUserId = (credentials.userId || "").trim();
   const inputUserPassword = (credentials.userPassword || "").trim();

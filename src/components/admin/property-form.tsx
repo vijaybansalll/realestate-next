@@ -61,11 +61,8 @@ const DEFAULT_NEW_PROPERTY: Partial<Property> = {
   homeAreaSqM: 450,
   landAreaSqM: 1200,
   size: "450 m² (4,844 sq ft)",
-  image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
-  images: [
-    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
-  ],
+  image: "",
+  images: [],
   isLuxury: true,
   featured: false,
   description:
@@ -562,7 +559,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
               </div>
 
               {/* Thumbnails Gallery Grid */}
-              {currentImages.length > 0 && (
+              {currentImages.length > 0 ? (
                 <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-4 pt-2">
                   {currentImages.map((imgUrl, index) => {
                     const isCover = index === 0 || imgUrl === formData.image;
@@ -623,6 +620,12 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                       </div>
                     );
                   })}
+                </div>
+              ) : (
+                <div className="rounded-xl border border-dashed border-neutral-800 bg-neutral-950/40 p-5 text-center">
+                  <p className="text-xs text-neutral-400">
+                    No images uploaded yet. Browse files above or paste an image URL.
+                  </p>
                 </div>
               )}
             </CardContent>
