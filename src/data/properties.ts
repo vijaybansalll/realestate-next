@@ -671,7 +671,12 @@ export const ALL_PROPERTIES: Property[] = [
   },
 ];
 
-// Re-export FEATURED_PROPERTIES for carousel backward compatibility
-export const FEATURED_PROPERTIES: Property[] = ALL_PROPERTIES.filter(
-  (p) => p.featured
-);
+// Latest Added Properties from ALL_PROPERTIES (newest first based on numeric ID / insertion order)
+export const LATEST_PROPERTIES: Property[] = [...ALL_PROPERTIES].sort((a, b) => {
+  const numA = parseInt(a.id.replace(/\D/g, ""), 10) || 0;
+  const numB = parseInt(b.id.replace(/\D/g, ""), 10) || 0;
+  return numB - numA;
+});
+
+// Re-export FEATURED_PROPERTIES pointing to the latest added properties
+export const FEATURED_PROPERTIES: Property[] = LATEST_PROPERTIES;

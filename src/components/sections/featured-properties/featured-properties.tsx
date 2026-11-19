@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,10 +10,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Bed, Bath, Car, Maximize2 } from "lucide-react";
 import { FEATURED_PROPERTIES } from "@/data";
 import type { Property } from "@/types";
-import { PropertyImageCarousel } from "@/components/properties";
+import { PropertyCard, PropertyInquiryModal } from "@/components/properties";
 
 interface FeaturedPropertiesProps {
   properties?: Property[];
@@ -21,6 +21,10 @@ interface FeaturedPropertiesProps {
 export function FeaturedProperties({
   properties = FEATURED_PROPERTIES,
 }: FeaturedPropertiesProps) {
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(
+    null
+  );
+
   return (
     <section
       id="residences"
@@ -43,9 +47,9 @@ export function FeaturedProperties({
           className="max-sm:hidden"
           size="sm"
           variant="secondary"
-          render={<Link href="#contact" />}
+          render={<Link href="/properties" />}
         >
-          Inquire on Estates
+          View more
         </Button>
       </div>
 
@@ -56,65 +60,13 @@ export function FeaturedProperties({
               className="basis-[88%] sm:basis-1/2 lg:basis-1/3"
               key={property.id}
             >
-              <div className="p-1">
-                <div className="group overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-xs transition hover:shadow-md">
-                  {/* Property Image Carousel */}
-                  <PropertyImageCarousel
-                    images={
-                      property.images && property.images.length > 0
-                        ? property.images
-                        : [property.image]
-                    }
-                    alt={property.title}
-                    aspectRatio="aspect-[4/3]"
-                    autoPlay={true}
-                    enableDrag={false}
-                    dotsClassName="bottom-3"
-                    sizes="(max-width: 640px) 88vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-
-                  {/* Property Info */}
-                  <div className="p-3 sm:p-3.5">
-                    {/* Title */}
-                    <h3
-                      className="truncate text-sm font-medium tracking-tight text-foreground sm:text-base"
-                      title={property.title}
-                    >
-                      {property.title}
-                    </h3>
-
-                    {/* Property Size */}
-                    <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <Maximize2 className="size-3.5" />
-                      <span>{property.size}</span>
-                    </div>
-
-                    {/* Stats: Bedroom, Bathroom, Car Garage */}
-                    <div className="mt-3 flex items-center justify-between border-t border-border/80 pt-2.5 text-[11px] text-muted-foreground sm:text-xs">
-                      <div
-                        className="flex items-center gap-1"
-                        title={`${property.bedrooms} Bedrooms`}
-                      >
-                        <Bed className="size-3.5 text-muted-foreground" />
-                        <span>{property.bedrooms} Beds</span>
-                      </div>
-                      <div
-                        className="flex items-center gap-1"
-                        title={`${property.bathrooms} Bathrooms`}
-                      >
-                        <Bath className="size-3.5 text-muted-foreground" />
-                        <span>{property.bathrooms} Baths</span>
-                      </div>
-                      <div
-                        className="flex items-center gap-1"
-                        title={`${property.garage} Car Garage`}
-                      >
-                        <Car className="size-3.5 text-muted-foreground" />
-                        <span>{property.garage} Garage</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div className="h-full p-1">
+                <PropertyCard
+                  property={property}
+                  onInquire={(prop) => setSelectedProperty(prop)}
+                  enableImageDrag={false}
+                  className="h-full"
+                />
               </div>
             </CarouselItem>
           ))}
@@ -129,12 +81,18 @@ export function FeaturedProperties({
             className="sm:hidden"
             size="sm"
             variant="secondary"
-            render={<Link href="#contact" />}
+            render={<Link href="/properties" />}
           >
-            Inquire on Estates
+            View more
           </Button>
         </div>
       </Carousel>
+
+      {/* Property Inquiry Sheet Modal */}
+      <PropertyInquiryModal
+        property={selectedProperty}
+        onClose={() => setSelectedProperty(null)}
+      />
     </section>
   );
 }

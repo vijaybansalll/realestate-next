@@ -7,7 +7,6 @@ import {
   ArrowLeft,
   Calendar,
   Share2,
-  Heart,
   ShieldCheck,
   Phone,
   Mail,

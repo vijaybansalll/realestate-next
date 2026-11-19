@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import {
   Bed,
@@ -9,7 +9,6 @@ import {
   MapPin,
   Sparkles,
   Layers,
-  Heart,
   ArrowUpRight,
 } from "lucide-react";
 import type { Property } from "@/types";
@@ -21,15 +20,15 @@ interface PropertyCardProps {
   property: Property;
   onInquire?: (property: Property) => void;
   className?: string;
+  enableImageDrag?: boolean;
 }
 
 export function PropertyCard({
   property,
   onInquire,
   className,
+  enableImageDrag = true,
 }: PropertyCardProps) {
-  const [isFavorite, setIsFavorite] = useState(false);
-
   // Normalize image list: support multiple images with fallback to property.image
   const images = useMemo(() => {
     if (property.images && property.images.length > 0) {
@@ -64,11 +63,11 @@ export function PropertyCard({
         showArrows={true}
         showDots={true}
         showCounter={true}
-        counterClassName="top-3 right-12"
-        enableDrag={true}
+        counterClassName="top-3 right-3"
+        enableDrag={enableImageDrag}
         dotsClassName="bottom-3"
       >
-        {/* Top Badges & Actions */}
+        {/* Top Badges */}
         <div className="pointer-events-none absolute inset-x-3 top-3 z-10 flex items-center justify-between">
           <div className="flex flex-wrap items-center gap-1.5">
             <span
@@ -89,26 +88,6 @@ export function PropertyCard({
               </span>
             )}
           </div>
-
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setIsFavorite(!isFavorite);
-            }}
-            aria-label={
-              isFavorite ? "Remove from favorites" : "Save to favorites"
-            }
-            className="pointer-events-auto flex size-7 items-center justify-center rounded-full border border-neutral-700/60 bg-neutral-950/75 text-neutral-200 shadow-sm backdrop-blur-md transition-all hover:scale-105 hover:border-rose-500/60 hover:bg-neutral-900 focus-visible:outline-none"
-          >
-            <Heart
-              className={cn(
-                "size-3.5 transition-colors",
-                isFavorite ? "fill-rose-500 text-rose-500" : "text-neutral-300"
-              )}
-            />
-          </button>
         </div>
 
         {/* Bottom Price Tag inside image */}
