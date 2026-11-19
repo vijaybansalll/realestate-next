@@ -63,18 +63,19 @@ export function AdminOverview() {
       {/* Executive Command Header */}
       <div className="relative">
         <div className="pointer-events-none absolute top-0 right-0 -mt-12 -mr-12 h-64 w-64 rounded-full bg-amber-500/5 blur-3xl" />
-        <div className="relative flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-3">
-              <h1 className="flex items-center gap-3 text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl dark:text-neutral-100">
-                <Building2 className="size-7 shrink-0 text-amber-500 dark:text-amber-400" />
-                Dashboard
-              </h1>
-            </div>
+        <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="space-y-1">
+            <h1 className="flex items-center gap-2.5 text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl dark:text-neutral-100">
+              <Building2 className="size-6 sm:size-7 shrink-0 text-amber-500 dark:text-amber-400" />
+              Dashboard
+            </h1>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400">
+              Executive overview of portfolio metrics and active property listings.
+            </p>
           </div>
 
           {/* Quick Route Shortcuts */}
-          <div className="flex shrink-0 flex-wrap items-center gap-2.5">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 w-full sm:w-auto">
             <Link
               href="/admin/properties"
               className={cn(
@@ -83,7 +84,7 @@ export function AdminOverview() {
               )}
             >
               <Layers className="size-3.5 text-neutral-500 dark:text-neutral-400" />
-              Properties Directory
+              Properties
             </Link>
 
             <Link
@@ -102,7 +103,7 @@ export function AdminOverview() {
               href="/admin/properties/new"
               className={cn(
                 buttonVariants({ variant: "default", size: "sm" }),
-                "gap-1.5 bg-amber-500 text-xs font-semibold text-neutral-950 shadow-md shadow-amber-500/10 transition-all hover:bg-amber-400 dark:bg-amber-400 dark:hover:bg-amber-300"
+                "col-span-2 sm:col-span-1 gap-1.5 bg-amber-500 text-xs font-semibold text-neutral-950 shadow-md shadow-amber-500/10 transition-all hover:bg-amber-400 dark:bg-amber-400 dark:hover:bg-amber-300"
               )}
             >
               <Plus className="size-4" />
@@ -119,7 +120,7 @@ export function AdminOverview() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Left: Recent Properties Preview Table (2 cols) */}
         <Card className="flex flex-col justify-between border-neutral-200 bg-white shadow-md dark:border-neutral-800/80 dark:bg-neutral-900/50 dark:shadow-xl lg:col-span-2">
-          <CardHeader className="flex flex-row items-center justify-between border-b border-neutral-200 pb-3 dark:border-neutral-800/60">
+          <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-neutral-200 pb-3.5 dark:border-neutral-800/60">
             <div>
               <CardTitle className="flex items-center gap-2 text-base font-semibold text-neutral-900 dark:text-neutral-100">
                 <Layers className="size-4 text-amber-500 dark:text-amber-400" />
@@ -133,7 +134,7 @@ export function AdminOverview() {
               href="/admin/properties"
               className={cn(
                 buttonVariants({ variant: "ghost", size: "sm" }),
-                "gap-1 text-xs text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800/40 dark:hover:text-amber-400"
+                "self-start sm:self-auto gap-1 text-xs text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800/40 dark:hover:text-amber-400"
               )}
             >
               View Directory ({allProperties.length})
@@ -142,7 +143,8 @@ export function AdminOverview() {
           </CardHeader>
 
           <CardContent className="flex-1 p-0">
-            <div className="overflow-x-auto">
+            {/* Desktop Table View (md and above) */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead className="border-b border-neutral-200 bg-neutral-50 text-[11px] font-semibold tracking-wider text-neutral-600 uppercase dark:border-neutral-800/60 dark:bg-neutral-950/60 dark:text-neutral-400">
                   <tr>
@@ -260,9 +262,93 @@ export function AdminOverview() {
                 </tbody>
               </table>
             </div>
+
+            {/* Mobile Card List View (<md) */}
+            <div className="block md:hidden divide-y divide-neutral-200 dark:divide-neutral-800/60">
+              {recentProperties.length === 0 ? (
+                <div className="p-6 text-center">
+                  <div className="mx-auto flex size-12 items-center justify-center rounded-full border border-neutral-200 bg-neutral-100 text-amber-500 dark:border-neutral-800 dark:bg-neutral-950 dark:text-amber-400/80 mb-2">
+                    <Building2 className="size-6" />
+                  </div>
+                  <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-200">
+                    No Estates in Portfolio
+                  </p>
+                  <Link
+                    href="/admin/properties/new"
+                    className={cn(
+                      buttonVariants({ variant: "default", size: "sm" }),
+                      "mt-3 gap-1.5 bg-amber-500 text-xs font-semibold text-neutral-950 hover:bg-amber-400 dark:bg-amber-400"
+                    )}
+                  >
+                    <Plus className="size-3.5" /> Add First Estate
+                  </Link>
+                </div>
+              ) : (
+                recentProperties.map((prop) => (
+                  <div key={prop.id} className="p-3.5 space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-950">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={
+                            (Array.isArray(prop.images) && prop.images[0]) ||
+                            prop.image ||
+                            "/images/canadian-wooden-house.jpg"
+                          }
+                          alt={prop.title}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5">
+                          <span className="truncate text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                            {prop.title}
+                          </span>
+                        </div>
+                        <p className="truncate text-xs text-neutral-500 dark:text-neutral-400 flex items-center gap-1 mt-0.5">
+                          <MapPin className="size-3 shrink-0" />
+                          <span className="truncate">{prop.location}</span>
+                        </p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <Badge
+                            variant="outline"
+                            className={cn(
+                              "text-[9px] font-semibold tracking-wider uppercase px-1.5 py-0",
+                              prop.purpose === "buy"
+                                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                                : "border-blue-500/30 bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                            )}
+                          >
+                            {prop.purpose === "buy" ? "For Sale" : "For Lease"}
+                          </Badge>
+                          <span className="text-xs font-bold text-amber-600 dark:text-amber-400">
+                            {prop.formattedPrice || `$${Number(prop.price).toLocaleString()}`}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-1 border-t border-neutral-100 dark:border-neutral-800/40">
+                      <span className="text-[11px] text-neutral-500">
+                        {prop.bhk ? `${prop.bhk} BHK • ` : ""}{prop.size || "Luxury Estate"}
+                      </span>
+                      <Link
+                        href={`/admin/properties/${prop.id}/edit`}
+                        className={cn(
+                          buttonVariants({ variant: "outline", size: "xs" }),
+                          "h-8 px-3 text-xs border-neutral-200 dark:border-neutral-800"
+                        )}
+                      >
+                        Edit Listing
+                      </Link>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
           </CardContent>
 
-          <div className="flex items-center justify-between border-t border-neutral-200 bg-neutral-50/60 p-3.5 text-xs text-neutral-600 dark:border-neutral-800/80 dark:bg-neutral-950/40 dark:text-neutral-400">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-t border-neutral-200 bg-neutral-50/60 p-3 sm:p-3.5 text-xs text-neutral-600 dark:border-neutral-800/80 dark:bg-neutral-950/40 dark:text-neutral-400">
             <span>
               Showing {recentProperties.length} of {allProperties.length} total
               estates in portfolio

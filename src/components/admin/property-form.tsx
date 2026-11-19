@@ -372,29 +372,29 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
             <ArrowLeftIcon className="size-3.5" />
             Back to Properties Directory
           </Link>
-          <div className="flex items-center gap-2.5">
-            <h1 className="text-2xl font-bold tracking-tight text-neutral-900 flex items-center gap-2 dark:text-neutral-100">
-              <BuildingIcon className="size-6 text-amber-500 dark:text-amber-400" />
-              {mode === "edit" ? `Edit Listing: ${formData.title || "Estate"}` : "Add New Property Listing"}
+          <div className="flex flex-wrap items-center gap-2">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-neutral-900 flex items-center gap-2 dark:text-neutral-100">
+              <BuildingIcon className="size-5 sm:size-6 text-amber-500 dark:text-amber-400 shrink-0" />
+              <span className="line-clamp-1">{mode === "edit" ? `Edit Listing: ${formData.title || "Estate"}` : "Add New Property Listing"}</span>
             </h1>
             <Badge
               variant="outline"
-              className="border-amber-500/30 text-amber-700 text-xs dark:border-amber-400/30 dark:text-amber-300"
+              className="border-amber-500/30 text-amber-700 text-[10px] sm:text-xs dark:border-amber-400/30 dark:text-amber-300"
             >
-              {mode === "edit" ? "Edit Mode" : "New Listing Page"}
+              {mode === "edit" ? "Edit Mode" : "New Listing"}
             </Badge>
           </div>
           <p className="text-xs text-neutral-600 mt-1 dark:text-neutral-400">
-            Fill in the architectural specifications, upload multiple photos, and publish to the live catalog.
+            Fill in architectural specifications, upload multiple photos, and publish to catalog.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto">
           <Link
             href="/admin/properties"
             className={cn(
               buttonVariants({ variant: "outline", size: "sm" }),
-              "border-neutral-200 bg-white text-xs text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:text-white"
+              "border-neutral-200 bg-white text-xs text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:text-white justify-center h-9"
             )}
           >
             Cancel
@@ -403,7 +403,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
           <Button
             type="submit"
             disabled={isSubmitting || isUploading}
-            className="bg-amber-500 text-neutral-950 font-semibold hover:bg-amber-400 transition-colors cursor-pointer text-xs gap-1.5 dark:bg-amber-400 dark:hover:bg-amber-300"
+            className="bg-amber-500 text-neutral-950 font-semibold hover:bg-amber-400 transition-colors cursor-pointer text-xs gap-1.5 dark:bg-amber-400 dark:hover:bg-amber-300 justify-center h-9"
           >
             {isSubmitting ? (
               <>
@@ -471,7 +471,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
           {/* SECTION 1: MULTI-IMAGE GALLERY UPLOADER */}
           <Card className="border-neutral-200 bg-white shadow-md dark:border-neutral-800 dark:bg-neutral-900/60 dark:shadow-xl">
             <CardHeader className="pb-3 border-b border-neutral-200 dark:border-neutral-800/80">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div>
                   <CardTitle className="text-base font-semibold text-neutral-900 flex items-center gap-2 dark:text-neutral-100">
                     <ImageIcon className="size-4 text-amber-500 dark:text-amber-400" />
@@ -481,7 +481,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                     Upload multiple high-resolution photos. The primary cover photo will be featured across the website.
                   </CardDescription>
                 </div>
-                <Badge variant="outline" className="border-neutral-300 text-neutral-700 text-xs dark:border-neutral-700 dark:text-neutral-300">
+                <Badge variant="outline" className="self-start sm:self-auto border-neutral-300 text-neutral-700 text-xs dark:border-neutral-700 dark:text-neutral-300">
                   {currentImages.length} {currentImages.length === 1 ? "Image" : "Images"}
                 </Badge>
               </div>
@@ -495,7 +495,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
-                className={`relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 text-center transition-all cursor-pointer ${
+                className={`relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-5 sm:p-8 text-center transition-all cursor-pointer ${
                   dragActive
                     ? "border-amber-500 bg-amber-500/10 dark:border-amber-400 dark:bg-amber-400/10"
                     : "border-neutral-200 bg-neutral-50/70 hover:border-neutral-300 hover:bg-neutral-100/50 dark:border-neutral-800 dark:bg-neutral-950/70 dark:hover:border-neutral-700 dark:hover:bg-neutral-950"
@@ -517,24 +517,24 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                   </div>
                 ) : (
                   <div className="flex flex-col items-center gap-2">
-                    <div className="p-3.5 rounded-full bg-neutral-100 text-neutral-700 border border-neutral-200 dark:bg-neutral-900 dark:text-neutral-300 dark:border-neutral-800">
-                      <UploadCloudIcon className="size-7 text-amber-500 dark:text-amber-400" />
+                    <div className="p-3 sm:p-3.5 rounded-full bg-neutral-100 text-neutral-700 border border-neutral-200 dark:bg-neutral-900 dark:text-neutral-300 dark:border-neutral-800">
+                      <UploadCloudIcon className="size-6 sm:size-7 text-amber-500 dark:text-amber-400" />
                     </div>
                     <div>
                       <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-200">
-                        Click to browse multiple photos
+                        Click to browse photos
                       </span>{" "}
-                      <span className="text-sm text-neutral-500 dark:text-neutral-400">or drag and drop them here</span>
+                      <span className="text-sm text-neutral-500 dark:text-neutral-400">or drop here</span>
                     </div>
-                    <p className="text-xs text-neutral-500">
-                      Supports JPG, PNG, WEBP. Uploads directly to Supabase Storage bucket (`realestate-bucket`).
+                    <p className="text-xs text-neutral-500 max-w-sm">
+                      Supports JPG, PNG, WEBP. Uploads directly to Supabase Storage.
                     </p>
                   </div>
                 )}
               </div>
 
               {/* URL Input Bar */}
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                 <Input
                   value={urlInput}
                   onChange={(e) => setUrlInput(e.target.value)}
@@ -545,14 +545,14 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                     }
                   }}
                   placeholder="Or paste an image URL (e.g. https://images.unsplash.com/...)"
-                  className="text-xs bg-white border-neutral-200 text-neutral-900 placeholder:text-neutral-400 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100 dark:placeholder:text-neutral-500"
+                  className="text-xs bg-white border-neutral-200 text-neutral-900 placeholder:text-neutral-400 dark:bg-neutral-950 dark:border-neutral-800 dark:text-neutral-100 dark:placeholder:text-neutral-500 h-9"
                 />
                 <Button
                   type="button"
                   onClick={handleAddUrl}
                   size="sm"
                   variant="outline"
-                  className="border-neutral-200 text-xs text-neutral-700 shrink-0 hover:bg-neutral-100 cursor-pointer dark:border-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-800"
+                  className="border-neutral-200 text-xs text-neutral-700 shrink-0 hover:bg-neutral-100 cursor-pointer dark:border-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-800 h-9 justify-center"
                 >
                   <PlusIcon className="size-3.5 mr-1" /> Add URL
                 </Button>
@@ -560,7 +560,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
               {/* Thumbnails Gallery Grid */}
               {currentImages.length > 0 ? (
-                <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-4 pt-2">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 pt-2">
                   {currentImages.map((imgUrl, index) => {
                     const isCover = index === 0 || imgUrl === formData.image;
                     return (
@@ -588,8 +588,8 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                           </div>
                         )}
 
-                        {/* Hover Overlay with Action Buttons */}
-                        <div className="absolute inset-0 z-10 flex flex-col justify-between p-2.5 bg-gradient-to-t from-black/85 via-black/20 to-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {/* Action Overlay: visible on mobile, hover on desktop */}
+                        <div className="absolute inset-0 z-10 flex flex-col justify-between p-2 bg-gradient-to-t from-black/85 via-black/20 to-black/50 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                           <div className="flex justify-end">
                             <button
                               type="button"
@@ -597,8 +597,9 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                                 e.stopPropagation();
                                 handleRemoveImage(index);
                               }}
-                              className="p-1 rounded-full bg-rose-500 hover:bg-rose-600 text-white transition-colors cursor-pointer"
+                              className="size-7 sm:size-6 flex items-center justify-center rounded-full bg-rose-500 hover:bg-rose-600 text-white shadow-md transition-colors cursor-pointer"
                               title="Delete photo"
+                              aria-label="Delete photo"
                             >
                               <XIcon className="size-3.5" />
                             </button>
@@ -611,9 +612,9 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                                 e.stopPropagation();
                                 handleSetCover(index);
                               }}
-                              className="w-full py-1.5 text-[11px] font-semibold bg-neutral-900/90 hover:bg-amber-400 hover:text-neutral-950 text-neutral-200 rounded-md transition-colors text-center cursor-pointer shadow-md"
+                              className="w-full py-1 text-[10px] sm:text-[11px] font-semibold bg-neutral-900/90 hover:bg-amber-400 hover:text-neutral-950 text-neutral-200 rounded-md transition-colors text-center cursor-pointer shadow-md"
                             >
-                              Set as Cover Photo
+                              Set as Cover
                             </button>
                           )}
                         </div>
@@ -989,12 +990,12 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
       </div>
 
       {/* Bottom Action Footer */}
-      <div className="flex items-center justify-between border-t border-neutral-200 pt-6 dark:border-neutral-800">
+      <div className="flex flex-col-reverse sm:flex-row gap-3 sm:items-center sm:justify-between border-t border-neutral-200 pt-5 dark:border-neutral-800">
         <Link
           href="/admin/properties"
           className={cn(
             buttonVariants({ variant: "outline", size: "sm" }),
-            "border-neutral-200 bg-white text-xs text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:text-neutral-300 dark:hover:text-white"
+            "border-neutral-200 bg-white text-xs text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:text-white justify-center h-10 sm:h-9 w-full sm:w-auto"
           )}
         >
           ← Cancel and Return
@@ -1003,7 +1004,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
         <Button
           type="submit"
           disabled={isSubmitting || isUploading}
-          className="bg-amber-500 text-neutral-950 font-semibold hover:bg-amber-400 transition-colors cursor-pointer text-xs px-6 py-2 dark:bg-amber-400 dark:hover:bg-amber-300"
+          className="bg-amber-500 text-neutral-950 font-semibold hover:bg-amber-400 transition-colors cursor-pointer text-xs px-6 h-10 sm:h-9 dark:bg-amber-400 dark:hover:bg-amber-300 justify-center w-full sm:w-auto"
         >
           {isSubmitting
             ? "Saving to Supabase..."

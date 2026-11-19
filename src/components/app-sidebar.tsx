@@ -15,6 +15,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { NavGroup } from "@/components/nav-group";
 import { navGroups } from "@/components/app-shared";
@@ -28,11 +29,21 @@ interface AppSidebarProps {
 
 export function AppSidebar({ pathname, onAddProperty }: AppSidebarProps) {
   const router = useRouter();
+  const { isMobile, setOpenMobile } = useSidebar();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLinkClick = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
 
   const handleLogout = async () => {
     try {
       setIsLoggingOut(true);
+      if (isMobile) {
+        setOpenMobile(false);
+      }
       await logoutAction();
       router.push("/login");
       router.refresh();
@@ -45,7 +56,15 @@ export function AppSidebar({ pathname, onAddProperty }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon" variant="floating">
       <SidebarHeader className="h-14 justify-center">
-        <SidebarMenuButton render={<Link href="/admin" />}>
+        <SidebarMenuButton
+          render={
+            <Link
+              href="/admin"
+              onClick={handleLinkClick}
+              className="flex items-center gap-2"
+            />
+          }
+        >
           <LogoIcon className="size-5 text-amber-500 dark:text-amber-400" />
           <span className="font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
             Estate Admin

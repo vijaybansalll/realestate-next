@@ -19,9 +19,9 @@ function AppShellInner({
   return (
     <SidebarProvider>
       <AppSidebar pathname={activePath} />
-      <SidebarInset className="p-4 md:p-6 bg-neutral-100/70 text-neutral-900 transition-colors duration-200 dark:bg-neutral-950 dark:text-neutral-100 min-h-screen">
+      <SidebarInset className="p-3 sm:p-4 md:p-6 bg-neutral-100/70 text-neutral-900 transition-colors duration-200 dark:bg-neutral-950 dark:text-neutral-100 min-h-screen max-w-full overflow-x-hidden">
         <AppHeader pathname={activePath} />
-        <div className="flex flex-1 flex-col gap-6">{children}</div>
+        <div className="flex flex-1 flex-col gap-4 sm:gap-6">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );

@@ -27,17 +27,17 @@ export function AppHeader({ pathname }: { pathname?: string }) {
   }
 
   return (
-    <header className={cn("mb-6 flex items-center justify-between gap-2 px-2")}>
-      <div className="flex items-center gap-3">
+    <header className={cn("mb-4 sm:mb-6 flex items-center justify-between gap-2 px-1 sm:px-2")}>
+      <div className="flex min-w-0 items-center gap-2 sm:gap-3">
         <CustomSidebarTrigger />
         <Separator
-          className="mr-2 h-4 data-[orientation=vertical]:self-center"
+          className="h-4 data-[orientation=vertical]:self-center opacity-60"
           orientation="vertical"
         />
         <AppBreadcrumbs page={activeItem} />
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3 shrink-0">
         <ThemeToggle />
       </div>
     </header>

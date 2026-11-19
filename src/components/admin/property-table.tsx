@@ -74,17 +74,17 @@ export function PropertyTable({
       <CardContent className="space-y-4">
         {/* Filters and Search Bar */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="relative max-w-md flex-1">
+          <div className="relative w-full sm:max-w-md">
             <SearchIcon className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400 dark:text-neutral-500" />
             <Input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by title, address, or location..."
-              className="border-neutral-200 bg-neutral-50 pl-9 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-amber-500/80 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus-visible:border-amber-400/80"
+              className="border-neutral-200 bg-neutral-50 pl-9 text-xs sm:text-sm text-neutral-900 placeholder:text-neutral-400 focus-visible:border-amber-500/80 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus-visible:border-amber-400/80"
             />
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 overflow-x-auto pb-1 max-w-full">
             {/* Purpose Filter Pills */}
             <div className="inline-flex rounded-lg border border-neutral-200 bg-neutral-100 p-1 dark:border-neutral-800 dark:bg-neutral-950">
               {["all", "buy", "rent"].map((purpose) => (
@@ -92,7 +92,7 @@ export function PropertyTable({
                   type="button"
                   key={purpose}
                   onClick={() => setPurposeFilter(purpose)}
-                  className={`cursor-pointer rounded-md px-3 py-1 text-xs font-medium capitalize transition-colors ${
+                  className={`cursor-pointer rounded-md px-2.5 sm:px-3 py-1 text-xs font-medium capitalize transition-colors ${
                     purposeFilter === purpose
                       ? "bg-white text-neutral-900 shadow-xs dark:bg-neutral-800 dark:text-neutral-100"
                       : "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200"
@@ -114,7 +114,7 @@ export function PropertyTable({
                   type="button"
                   key={t}
                   onClick={() => setTypeFilter(t)}
-                  className={`cursor-pointer rounded-md px-2.5 py-1 text-xs font-medium capitalize transition-colors ${
+                  className={`cursor-pointer rounded-md px-2 sm:px-2.5 py-1 text-xs font-medium capitalize transition-colors ${
                     typeFilter === t
                       ? "bg-white text-neutral-900 shadow-xs dark:bg-neutral-800 dark:text-neutral-100"
                       : "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200"
@@ -155,11 +155,11 @@ export function PropertyTable({
             {filteredProperties.map((property) => (
               <div
                 key={property.id}
-                className="flex flex-col gap-4 p-4 transition-colors hover:bg-neutral-100/60 sm:flex-row sm:items-center sm:justify-between dark:hover:bg-neutral-900/40"
+                className="flex flex-col gap-3 p-3.5 transition-colors hover:bg-neutral-100/60 sm:p-4 sm:flex-row sm:items-center sm:justify-between dark:hover:bg-neutral-900/40"
               >
                 {/* Left: Thumbnail & Details */}
-                <div className="flex min-w-0 items-center gap-4">
-                  <div className="relative size-16 shrink-0 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900">
+                <div className="flex min-w-0 items-start sm:items-center gap-3 sm:gap-4">
+                  <div className="relative size-16 sm:size-20 shrink-0 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={
@@ -180,49 +180,50 @@ export function PropertyTable({
                       )}
                   </div>
 
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h4 className="truncate text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                      <h4 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 line-clamp-1">
                         {property.title}
                       </h4>
-                      <Badge
-                        variant="secondary"
-                        className="bg-neutral-200 text-[10px] font-semibold tracking-wider text-neutral-700 uppercase dark:bg-neutral-800 dark:text-neutral-300"
-                      >
-                        {property.type}
-                      </Badge>
-                      <Badge
-                        variant="outline"
-                        className={`text-[10px] font-semibold tracking-wider uppercase ${
-                          property.purpose === "buy"
-                            ? "border-emerald-500/30 text-emerald-600 dark:text-emerald-400"
-                            : "border-sky-500/30 text-sky-600 dark:text-sky-400"
-                        }`}
-                      >
-                        {property.purpose === "buy" ? "For Sale" : "For Lease"}
-                      </Badge>
-                      {property.isLuxury && (
+                      <div className="flex flex-wrap items-center gap-1">
                         <Badge
                           variant="secondary"
-                          className="flex items-center gap-1 border-amber-500/20 bg-amber-500/10 text-[10px] text-amber-700 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-300"
+                          className="bg-neutral-200 text-[9px] sm:text-[10px] font-semibold tracking-wider text-neutral-700 uppercase px-1.5 py-0 dark:bg-neutral-800 dark:text-neutral-300"
                         >
-                          <SparklesIcon className="size-2.5" /> Luxury
+                          {property.type}
                         </Badge>
-                      )}
+                        <Badge
+                          variant="outline"
+                          className={`text-[9px] sm:text-[10px] font-semibold tracking-wider uppercase px-1.5 py-0 ${
+                            property.purpose === "buy"
+                              ? "border-emerald-500/30 text-emerald-600 dark:text-emerald-400"
+                              : "border-sky-500/30 text-sky-600 dark:text-sky-400"
+                          }`}
+                        >
+                          {property.purpose === "buy" ? "For Sale" : "For Lease"}
+                        </Badge>
+                        {property.isLuxury && (
+                          <Badge
+                            variant="secondary"
+                            className="hidden sm:inline-flex items-center gap-1 border-amber-500/20 bg-amber-500/10 text-[9px] sm:text-[10px] text-amber-700 px-1.5 py-0 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-300"
+                          >
+                            <SparklesIcon className="size-2.5" /> Luxury
+                          </Badge>
+                        )}
+                      </div>
                     </div>
 
                     <p className="mt-0.5 truncate text-xs text-neutral-600 dark:text-neutral-400">
                       {property.location}
                     </p>
 
-                    <div className="mt-1 flex items-center gap-3 text-[11px] text-neutral-500">
+                    <div className="mt-1 flex flex-wrap items-center gap-2 sm:gap-3 text-[11px] text-neutral-500">
                       <span className="flex items-center gap-1">
                         <BedIcon className="size-3" /> {property.bedrooms} Beds
                       </span>
                       <span>•</span>
                       <span className="flex items-center gap-1">
-                        <BathIcon className="size-3" /> {property.bathrooms}{" "}
-                        Baths
+                        <BathIcon className="size-3" /> {property.bathrooms} Baths
                       </span>
                       <span>•</span>
                       <span className="flex items-center gap-1">
@@ -233,7 +234,7 @@ export function PropertyTable({
                 </div>
 
                 {/* Right: Price & Actions */}
-                <div className="flex shrink-0 items-center justify-between gap-4 border-t border-neutral-200 pt-2 sm:justify-end sm:border-t-0 sm:pt-0 dark:border-neutral-800/60">
+                <div className="flex shrink-0 items-center justify-between gap-3 border-t border-neutral-200/80 pt-2.5 sm:justify-end sm:border-t-0 sm:pt-0 dark:border-neutral-800/60">
                   <div className="text-left sm:text-right">
                     <div className="text-sm font-bold text-neutral-900 dark:text-neutral-100">
                       {property.formattedPrice ||
@@ -244,13 +245,14 @@ export function PropertyTable({
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1 sm:gap-1.5">
                     <Link
                       href={`/admin/properties/${property.id}/edit`}
-                      className="inline-flex size-8 items-center justify-center rounded-lg text-neutral-500 transition-colors hover:bg-neutral-200/70 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
+                      className="inline-flex size-9 sm:size-8 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-700 shadow-2xs hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white transition-colors"
                       title="Edit Property (Full Page)"
+                      aria-label="Edit Property"
                     >
-                      <PencilIcon className="size-3.5" />
+                      <PencilIcon className="size-4 sm:size-3.5" />
                     </Link>
 
                     <Button
@@ -258,19 +260,21 @@ export function PropertyTable({
                       variant="ghost"
                       onClick={() => handleDelete(property.id, property.title)}
                       disabled={deletingId === property.id}
-                      className="size-8 text-rose-500/80 hover:bg-rose-500/10 hover:text-rose-600 dark:text-rose-400/70 dark:hover:text-rose-400"
+                      className="size-9 sm:size-8 rounded-lg border border-transparent text-rose-500 hover:bg-rose-500/10 hover:text-rose-600 dark:text-rose-400 dark:hover:bg-rose-500/10 transition-colors"
                       title="Delete Property"
+                      aria-label="Delete Property"
                     >
-                      <Trash2Icon className="size-3.5" />
+                      <Trash2Icon className="size-4 sm:size-3.5" />
                     </Button>
 
                     <Link
                       href={`/properties/${property.id}`}
                       target="_blank"
-                      className="inline-flex size-8 items-center justify-center rounded-lg text-neutral-500 transition-colors hover:bg-neutral-200/70 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
+                      className="inline-flex size-9 sm:size-8 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-700 shadow-2xs hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white transition-colors"
                       title="View Public Listing"
+                      aria-label="View Public Listing"
                     >
-                      <ExternalLinkIcon className="size-3.5" />
+                      <ExternalLinkIcon className="size-4 sm:size-3.5" />
                     </Link>
                   </div>
                 </div>

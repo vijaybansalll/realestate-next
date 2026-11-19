@@ -74,28 +74,25 @@ export function LoginForm() {
 
   return (
     <div className="relative flex min-h-screen w-full items-center justify-center bg-neutral-50 font-sans text-neutral-900 transition-colors duration-200 dark:bg-neutral-950 dark:text-neutral-100">
-      {/* Back Arrow Button at the Top to go to Home Page */}
-      <div className="absolute top-6 left-6 z-20">
+      {/* Top Header Bar for Back to Home & Theme Toggle */}
+      <header className="absolute inset-x-0 top-0 z-20 flex items-center justify-between p-4 sm:p-6">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/80 px-4 py-2 text-sm font-medium text-neutral-700 shadow-sm backdrop-blur-md transition-colors hover:border-neutral-300 hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900/80 dark:text-neutral-300 dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white"
+          className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-neutral-200/80 bg-white/90 px-3.5 py-1.5 text-xs sm:text-sm font-medium text-neutral-700 shadow-xs backdrop-blur-md transition-colors hover:border-neutral-300 hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800/80 dark:bg-neutral-900/90 dark:text-neutral-300 dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white"
           aria-label="Back to home"
         >
-          <ArrowLeft className="size-4" />
+          <ArrowLeft className="size-3.5 sm:size-4" />
           <span>Home</span>
         </Link>
-      </div>
 
-      {/* Theme Toggle at the Top Right */}
-      <div className="absolute top-6 right-6 z-20">
         <ThemeToggle />
-      </div>
+      </header>
 
       <div className="flex min-h-screen w-full">
         {/* Left Side: Login Form Section */}
-        <div className="flex w-full flex-col items-center justify-center p-6 sm:p-12 lg:w-1/2">
-          <div className="relative flex w-full max-w-sm flex-col items-center p-8 outline-0 outline-border/40 outline-offset-0.5 sm:outline-2 dark:outline-border/80">
-            {/* Architectural Frame Accents */}
+        <div className="flex w-full flex-col items-center justify-center px-4 pt-20 pb-10 sm:p-12 lg:w-1/2">
+          <div className="relative flex w-full max-w-sm flex-col items-center rounded-2xl border border-neutral-200/80 bg-white/80 p-6 sm:p-8 shadow-xl backdrop-blur-md sm:border-transparent sm:bg-transparent sm:shadow-none sm:backdrop-blur-none sm:outline-2 outline-border/40 outline-offset-0.5 dark:border-neutral-800/80 dark:bg-neutral-900/70 sm:dark:bg-transparent dark:outline-border/80">
+            {/* Architectural Frame Accents (Desktop Only) */}
             <div className="absolute inset-x-0 top-0 w-[calc(100%+4rem)] -translate-x-8 border-t border-neutral-300 max-sm:hidden dark:border-neutral-800" />
             <div className="absolute inset-x-0 bottom-0 w-[calc(100%+4rem)] -translate-x-8 border-b border-neutral-300 max-sm:hidden dark:border-neutral-800" />
             <div className="absolute inset-y-0 left-0 h-[calc(100%+4rem)] -translate-y-8 border-s border-neutral-300 max-sm:hidden dark:border-neutral-800" />
@@ -110,9 +107,12 @@ export function LoginForm() {
             <Logo className="h-8 w-auto fill-current text-neutral-900 dark:text-neutral-100" />
 
             {/* 2. Login Title */}
-            <h1 className="mt-4 text-xl font-medium tracking-tight text-neutral-900 dark:text-neutral-100">
-              Login
+            <h1 className="mt-4 text-xl sm:text-2xl font-medium tracking-tight text-neutral-900 dark:text-neutral-100">
+              Admin Portal
             </h1>
+            <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400 text-center">
+              Sign in to manage luxury architectural properties
+            </p>
 
             {/* Login Form: ONLY User ID, User Password, Submit Button */}
             <form
@@ -125,10 +125,10 @@ export function LoginForm() {
                 name="userId"
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel>User ID</FieldLabel>
+                    <FieldLabel className="text-xs">User ID</FieldLabel>
                     <Input
                       aria-invalid={fieldState.invalid}
-                      className="w-full border-neutral-200 bg-white text-neutral-900 placeholder:text-neutral-400 focus-visible:border-amber-500/80 focus-visible:ring-amber-500/20 dark:border-neutral-800 dark:bg-neutral-900/60 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus-visible:border-amber-400/80 dark:focus-visible:ring-amber-400/20"
+                      className="w-full h-11 sm:h-10 text-sm border-neutral-200 bg-white text-neutral-900 placeholder:text-neutral-400 focus-visible:border-amber-500/80 focus-visible:ring-amber-500/20 dark:border-neutral-800 dark:bg-neutral-900/60 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus-visible:border-amber-400/80 dark:focus-visible:ring-amber-400/20"
                       placeholder="Enter user ID"
                       type="text"
                       autoComplete="username"
@@ -146,10 +146,10 @@ export function LoginForm() {
                 name="userPassword"
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel>User Password</FieldLabel>
+                    <FieldLabel className="text-xs">User Password</FieldLabel>
                     <Input
                       aria-invalid={fieldState.invalid}
-                      className="w-full border-neutral-200 bg-white text-neutral-900 placeholder:text-neutral-400 focus-visible:border-amber-500/80 focus-visible:ring-amber-500/20 dark:border-neutral-800 dark:bg-neutral-900/60 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus-visible:border-amber-400/80 dark:focus-visible:ring-amber-400/20"
+                      className="w-full h-11 sm:h-10 text-sm border-neutral-200 bg-white text-neutral-900 placeholder:text-neutral-400 focus-visible:border-amber-500/80 focus-visible:ring-amber-500/20 dark:border-neutral-800 dark:bg-neutral-900/60 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus-visible:border-amber-400/80 dark:focus-visible:ring-amber-400/20"
                       placeholder="Enter user password"
                       type="password"
                       autoComplete="current-password"
@@ -182,12 +182,19 @@ export function LoginForm() {
 
               {/* 5. Submit Button */}
               <Button
-                className="mt-6 w-full cursor-pointer bg-neutral-900 font-medium text-neutral-100 transition-colors hover:bg-neutral-800 disabled:opacity-50 dark:bg-neutral-100 dark:text-neutral-950 dark:hover:bg-neutral-200"
+                className="mt-6 w-full h-11 sm:h-10 cursor-pointer bg-neutral-900 font-semibold text-neutral-100 text-sm transition-colors hover:bg-neutral-800 disabled:opacity-50 dark:bg-neutral-100 dark:text-neutral-950 dark:hover:bg-neutral-200"
                 disabled={formState.isLoading}
                 type="submit"
               >
-                {formState.isLoading ? "Submitting..." : "Submit"}
+                {formState.isLoading ? "Signing in..." : "Sign in to Dashboard"}
               </Button>
+
+              {/* Sample credentials helper */}
+              <div className="pt-2 text-center">
+                <span className="text-[11px] text-neutral-500 dark:text-neutral-400">
+                  Demo access: <code className="rounded bg-neutral-100 px-1.5 py-0.5 font-mono text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">admin</code> / <code className="rounded bg-neutral-100 px-1.5 py-0.5 font-mono text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">password123</code>
+                </span>
+              </div>
             </form>
           </div>
         </div>

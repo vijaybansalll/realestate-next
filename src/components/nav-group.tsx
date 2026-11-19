@@ -15,6 +15,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import type { SidebarNavGroup } from "@/components/app-shared";
 import { ChevronRightIcon } from "lucide-react";
@@ -24,6 +25,14 @@ export function NavGroup({
   items,
   pathname,
 }: SidebarNavGroup & { pathname?: string }) {
+  const { isMobile, setOpenMobile } = useSidebar();
+
+  const handleLinkClick = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
+
   return (
     <SidebarGroup>
       {label && (
@@ -49,6 +58,7 @@ export function NavGroup({
                   render={
                     <Link
                       href={item.path || "#"}
+                      onClick={handleLinkClick}
                       className="transition-colors hover:text-neutral-900 dark:hover:text-neutral-100"
                     />
                   }
@@ -90,6 +100,7 @@ export function NavGroup({
                           render={
                             <Link
                               href={subItem.path || "#"}
+                              onClick={handleLinkClick}
                               className="transition-colors hover:text-neutral-900 dark:hover:text-neutral-100"
                             />
                           }

@@ -79,27 +79,26 @@ export default function PropertiesAdminPage() {
       )}
 
       {/* Header bar */}
-      <div className="flex flex-col gap-4 border-b border-neutral-200 pb-5 sm:flex-row sm:items-center sm:justify-between dark:border-neutral-800">
+      <div className="flex flex-col gap-3.5 border-b border-neutral-200 pb-4 sm:flex-row sm:items-center sm:justify-between dark:border-neutral-800">
         <div>
-          <div className="flex items-center gap-2.5">
-            <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
-              <BuildingIcon className="size-6 text-amber-500 dark:text-amber-400" />
-              Properties Management (CRUD)
+          <div className="flex items-center gap-2">
+            <h1 className="flex items-center gap-2 text-xl sm:text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
+              <BuildingIcon className="size-5 sm:size-6 text-amber-500 dark:text-amber-400" />
+              Properties Management
             </h1>
           </div>
           <p className="mt-1 text-xs text-neutral-600 dark:text-neutral-400">
-            Create new listings on a dedicated page with multiple image uploads,
-            update pricing, edit architectural details, and manage deletions.
+            Create listings, update pricing, edit architectural specs, and manage deletions.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           <Button
             size="icon"
             variant="outline"
             onClick={() => loadProperties(true)}
             disabled={isLoading}
-            className="size-9 cursor-pointer border-neutral-200 text-neutral-600 hover:text-neutral-900 dark:border-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-100"
+            className="size-9 shrink-0 cursor-pointer border-neutral-200 text-neutral-600 hover:text-neutral-900 dark:border-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-100"
             title="Refresh listings"
           >
             <RefreshCwIcon
@@ -111,11 +110,11 @@ export default function PropertiesAdminPage() {
             href="/admin/properties/new"
             className={cn(
               buttonVariants({ variant: "default", size: "sm" }),
-              "gap-1.5 bg-amber-500 text-xs font-semibold text-neutral-950 transition-colors hover:bg-amber-400 dark:bg-amber-400 dark:hover:bg-amber-300"
+              "flex-1 sm:flex-initial justify-center gap-1.5 bg-amber-500 text-xs font-semibold text-neutral-950 transition-colors hover:bg-amber-400 dark:bg-amber-400 dark:hover:bg-amber-300 h-9"
             )}
           >
-            <PlusIcon className="mr-1.5 size-4" />
-            Add New Property
+            <PlusIcon className="size-4" />
+            Add Property
           </Link>
         </div>
       </div>
