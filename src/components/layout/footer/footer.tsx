@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Logo } from "@/components/layout/logo";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -72,13 +73,13 @@ export function Footer() {
             <div className="col-span-2 sm:col-span-4 lg:col-span-4">
               <div className="flex animate-in flex-col gap-6 delay-100 duration-1000 ease-in-out fill-mode-both slide-in-from-bottom-10 fade-in">
                 {/* Brand Logo */}
-                <a
+                <Link
                   href="/"
                   className="flex items-center gap-2"
                   aria-label={siteConfig.name}
                 >
                   <Logo className="fill-current text-neutral-900 dark:text-neutral-100" />
-                </a>
+                </Link>
 
                 <p className="text-sm leading-relaxed font-normal text-muted-foreground">
                   Crafting exceptional architectural estates and bespoke living

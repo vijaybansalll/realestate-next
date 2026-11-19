@@ -41,7 +41,10 @@ export default function RootLayout({
         inter.variable
       )}
     >
-      <body className="min-h-screen overflow-x-clip bg-neutral-50 text-neutral-900 transition-colors duration-200 dark:bg-neutral-950 dark:text-neutral-100 font-sans">
+      <body
+        suppressHydrationWarning
+        className="min-h-screen overflow-x-clip bg-neutral-50 text-neutral-900 transition-colors duration-200 dark:bg-neutral-950 dark:text-neutral-100 font-sans"
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

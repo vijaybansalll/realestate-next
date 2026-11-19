@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -12,7 +12,7 @@ import { NavMenu } from "./nav-menu";
 import { NavigationSheet } from "./navigation-sheet";
 import { cn } from "@/lib/utils";
 
-export function Navbar() {
+function NavbarContent() {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
@@ -89,6 +89,33 @@ export function Navbar() {
         </div>
       </div>
     </header>
+  );
+}
+
+export function Navbar() {
+  return (
+    <Suspense
+      fallback={
+        <header className="fixed inset-x-0 top-0 z-50 h-16 border-b border-neutral-200/80 bg-white/85 shadow-sm backdrop-blur-md dark:border-neutral-800/80 dark:bg-neutral-950/90 dark:shadow-black/25 sm:h-20">
+          <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center gap-8">
+              <Link
+                href="/"
+                className="group flex items-center gap-2"
+                aria-label="Home"
+              >
+                <Logo className="fill-current text-neutral-900 dark:text-neutral-100" />
+              </Link>
+            </div>
+            <div className="flex items-center gap-2 sm:gap-3">
+              <ThemeToggle />
+            </div>
+          </div>
+        </header>
+      }
+    >
+      <NavbarContent />
+    </Suspense>
   );
 }
 

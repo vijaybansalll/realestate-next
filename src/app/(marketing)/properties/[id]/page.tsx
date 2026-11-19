@@ -264,7 +264,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 </div>
 
                 <Button
-                  type="submit"
+                  type="button"
                   variant="primary"
                   size="lg"
                   className="mt-2 w-full"

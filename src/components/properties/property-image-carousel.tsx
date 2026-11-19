@@ -51,7 +51,13 @@ export function PropertyImageCarousel({
 }: PropertyImageCarouselProps) {
   // Normalize images array
   const validImages = useMemo(
-    () => (images && images.length > 0 ? images : []),
+    () =>
+      images && images.length > 0
+        ? images.filter(
+            (img): img is string =>
+              typeof img === "string" && img.trim().length > 0
+          )
+        : [],
     [images]
   );
   const hasMultiple = validImages.length > 1;
@@ -87,9 +93,13 @@ export function PropertyImageCarousel({
 
   useEffect(() => {
     if (!emblaApi) return;
-    onSelect(emblaApi);
+    
     emblaApi.on("select", onSelect);
     emblaApi.on("reInit", onSelect);
+
+    queueMicrotask(() => {
+      onSelect(emblaApi);
+    });
 
     return () => {
       emblaApi.off("select", onSelect);
@@ -158,6 +168,10 @@ export function PropertyImageCarousel({
           fill
           sizes={sizes}
           priority={priority}
+          unoptimized={
+            validImages[0]?.startsWith("data:") ||
+            validImages[0]?.startsWith("blob:")
+          }
           className={cn(
             "object-cover transition-transform duration-500 ease-out group-hover:scale-105",
             imageClassName
@@ -199,6 +213,7 @@ export function PropertyImageCarousel({
                 fill
                 sizes={sizes}
                 priority={priority && index === 0}
+                unoptimized={src.startsWith("data:") || src.startsWith("blob:")}
                 className={cn(
                   "object-cover transition-transform duration-500 ease-out group-hover:scale-105",
                   imageClassName
