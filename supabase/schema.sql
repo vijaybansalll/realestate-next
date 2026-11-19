@@ -31,27 +31,28 @@ CREATE TABLE IF NOT EXISTS public.properties (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- 2. Enable Row Level Security (RLS)
+-- 2. Grant Table & Schema Privileges to anon and authenticated roles
+GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON TABLE public.properties TO anon, authenticated, service_role;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO anon, authenticated, service_role;
+
+-- 3. Enable Row Level Security (RLS) & Policies
 ALTER TABLE public.properties ENABLE ROW LEVEL SECURITY;
 
 -- Drop existing policies if any to allow safe re-runs
 DROP POLICY IF EXISTS "Allow public read access to properties" ON public.properties;
 DROP POLICY IF EXISTS "Allow admin full access to properties" ON public.properties;
+DROP POLICY IF EXISTS "Allow all for anon and authenticated" ON public.properties;
 
--- Allow public read access (for public website visitors)
-CREATE POLICY "Allow public read access to properties" 
-ON public.properties FOR SELECT 
-TO public 
-USING (true);
-
--- Allow full CRUD operations for admin panel
-CREATE POLICY "Allow admin full access to properties" 
+-- Allow full access (SELECT, INSERT, UPDATE, DELETE) for anon and authenticated
+CREATE POLICY "Allow all for anon and authenticated" 
 ON public.properties FOR ALL 
-TO public 
+TO anon, authenticated 
 USING (true) 
 WITH CHECK (true);
 
--- 3. Create updated_at trigger
+-- 4. Create updated_at trigger
 CREATE OR REPLACE FUNCTION public.handle_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -66,7 +67,7 @@ CREATE TRIGGER on_properties_updated
     FOR EACH ROW
     EXECUTE FUNCTION public.handle_updated_at();
 
--- 4. Storage Bucket & Policies for realestate-bucket
+-- 5. Storage Bucket & Policies for realestate-bucket
 INSERT INTO storage.buckets (id, name, public)
 VALUES ('realestate-bucket', 'realestate-bucket', true)
 ON CONFLICT (id) DO UPDATE SET public = true;
@@ -97,7 +98,7 @@ ON storage.objects FOR DELETE
 TO public 
 USING (bucket_id = 'realestate-bucket');
 
--- 5. Seed Initial Luxury Properties (14 estates)
+-- 6. Seed Initial Luxury Properties (14 estates)
 INSERT INTO public.properties (
   id, title, location, purpose, type, bhk, bedrooms, bathrooms, garage,
   price, formatted_price, is_luxury, home_area_sqm, land_area_sqm, size,

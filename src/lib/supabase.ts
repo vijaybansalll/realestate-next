@@ -46,6 +46,7 @@ export async function uploadPropertyImagesToSupabase(
 ): Promise<{ urls: string[]; isLiveSupabase: boolean; error?: string }> {
   const supabase = getSupabaseClient();
   const uploadedUrls: string[] = [];
+  let uploadError: string | undefined;
 
   if (supabase) {
     try {
@@ -64,6 +65,7 @@ export async function uploadPropertyImagesToSupabase(
 
         if (error) {
           console.warn("Supabase storage upload failed, using data URL fallback:", error.message);
+          uploadError = error.message;
           const dataUrl = await readFileAsDataUrl(file);
           uploadedUrls.push(dataUrl);
         } else {
@@ -75,9 +77,10 @@ export async function uploadPropertyImagesToSupabase(
         }
       }
 
-      return { urls: uploadedUrls, isLiveSupabase: true };
+      return { urls: uploadedUrls, isLiveSupabase: !uploadError, error: uploadError };
     } catch (err: any) {
       console.warn("Exception during Supabase storage upload:", err.message);
+      uploadError = err.message;
     }
   }
 
@@ -87,7 +90,7 @@ export async function uploadPropertyImagesToSupabase(
     uploadedUrls.push(dataUrl);
   }
 
-  return { urls: uploadedUrls, isLiveSupabase: false };
+  return { urls: uploadedUrls, isLiveSupabase: false, error: uploadError };
 }
 
 // Map DB row (snake_case) to Property type (camelCase)
@@ -122,29 +125,45 @@ export function mapPropertyToRow(property: Partial<Property>) {
   const imagesList = property.images && property.images.length > 0 
     ? property.images 
     : (property.image ? [property.image] : []);
+  const coverImage = property.image || (imagesList[0] || "");
+  const homeArea = property.homeAreaSqM !== undefined ? Number(property.homeAreaSqM) : undefined;
+  const landArea = property.landAreaSqM !== undefined ? Number(property.landAreaSqM) : undefined;
+  const numPrice = property.price !== undefined ? Number(property.price) : undefined;
 
-  return {
-    title: property.title,
-    location: property.location,
-    purpose: property.purpose,
-    type: property.type,
-    bhk: property.bhk,
-    bedrooms: property.bedrooms,
-    bathrooms: property.bathrooms,
-    garage: property.garage,
-    price: property.price,
-    formatted_price: property.formattedPrice || (property.price ? `$${property.price.toLocaleString()}` : "$0"),
-    is_luxury: property.isLuxury ?? false,
-    home_area_sqm: property.homeAreaSqM,
-    land_area_sqm: property.landAreaSqM,
-    size: property.size || `${property.homeAreaSqM || 200} m²`,
-    image: property.image || (imagesList[0] || ""),
-    images: imagesList,
-    description: property.description,
-    features: property.features || [],
-    featured: property.featured ?? false,
-    specs: property.specs || {},
-  };
+  const row: Record<string, any> = {};
+
+  if (property.title !== undefined) row.title = property.title;
+  if (property.location !== undefined) row.location = property.location;
+  if (property.purpose !== undefined) row.purpose = property.purpose;
+  if (property.type !== undefined) row.type = property.type;
+  if (property.bhk !== undefined) row.bhk = Number(property.bhk);
+  if (property.bedrooms !== undefined) row.bedrooms = Number(property.bedrooms);
+  if (property.bathrooms !== undefined) row.bathrooms = Number(property.bathrooms);
+  if (property.garage !== undefined) row.garage = Number(property.garage);
+  if (numPrice !== undefined) row.price = numPrice;
+  if (property.formattedPrice !== undefined) {
+    row.formatted_price = property.formattedPrice;
+  } else if (numPrice !== undefined) {
+    row.formatted_price = `$${numPrice.toLocaleString()}`;
+  }
+  if (property.isLuxury !== undefined) row.is_luxury = Boolean(property.isLuxury);
+  if (homeArea !== undefined) row.home_area_sqm = homeArea;
+  if (landArea !== undefined) row.land_area_sqm = landArea;
+  if (property.size !== undefined) {
+    row.size = property.size;
+  } else if (homeArea !== undefined) {
+    row.size = `${homeArea} m²`;
+  }
+  if (property.image !== undefined || property.images !== undefined) {
+    row.image = coverImage;
+    row.images = imagesList.length > 0 ? imagesList : [coverImage].filter(Boolean);
+  }
+  if (property.description !== undefined) row.description = property.description;
+  if (property.features !== undefined) row.features = property.features;
+  if (property.featured !== undefined) row.featured = Boolean(property.featured);
+  if (property.specs !== undefined) row.specs = property.specs;
+
+  return row;
 }
 
 // In-Memory / Local Storage Store Fallback
@@ -248,6 +267,8 @@ export async function createProperty(
 
       if (error) {
         console.warn("Supabase create failed, saving to local state:", error.message);
+        inMemoryProperties = [newProperty, ...inMemoryProperties];
+        return { data: newProperty, isLiveSupabase: false, error: error.message };
       } else if (data) {
         const saved = mapRowToProperty(data);
         inMemoryProperties = [saved, ...inMemoryProperties];
@@ -255,11 +276,13 @@ export async function createProperty(
       }
     } catch (err: any) {
       console.warn("Supabase insert exception:", err.message);
+      inMemoryProperties = [newProperty, ...inMemoryProperties];
+      return { data: newProperty, isLiveSupabase: false, error: err.message };
     }
   }
 
   inMemoryProperties = [newProperty, ...inMemoryProperties];
-  return { data: newProperty, isLiveSupabase: false };
+  return { data: newProperty, isLiveSupabase: false, error: "Supabase client not configured" };
 }
 
 export async function updateProperty(
@@ -275,6 +298,8 @@ export async function updateProperty(
     updates.images = [updates.image];
   }
 
+  let dbError: string | undefined;
+
   if (supabase) {
     try {
       const rowUpdates = mapPropertyToRow(updates);
@@ -285,13 +310,17 @@ export async function updateProperty(
         .select()
         .single();
 
-      if (!error && data) {
+      if (error) {
+        console.warn("Supabase update failed:", error.message);
+        dbError = error.message;
+      } else if (data) {
         const updated = mapRowToProperty(data);
         inMemoryProperties = inMemoryProperties.map((p) => (p.id === id ? updated : p));
         return { data: updated, isLiveSupabase: true };
       }
     } catch (err: any) {
       console.warn("Supabase update exception:", err.message);
+      dbError = err.message;
     }
   }
 
@@ -313,7 +342,7 @@ export async function updateProperty(
   });
 
   const updatedProperty = inMemoryProperties.find((p) => p.id === id)!;
-  return { data: updatedProperty, isLiveSupabase: false };
+  return { data: updatedProperty, isLiveSupabase: false, error: dbError };
 }
 
 export async function deleteProperty(
@@ -327,19 +356,26 @@ export async function deleteProperty(
       if (!error) {
         inMemoryProperties = inMemoryProperties.filter((p) => p.id !== id);
         return { success: true, isLiveSupabase: true };
+      } else {
+        console.warn("Supabase delete failed:", error.message);
+        inMemoryProperties = inMemoryProperties.filter((p) => p.id !== id);
+        return { success: true, isLiveSupabase: false, error: error.message };
       }
     } catch (err: any) {
       console.warn("Supabase delete exception:", err.message);
+      inMemoryProperties = inMemoryProperties.filter((p) => p.id !== id);
+      return { success: true, isLiveSupabase: false, error: err.message };
     }
   }
 
   inMemoryProperties = inMemoryProperties.filter((p) => p.id !== id);
-  return { success: true, isLiveSupabase: false };
+  return { success: true, isLiveSupabase: false, error: "Supabase client not configured" };
 }
 
 export async function testSupabaseConnection(): Promise<{
   isConnected: boolean;
   tableExists: boolean;
+  isPermissionDenied?: boolean;
   bucketExists: boolean;
   message: string;
   error?: string;
@@ -356,6 +392,9 @@ export async function testSupabaseConnection(): Promise<{
 
   try {
     const { error: tableError } = await supabase.from("properties").select("id").limit(1);
+    const isPermissionDenied =
+      tableError?.code === "42501" ||
+      tableError?.message?.toLowerCase().includes("permission denied");
     const tableExists = !tableError;
 
     let bucketExists = false;
@@ -366,6 +405,17 @@ export async function testSupabaseConnection(): Promise<{
       bucketExists = !listError;
     } catch {
       bucketExists = false;
+    }
+
+    if (isPermissionDenied) {
+      return {
+        isConnected: true,
+        tableExists: true,
+        isPermissionDenied: true,
+        bucketExists,
+        message: `Table "public.properties" is present in Supabase, but permission is denied for the anon API role (code 42501). Run the GRANT permissions snippet in Supabase SQL Editor.`,
+        error: tableError?.message,
+      };
     }
 
     if (!tableExists) {

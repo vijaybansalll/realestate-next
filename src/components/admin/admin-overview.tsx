@@ -65,10 +65,22 @@ export function AdminOverview() {
         <div className="pointer-events-none absolute top-0 right-0 -mt-12 -mr-12 h-64 w-64 rounded-full bg-amber-500/5 blur-3xl" />
         <div className="relative flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="space-y-1.5">
-            <h1 className="flex items-center gap-3 text-2xl font-bold tracking-tight text-neutral-100 sm:text-3xl">
-              <Building2 className="size-7 shrink-0 text-amber-400" />
-              Dashboard
-            </h1>
+            <div className="flex items-center gap-3">
+              <h1 className="flex items-center gap-3 text-2xl font-bold tracking-tight text-neutral-100 sm:text-3xl">
+                <Building2 className="size-7 shrink-0 text-amber-400" />
+                Dashboard
+              </h1>
+              <Badge
+                variant="outline"
+                className={
+                  isLiveSupabase
+                    ? "border-emerald-500/30 text-emerald-400 text-xs"
+                    : "border-amber-500/30 text-amber-400 text-xs"
+                }
+              >
+                {isLiveSupabase ? "Supabase Live" : "Local Demo Store"}
+              </Badge>
+            </div>
           </div>
 
           {/* Quick Route Shortcuts */}

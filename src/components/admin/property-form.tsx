@@ -29,12 +29,15 @@ import {
   LayersIcon,
   ShieldCheckIcon,
   SparklesIcon,
+  AlertTriangle,
+  ExternalLink,
 } from "lucide-react";
 import {
   createProperty,
   updateProperty,
   uploadPropertyImagesToSupabase,
   fetchPropertyById,
+  testSupabaseConnection,
 } from "@/lib/supabase";
 import type { Property, PropertyPurpose, PropertyType, PropertySpecs } from "@/types";
 import { cn } from "@/lib/utils";
@@ -102,6 +105,24 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
   const [isLoadingProperty, setIsLoadingProperty] = useState(mode === "edit");
   const [dragActive, setDragActive] = useState(false);
   const [notification, setNotification] = useState<string | null>(null);
+  const [dbStatus, setDbStatus] = useState<{
+    isConnected: boolean;
+    tableExists: boolean;
+    isPermissionDenied?: boolean;
+    message: string;
+    error?: string;
+  } | null>(null);
+
+  // Check Supabase connection & schema status on mount
+  useEffect(() => {
+    let isMounted = true;
+    testSupabaseConnection().then((status) => {
+      if (isMounted) setDbStatus(status);
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Load existing property when in edit mode
   useEffect(() => {
@@ -181,8 +202,12 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
         };
       });
 
-      setNotification(`Uploaded ${res.urls.length} images successfully.`);
-      setTimeout(() => setNotification(null), 3500);
+      if (res.error) {
+        setNotification(`Images loaded locally (Supabase storage notice: ${res.error})`);
+      } else {
+        setNotification(`Uploaded ${res.urls.length} images successfully.`);
+      }
+      setTimeout(() => setNotification(null), 4000);
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) {
@@ -298,10 +323,17 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
         formattedPrice: `$${Number(formData.price).toLocaleString()}`,
       };
 
+      let saveRes;
       if (mode === "edit" && propertyId) {
-        await updateProperty(propertyId, payload);
+        saveRes = await updateProperty(propertyId, payload);
       } else {
-        await createProperty(payload as Omit<Property, "id">);
+        saveRes = await createProperty(payload as Omit<Property, "id">);
+      }
+
+      if (saveRes && !saveRes.isLiveSupabase) {
+        alert(
+          `⚠️ Notice: Property saved to local memory only!\n\nIt could NOT be saved to Supabase.\nReason: ${saveRes.error || "Supabase table 'public.properties' was not found"}\n\nTo save properties to Supabase permanently, run 'supabase/schema.sql' in your Supabase SQL Editor.`
+        );
       }
 
       router.push("/admin/properties");
@@ -389,6 +421,52 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
           </Button>
         </div>
       </div>
+
+      {/* Supabase Connection / Table Missing Warning Banner */}
+      {dbStatus && (dbStatus.isPermissionDenied || !dbStatus.tableExists) && (
+        <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 text-amber-200 backdrop-blur-md">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="size-5 text-amber-400 shrink-0 mt-0.5" />
+            <div className="space-y-1.5 flex-1">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-semibold text-amber-300">
+                  {dbStatus.isPermissionDenied
+                    ? "Supabase Permission Denied: Table 'properties' is present, but missing role permissions"
+                    : "Supabase Table Missing: Property will not be saved in Supabase"}
+                </h3>
+                <Badge variant="outline" className="border-amber-400/40 text-amber-300 text-[10px]">
+                  Local Store Only
+                </Badge>
+              </div>
+              <p className="text-xs text-neutral-300 leading-relaxed">
+                {dbStatus.isPermissionDenied ? (
+                  <>
+                    The <code className="bg-neutral-900/80 px-1.5 py-0.5 rounded text-amber-300 font-mono">public.properties</code> table exists, but Postgres denied access to the API key role (<code className="text-neutral-400 font-mono">anon</code>, error code 42501). Table privileges (<code className="text-amber-300 font-mono">GRANT ALL</code>) and RLS policy must be granted in SQL Editor.
+                  </>
+                ) : (
+                  <>
+                    The database table <code className="bg-neutral-900/80 px-1.5 py-0.5 rounded text-amber-300 font-mono">public.properties</code> does not exist yet in your Supabase project (<code className="text-neutral-400 font-mono">wjxxmqkuhjhurpvyngxq</code>).
+                  </>
+                )}
+              </p>
+              <div className="pt-1 flex flex-wrap items-center gap-3 text-xs">
+                <a
+                  href="https://supabase.com/dashboard/project/wjxxmqkuhjhurpvyngxq/sql/new"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-semibold text-amber-400 hover:text-amber-300 underline underline-offset-4"
+                >
+                  Open Supabase SQL Editor <ExternalLink className="size-3" />
+                </a>
+                <span className="text-neutral-600">•</span>
+                <span className="text-neutral-400">
+                  Run <strong className="text-neutral-200">supabase/schema.sql</strong> to grant permissions and enable live Supabase CRUD.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* LEFT TWO COLUMNS: Main Details & Specs */}
