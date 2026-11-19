@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Instrument_Sans, Inter } from "next/font/google";
-import { Navbar, Footer, SmoothScroll } from "@/components/layout";
+import { SmoothScroll } from "@/components/layout";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import "./globals.css";
@@ -42,11 +42,7 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-screen overflow-x-clip bg-neutral-950 font-sans text-neutral-100">
-        <SmoothScroll>
-          <Navbar />
-          {children}
-          <Footer />
-        </SmoothScroll>
+        <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>
   );
