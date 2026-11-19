@@ -14,6 +14,7 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import { ALL_PROPERTIES } from "@/data/properties";
+import { fetchPropertyById, fetchProperties } from "@/lib/supabase";
 import { siteConfig } from "@/config/site";
 import { PropertyGridGallery } from "@/components/properties/property-grid-gallery";
 import { PropertySpecsGrid } from "@/components/properties/property-specs-grid";
@@ -25,17 +26,12 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export async function generateStaticParams() {
-  return ALL_PROPERTIES.map((property) => ({
-    id: property.id,
-  }));
-}
-
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { id } = await params;
-  const property = ALL_PROPERTIES.find((p) => p.id === id);
+  const propRes = await fetchPropertyById(id);
+  const property = propRes.data || ALL_PROPERTIES.find((p) => p.id === id);
 
   if (!property) {
     return {
@@ -63,7 +59,8 @@ export async function generateMetadata({
 
 export default async function PropertyDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const property = ALL_PROPERTIES.find((p) => p.id === id);
+  const propRes = await fetchPropertyById(id);
+  const property = propRes.data || ALL_PROPERTIES.find((p) => p.id === id);
 
   if (!property) {
     notFound();
@@ -75,7 +72,9 @@ export default async function PropertyDetailPage({ params }: PageProps) {
       : [property.image];
 
   // Related properties (same purpose or type, excluding current)
-  const relatedProperties = ALL_PROPERTIES.filter(
+  const allPropsRes = await fetchProperties();
+  const allProps = allPropsRes.data.length > 0 ? allPropsRes.data : ALL_PROPERTIES;
+  const relatedProperties = allProps.filter(
     (p) => p.id !== property.id && p.purpose === property.purpose
   ).slice(0, 3);
 

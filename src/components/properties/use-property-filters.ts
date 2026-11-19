@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { ALL_PROPERTIES } from "@/data";
-import type { PropertyFilters } from "@/types";
+import { fetchProperties, getInitialProperties } from "@/lib/supabase";
+import type { Property, PropertyFilters } from "@/types";
 import { INITIAL_FILTERS } from "./constants";
 
 export interface ActiveChip {
@@ -12,10 +13,23 @@ export interface ActiveChip {
 }
 
 export function usePropertyFilters(initial = INITIAL_FILTERS) {
+  const [propertiesList, setPropertiesList] = useState<Property[]>(() => getInitialProperties());
   const [filters, setFilters] = useState<PropertyFilters>(initial);
   const [filterSheetOpen, setFilterSheetOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(6);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetchProperties().then((res) => {
+      if (isMounted && res.data) {
+        setPropertiesList(res.data);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleFilterChange = useCallback(
     <K extends keyof PropertyFilters>(key: K, value: PropertyFilters[K]) => {
@@ -53,7 +67,8 @@ export function usePropertyFilters(initial = INITIAL_FILTERS) {
 
   // Filtered & Sorted properties
   const filteredProperties = useMemo(() => {
-    return ALL_PROPERTIES.filter((property) => {
+    const dataSource = propertiesList.length > 0 ? propertiesList : ALL_PROPERTIES;
+    return dataSource.filter((property) => {
       // 1. Purpose filter (Buy vs Rent)
       if (filters.purpose !== "all" && property.purpose !== filters.purpose) {
         return false;
@@ -325,7 +340,7 @@ export function usePropertyFilters(initial = INITIAL_FILTERS) {
     totalPages,
     setPage: handlePageChange,
     setPageSize: handlePageSizeChange,
-    totalCount: ALL_PROPERTIES.length,
+    totalCount: propertiesList.length,
     filteredCount: filteredProperties.length,
     activeChips,
     activeFiltersCount,

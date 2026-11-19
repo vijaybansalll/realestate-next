@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,6 +11,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { FEATURED_PROPERTIES } from "@/data";
+import { fetchProperties, getInitialProperties } from "@/lib/supabase";
 import type { Property } from "@/types";
 import { PropertyCard, PropertyInquiryModal } from "@/components/properties";
 
@@ -19,11 +20,26 @@ interface FeaturedPropertiesProps {
 }
 
 export function FeaturedProperties({
-  properties = FEATURED_PROPERTIES,
+  properties: propList,
 }: FeaturedPropertiesProps) {
+  const [properties, setProperties] = useState<Property[]>(() => propList || getInitialProperties());
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(
     null
   );
+
+  useEffect(() => {
+    if (!propList) {
+      let isMounted = true;
+      fetchProperties().then((res) => {
+        if (isMounted && res.data) {
+          setProperties(res.data);
+        }
+      });
+      return () => {
+        isMounted = false;
+      };
+    }
+  }, [propList]);
 
   return (
     <section
@@ -53,40 +69,52 @@ export function FeaturedProperties({
         </Button>
       </div>
 
-      <Carousel className="mt-6 w-full" opts={{ loop: true, align: "start" }}>
-        <CarouselContent>
-          {properties.map((property) => (
-            <CarouselItem
-              className="basis-[88%] sm:basis-1/2 lg:basis-1/3"
-              key={property.id}
-            >
-              <div className="h-full p-1">
-                <PropertyCard
-                  property={property}
-                  onInquire={(prop) => setSelectedProperty(prop)}
-                  enableImageDrag={false}
-                  className="h-full"
-                />
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <div className="mt-6 flex items-center justify-between sm:justify-end">
-          <div className="flex items-center justify-end gap-2">
-            <CarouselPrevious className="static translate-y-0" />
-            <CarouselNext className="static translate-y-0" />
-          </div>
-
-          <Button
-            className="sm:hidden"
-            size="sm"
-            variant="secondary"
-            render={<Link href="/properties" />}
-          >
-            View more
-          </Button>
+      {properties.length === 0 ? (
+        <div className="mt-8 rounded-xl border border-dashed border-neutral-800 bg-neutral-900/30 p-12 text-center">
+          <p className="text-sm font-medium text-neutral-300">No estates listed currently.</p>
+          <p className="mt-1 text-xs text-neutral-500">
+            Properties added in the admin console will automatically appear here.
+          </p>
         </div>
-      </Carousel>
+      ) : (
+        <Carousel
+          className="mt-6 w-full"
+          opts={{ loop: properties.length > 1, align: "start" }}
+        >
+          <CarouselContent>
+            {properties.map((property) => (
+              <CarouselItem
+                className="basis-[88%] sm:basis-1/2 lg:basis-1/3"
+                key={property.id}
+              >
+                <div className="h-full p-1">
+                  <PropertyCard
+                    property={property}
+                    onInquire={(prop) => setSelectedProperty(prop)}
+                    enableImageDrag={false}
+                    className="h-full"
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className="mt-6 flex items-center justify-between sm:justify-end">
+            <div className="flex items-center justify-end gap-2">
+              <CarouselPrevious className="static translate-y-0" />
+              <CarouselNext className="static translate-y-0" />
+            </div>
+
+            <Button
+              className="sm:hidden"
+              size="sm"
+              variant="secondary"
+              render={<Link href="/properties" />}
+            >
+              View more
+            </Button>
+          </div>
+        </Carousel>
+      )}
 
       {/* Property Inquiry Sheet Modal */}
       <PropertyInquiryModal

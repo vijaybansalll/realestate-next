@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { loginAction } from "@/app/(auth)/login/actions";
@@ -23,6 +23,9 @@ type FormValues = z.infer<typeof formSchema>;
 
 export function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/admin";
+
   const [formState, setFormState] = useState<{
     isLoading: boolean;
     errorMessage?: string;
@@ -51,8 +54,9 @@ export function LoginForm() {
           successMessage: "Login successful! Redirecting...",
         });
         setTimeout(() => {
-          router.push("/");
-        }, 800);
+          router.push(callbackUrl);
+          router.refresh();
+        }, 600);
       } else {
         setFormState({
           isLoading: false,

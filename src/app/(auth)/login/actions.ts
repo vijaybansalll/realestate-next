@@ -1,5 +1,7 @@
 "use server";
 
+import { cookies } from "next/headers";
+
 export interface LoginResult {
   success: boolean;
   error?: string;
@@ -27,6 +29,15 @@ export async function loginAction(credentials: {
   const inputUserPassword = (credentials.userPassword || "").trim();
 
   if (inputUserId === envUserId && inputUserPassword === envUserPassword) {
+    const cookieStore = await cookies();
+    cookieStore.set("admin_session", "authenticated", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30, // 30 days persistent session
+    });
+
     return { success: true };
   }
 
@@ -34,4 +45,15 @@ export async function loginAction(credentials: {
     success: false,
     error: "Invalid User ID or Password. Please try again.",
   };
+}
+
+export async function logoutAction(): Promise<void> {
+  const cookieStore = await cookies();
+  cookieStore.delete("admin_session");
+}
+
+export async function checkAuthStatus(): Promise<boolean> {
+  const cookieStore = await cookies();
+  const session = cookieStore.get("admin_session");
+  return session?.value === "authenticated";
 }
