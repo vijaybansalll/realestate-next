@@ -8,13 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/sonner";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import {
   SearchIcon,
   PencilIcon,
   Trash2Icon,
@@ -29,16 +22,12 @@ import type { Property } from "@/types";
 
 interface PropertyTableProps {
   properties: Property[];
-  onAddProperty?: () => void;
-  onEditProperty?: (property: Property) => void;
   onDeleteProperty: (id: string) => Promise<void>;
   isLoading?: boolean;
 }
 
 export function PropertyTable({
   properties,
-  onAddProperty,
-  onEditProperty,
   onDeleteProperty,
   isLoading = false,
 }: PropertyTableProps) {

@@ -263,7 +263,7 @@ export function LiquidItem({
   const context = useLiquidContext();
   const reduce = useReducedMotion() ?? false;
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [blob, setBlob] = useState<SVGRectElement | null>(null);
+  const blobRef = useRef<SVGRectElement | null>(null);
   const currentRef = useRef<LiquidBox | null>(null);
   const duration = reduce ? 0 : (transition?.duration ?? 280);
   const ease = transition?.ease ?? EASE_OUT;
@@ -283,15 +283,17 @@ export function LiquidItem({
     blob.style.transformOrigin = "center";
     blob.style.willChange = "transform";
     portal.append(blob);
-    setBlob(blob);
+    blobRef.current = blob;
 
     return () => {
       blob.remove();
+      blobRef.current = null;
     };
   }, [context]);
 
   useLayoutEffect(() => {
     const wrapper = wrapperRef.current;
+    const blob = blobRef.current;
     if (!wrapper || !blob || !context.getRoot()) return;
 
     const target = { x, y, width, height, radius };
@@ -336,7 +338,7 @@ export function LiquidItem({
 
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [blob, context, duration, height, radius, width, x, x1, x2, y, y1, y2]);
+  }, [context, duration, height, radius, width, x, x1, x2, y, y1, y2]);
 
   return (
     <div

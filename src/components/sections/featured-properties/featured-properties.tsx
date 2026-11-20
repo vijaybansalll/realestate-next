@@ -10,7 +10,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { FEATURED_PROPERTIES } from "@/data";
 import {
   fetchProperties,
   getInitialProperties,

@@ -6,8 +6,6 @@ import {
   Sparkles,
   ArrowLeft,
   Calendar,
-  Share2,
-  ShieldCheck,
   Phone,
   Mail,
   User,

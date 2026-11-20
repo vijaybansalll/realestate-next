@@ -18,7 +18,6 @@ import type { Property } from "@/types";
 import {
   PlusIcon,
   RefreshCwIcon,
-  CheckCircle2Icon,
   BuildingIcon,
   AlertTriangle,
   ExternalLink,
@@ -62,13 +61,28 @@ export default function PropertiesAdminPage() {
   };
 
   useEffect(() => {
-    loadProperties(false);
+    let isMounted = true;
+    async function init() {
+      const [res, status] = await Promise.all([
+        fetchProperties(),
+        testSupabaseConnection(),
+      ]);
+      if (isMounted) {
+        setProperties(res.data);
+        setIsLiveDb(res.isLiveSupabase);
+        setDbStatus(status);
+      }
+    }
+    init();
 
     const unsubscribe = subscribeToProperties((updatedList) => {
-      setProperties(updatedList);
+      if (isMounted) {
+        setProperties(updatedList);
+      }
     });
 
     return () => {
+      isMounted = false;
       unsubscribe();
     };
   }, []);

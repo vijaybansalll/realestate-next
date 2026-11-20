@@ -3,14 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { LogoIcon } from "@/components/logo";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { LogoIcon } from "@/components/layout";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -19,15 +16,14 @@ import {
 } from "@/components/ui/sidebar";
 import { NavGroup } from "@/components/nav-group";
 import { navGroups } from "@/components/app-shared";
-import { PlusIcon, CompassIcon, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { logoutAction } from "@/app/(auth)/login/actions";
 
 interface AppSidebarProps {
   pathname?: string;
-  onAddProperty?: () => void;
 }
 
-export function AppSidebar({ pathname, onAddProperty }: AppSidebarProps) {
+export function AppSidebar({ pathname }: AppSidebarProps) {
   const router = useRouter();
   const { isMobile, setOpenMobile } = useSidebar();
   const [isLoggingOut, setIsLoggingOut] = useState(false);

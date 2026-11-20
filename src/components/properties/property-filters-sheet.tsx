@@ -67,7 +67,6 @@ export function PropertyFiltersSheet({
   onFilterChange,
   onPurposeChange,
   onReset,
-  totalCount: _totalCount,
   filteredCount,
   open,
   onOpenChange,

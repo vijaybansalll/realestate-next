@@ -203,7 +203,7 @@ export function usePropertyFilters(initial = INITIAL_FILTERS) {
       if (!a.featured && b.featured) return 1;
       return b.price - a.price;
     });
-  }, [filters]);
+  }, [filters, propertiesList, isLoaded]);
 
   // Active filter count
   const activeFiltersCount = useMemo(() => {

@@ -24,7 +24,6 @@ import {
   Loader2Icon,
   ImageIcon,
   ArrowLeftIcon,
-  CheckCircle2Icon,
   BuildingIcon,
   LayersIcon,
   ShieldCheckIcon,
@@ -154,14 +153,14 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
     }
   }, [mode, propertyId]);
 
-  const handleChange = (field: keyof Property, value: any) => {
+  const handleChange = (field: keyof Property, value: unknown) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
 
-  const handleSpecChange = (specKey: keyof PropertySpecs, value: any) => {
+  const handleSpecChange = (specKey: keyof PropertySpecs, value: unknown) => {
     setFormData((prev) => ({
       ...prev,
       specs: {
@@ -345,9 +344,9 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
       router.refresh();
       router.push("/admin/properties");
-    } catch (err: any) {
+    } catch (err: unknown) {
       toast.error("Failed to Save Property", {
-        description: err.message || "An unexpected error occurred while saving.",
+        description: err instanceof Error ? err.message : "An unexpected error occurred while saving.",
       });
     } finally {
       setIsSubmitting(false);
@@ -952,7 +951,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
             <CardContent className="pt-4 space-y-3">
               <div className="space-y-1">
-                <Label className="text-[11px] text-neutral-500 dark:text-neutral-400">Butler's Pantry</Label>
+                <Label className="text-[11px] text-neutral-500 dark:text-neutral-400">Butler&apos;s Pantry</Label>
                 <Input
                   value={String(formData.specs?.pantry || "")}
                   onChange={(e) => handleSpecChange("pantry", e.target.value)}

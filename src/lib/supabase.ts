@@ -69,7 +69,7 @@ export async function uploadPropertyImagesToSupabase(
         const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 7)}_${cleanName}.${fileExt}`;
         const filePath = `properties/${fileName}`;
 
-        const { data, error } = await supabase.storage
+        const { error } = await supabase.storage
           .from(SUPABASE_STORAGE_BUCKET)
           .upload(filePath, file, {
             cacheControl: "3600",
@@ -91,9 +91,10 @@ export async function uploadPropertyImagesToSupabase(
       }
 
       return { urls: uploadedUrls, isLiveSupabase: !uploadError, error: uploadError };
-    } catch (err: any) {
-      console.warn("Exception during Supabase storage upload:", err.message);
-      uploadError = err.message;
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.warn("Exception during Supabase storage upload:", message);
+      uploadError = message;
     }
   }
 
@@ -107,29 +108,29 @@ export async function uploadPropertyImagesToSupabase(
 }
 
 // Map DB row (snake_case) to Property type (camelCase)
-export function mapRowToProperty(row: any): Property {
+export function mapRowToProperty(row: Record<string, unknown>): Property {
   return {
     id: String(row.id),
-    title: row.title || "Untitled Property",
-    location: row.location || "Unknown Location",
+    title: (row.title as string) || "Untitled Property",
+    location: (row.location as string) || "Unknown Location",
     purpose: row.purpose === "rent" ? "rent" : "buy",
-    type: row.type || "estate",
+    type: (row.type as Property["type"]) || "estate",
     bhk: Number(row.bhk) || 3,
     bedrooms: Number(row.bedrooms) || 3,
     bathrooms: Number(row.bathrooms) || 2,
     garage: Number(row.garage) || 1,
     price: Number(row.price) || 0,
-    formattedPrice: row.formatted_price || `$${Number(row.price || 0).toLocaleString()}`,
+    formattedPrice: (row.formatted_price as string) || `$${Number(row.price || 0).toLocaleString()}`,
     isLuxury: Boolean(row.is_luxury),
     homeAreaSqM: Number(row.home_area_sqm) || 200,
     landAreaSqM: Number(row.land_area_sqm) || 300,
-    size: row.size || `${row.home_area_sqm || 200} m²`,
-    image: row.image || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
-    images: Array.isArray(row.images) && row.images.length > 0 ? row.images : [row.image].filter(Boolean),
-    description: row.description || "",
-    features: Array.isArray(row.features) ? row.features : [],
+    size: (row.size as string) || `${row.home_area_sqm || 200} m²`,
+    image: (row.image as string) || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+    images: Array.isArray(row.images) && row.images.length > 0 ? (row.images as string[]) : [row.image as string].filter(Boolean),
+    description: (row.description as string) || "",
+    features: Array.isArray(row.features) ? (row.features as string[]) : [],
     featured: Boolean(row.featured),
-    specs: row.specs || undefined,
+    specs: (row.specs as Property["specs"]) || undefined,
   };
 }
 
@@ -143,7 +144,7 @@ export function mapPropertyToRow(property: Partial<Property>) {
   const landArea = property.landAreaSqM !== undefined ? Number(property.landAreaSqM) : undefined;
   const numPrice = property.price !== undefined ? Number(property.price) : undefined;
 
-  const row: Record<string, any> = {};
+  const row: Record<string, unknown> = {};
 
   if (property.title !== undefined) row.title = property.title;
   if (property.location !== undefined) row.location = property.location;
@@ -317,7 +318,7 @@ export function initSupabaseRealtime() {
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "properties" },
-        async (payload) => {
+        async () => {
           try {
             const { data, error } = await supabase
               .from("properties")
@@ -371,8 +372,9 @@ export async function fetchProperties(): Promise<{
         savePropertiesToCache(mapped);
         return { data: mapped, isLiveSupabase: true };
       }
-    } catch (err: any) {
-      console.warn("Supabase fetch exception, using fallback:", err.message);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.warn("Supabase fetch exception, using fallback:", message);
     }
   }
 
@@ -398,8 +400,9 @@ export async function fetchPropertyById(
       if (!error && data) {
         return { data: mapRowToProperty(data), isLiveSupabase: true };
       }
-    } catch (err: any) {
-      console.warn("Supabase fetch by ID error:", err.message);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.warn("Supabase fetch by ID error:", message);
     }
   }
 
@@ -446,11 +449,12 @@ export async function createProperty(
         notifyPropertiesChanged(updated);
         return { data: saved, isLiveSupabase: true };
       }
-    } catch (err: any) {
-      console.warn("Supabase insert exception:", err.message);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.warn("Supabase insert exception:", message);
       const updated = [newProperty, ...inMemoryProperties.filter((p) => p.id !== newProperty.id)];
       notifyPropertiesChanged(updated);
-      return { data: newProperty, isLiveSupabase: false, error: err.message };
+      return { data: newProperty, isLiveSupabase: false, error: message };
     }
   }
 
@@ -493,9 +497,10 @@ export async function updateProperty(
         notifyPropertiesChanged(updatedList);
         return { data: updated, isLiveSupabase: true };
       }
-    } catch (err: any) {
-      console.warn("Supabase update exception:", err.message);
-      dbError = err.message;
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.warn("Supabase update exception:", message);
+      dbError = message;
     }
   }
 
@@ -539,11 +544,12 @@ export async function deleteProperty(
         notifyPropertiesChanged(updatedList);
         return { success: true, isLiveSupabase: false, error: error.message };
       }
-    } catch (err: any) {
-      console.warn("Supabase delete exception:", err.message);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.warn("Supabase delete exception:", message);
       const updatedList = inMemoryProperties.filter((p) => p.id !== id);
       notifyPropertiesChanged(updatedList);
-      return { success: true, isLiveSupabase: false, error: err.message };
+      return { success: true, isLiveSupabase: false, error: message };
     }
   }
 
@@ -614,13 +620,14 @@ export async function testSupabaseConnection(): Promise<{
       bucketExists,
       message: "Connected to Supabase! Table 'properties' is live and ready for CRUD operations.",
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
     return {
       isConnected: false,
       tableExists: false,
       bucketExists: false,
-      message: `Connection failed: ${err.message}`,
-      error: err.message,
+      message: `Connection failed: ${message}`,
+      error: message,
     };
   }
 }

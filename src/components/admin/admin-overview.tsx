@@ -25,33 +25,25 @@ import {
   Plus,
   ArrowRight,
   Layers,
-  Images,
   ExternalLink,
   MapPin,
-  Sparkles,
 } from "lucide-react";
 
 export function AdminOverview() {
   const [allProperties, setAllProperties] = useState<Property[]>(() =>
     getInitialProperties()
   );
-  const [isLoading, setIsLoading] = useState(false);
-  const [isLiveSupabase, setIsLiveSupabase] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
     async function loadData() {
       try {
-        setIsLoading(true);
         const res = await fetchProperties();
         if (isMounted) {
           setAllProperties(res.data);
-          setIsLiveSupabase(res.isLiveSupabase);
         }
       } catch (err) {
         console.error("Failed to load overview properties", err);
-      } finally {
-        if (isMounted) setIsLoading(false);
       }
     }
     loadData();
@@ -67,7 +59,6 @@ export function AdminOverview() {
       fetchProperties().then((res) => {
         if (isMounted && res.data) {
           setAllProperties(res.data);
-          setIsLiveSupabase(res.isLiveSupabase);
         }
       });
     };

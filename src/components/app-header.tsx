@@ -1,14 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { AppBreadcrumbs } from "@/components/app-breadcrumbs";
 import { CustomSidebarTrigger } from "@/components/custom-sidebar-trigger";
 import { navLinks } from "@/components/app-shared";
-import { NavUser } from "@/components/nav-user";
-import { BellIcon, LayoutGridIcon, BuildingIcon } from "lucide-react";
-
+import { LayoutGridIcon, BuildingIcon } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 export function AppHeader({ pathname }: { pathname?: string }) {
