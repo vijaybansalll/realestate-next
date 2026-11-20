@@ -86,7 +86,9 @@ export function DashboardStats({ properties = [] }: DashboardStatsProps) {
                   <DeltaValue />
                 </Delta>
               ) : null}
-              <span className="text-xs text-neutral-500 dark:text-neutral-400">{s.hint}</span>
+              <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                {s.hint}
+              </span>
             </div>
           </CardContent>
         </Card>
