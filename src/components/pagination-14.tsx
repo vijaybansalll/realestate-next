@@ -70,17 +70,40 @@ export function Pagination14({
   const startItem = totalItems === 0 ? 0 : (page - 1) * pageSize + 1;
   const endItem = Math.min(page * pageSize, totalItems);
 
+  // Generate pagination pills with ellipsis windowing
+  const getVisiblePages = (): (number | "...")[] => {
+    if (totalPages <= 5) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    if (page <= 3) {
+      return [1, 2, 3, 4, "...", totalPages];
+    }
+    if (page >= totalPages - 2) {
+      return [
+        1,
+        "...",
+        totalPages - 3,
+        totalPages - 2,
+        totalPages - 1,
+        totalPages,
+      ];
+    }
+    return [1, "...", page - 1, page, page + 1, "...", totalPages];
+  };
+
+  const visiblePages = getVisiblePages();
+
   return (
     <div
       className={cn(
-        "flex w-full flex-col gap-3 rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-4 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between",
+        "flex w-full flex-col gap-4 rounded-2xl border border-neutral-200/80 bg-white/80 p-4 shadow-sm backdrop-blur-md sm:flex-row sm:items-center sm:justify-between dark:border-neutral-800/80 dark:bg-neutral-900/40",
         className
       )}
       aria-label="Pagination Navigation"
     >
       {/* Left: Page Size Selector */}
       <div className="flex items-center gap-2.5">
-        <Label className="text-xs font-medium whitespace-nowrap text-neutral-400">
+        <Label className="text-xs font-medium whitespace-nowrap text-neutral-600 dark:text-neutral-400">
           {label}
         </Label>
         <Select
@@ -91,13 +114,17 @@ export function Pagination14({
         >
           <SelectTrigger
             size="sm"
-            className="h-8 w-18 rounded-xl border-neutral-800 bg-neutral-900/90 px-2.5 py-1 text-xs text-neutral-200 hover:border-neutral-700"
+            className="h-8 w-18 rounded-xl border border-neutral-200 bg-white px-2.5 py-1 text-xs font-medium text-neutral-800 shadow-xs transition-colors hover:border-neutral-300 hover:bg-neutral-50 focus:border-amber-500/80 focus:ring-2 focus:ring-amber-500/20 dark:border-neutral-800 dark:bg-neutral-900/90 dark:text-neutral-200 dark:hover:border-neutral-700 dark:hover:bg-neutral-800/80 dark:focus:border-amber-400/80 dark:focus:ring-amber-400/20"
           >
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="z-50 min-w-[4.5rem] rounded-xl border-neutral-800 bg-neutral-900 text-xs text-neutral-200 shadow-2xl">
+          <SelectContent className="z-50 min-w-[4.5rem] rounded-xl border border-neutral-200 bg-white p-1 text-xs text-neutral-800 shadow-xl dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-200">
             {pageSizeOptions.map((opt) => (
-              <SelectItem key={opt} value={opt.toString()}>
+              <SelectItem
+                key={opt}
+                value={opt.toString()}
+                className="cursor-pointer rounded-lg py-1.5 text-xs text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 focus:bg-neutral-100 focus:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 dark:focus:bg-neutral-800 dark:focus:text-neutral-100"
+              >
                 {opt}
               </SelectItem>
             ))}
@@ -105,18 +132,21 @@ export function Pagination14({
         </Select>
       </div>
 
-      {/* Right: Item Range & Prev/Next Controls */}
-      <div className="flex items-center justify-between gap-3 sm:justify-end">
-        <span className="text-xs whitespace-nowrap text-neutral-400">
-          <span className="font-semibold text-neutral-200">
-            {startItem}-{endItem}
+      {/* Right: Item Range & Page Navigation Controls */}
+      <div className="flex flex-wrap items-center justify-between gap-3 sm:justify-end">
+        <span className="text-xs whitespace-nowrap text-neutral-600 dark:text-neutral-400">
+          <span className="font-semibold text-neutral-900 dark:text-neutral-100">
+            {startItem}–{endItem}
           </span>{" "}
           of{" "}
-          <span className="font-semibold text-neutral-200">{totalItems}</span>
+          <span className="font-semibold text-neutral-900 dark:text-neutral-100">
+            {totalItems}
+          </span>
         </span>
 
         <Pagination className="mx-0 w-auto">
           <PaginationContent className="gap-1.5">
+            {/* Previous Page Button */}
             <PaginationItem>
               <Button
                 type="button"
@@ -125,11 +155,47 @@ export function Pagination14({
                 size="icon-sm"
                 variant="secondary"
                 onClick={() => handlePageChange(page - 1)}
-                className="rounded-lg"
+                className="size-8 rounded-xl border border-neutral-200 bg-white text-neutral-700 shadow-xs transition-colors hover:border-neutral-300 hover:bg-neutral-100 hover:text-neutral-900 disabled:pointer-events-none disabled:border-neutral-200/60 disabled:opacity-35 dark:border-neutral-800 dark:bg-neutral-900/90 dark:text-neutral-300 dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 dark:disabled:border-neutral-800/60"
               >
                 <ChevronLeftIcon className="size-4" />
               </Button>
             </PaginationItem>
+
+            {/* Page Number Pills */}
+            {visiblePages.map((item, idx) => {
+              if (item === "...") {
+                return (
+                  <PaginationItem key={`ellipsis-${idx}`}>
+                    <span className="flex size-8 items-center justify-center text-xs text-neutral-400 dark:text-neutral-500">
+                      …
+                    </span>
+                  </PaginationItem>
+                );
+              }
+
+              const isCurrent = item === page;
+              return (
+                <PaginationItem key={item}>
+                  <Button
+                    type="button"
+                    size="icon-sm"
+                    onClick={() => handlePageChange(item)}
+                    className={cn(
+                      "size-8 rounded-xl text-xs font-medium transition-all",
+                      isCurrent
+                        ? "bg-amber-500 font-semibold text-neutral-950 shadow-xs hover:bg-amber-400 active:scale-95 dark:bg-amber-400 dark:text-neutral-950 dark:hover:bg-amber-300"
+                        : "border border-neutral-200 bg-white text-neutral-700 shadow-xs hover:border-neutral-300 hover:bg-neutral-100 hover:text-neutral-900 active:scale-95 dark:border-neutral-800 dark:bg-neutral-900/90 dark:text-neutral-300 dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
+                    )}
+                    aria-label={`Page ${item}`}
+                    aria-current={isCurrent ? "page" : undefined}
+                  >
+                    {item}
+                  </Button>
+                </PaginationItem>
+              );
+            })}
+
+            {/* Next Page Button */}
             <PaginationItem>
               <Button
                 type="button"
@@ -138,7 +204,7 @@ export function Pagination14({
                 size="icon-sm"
                 variant="secondary"
                 onClick={() => handlePageChange(page + 1)}
-                className="rounded-lg"
+                className="size-8 rounded-xl border border-neutral-200 bg-white text-neutral-700 shadow-xs transition-colors hover:border-neutral-300 hover:bg-neutral-100 hover:text-neutral-900 disabled:pointer-events-none disabled:border-neutral-200/60 disabled:opacity-35 dark:border-neutral-800 dark:bg-neutral-900/90 dark:text-neutral-300 dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 dark:disabled:border-neutral-800/60"
               >
                 <ChevronRightIcon className="size-4" />
               </Button>

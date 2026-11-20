@@ -50,7 +50,8 @@ export function PropertyTable({
 
   const handleDelete = (id: string, title: string) => {
     toast(`Delete "${title}"?`, {
-      description: "Are you sure you want to delete this property from the inventory?",
+      description:
+        "Are you sure you want to delete this property from the inventory?",
       action: {
         label: "Delete",
         onClick: async () => {
@@ -217,17 +218,20 @@ export function PropertyTable({
                     {property.location}
                   </p>
 
-                  <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-neutral-500 sm:gap-3">
+                  <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-neutral-500 sm:gap-3 dark:text-neutral-300">
                     <span className="flex items-center gap-1">
-                      <BedIcon className="size-3" /> {property.bedrooms} Beds
+                      <BedIcon className="size-3 text-amber-500 dark:text-amber-300" />{" "}
+                      {property.bedrooms} Beds
                     </span>
                     <span>•</span>
                     <span className="flex items-center gap-1">
-                      <BathIcon className="size-3" /> {property.bathrooms} Baths
+                      <BathIcon className="size-3 text-amber-500 dark:text-amber-300" />{" "}
+                      {property.bathrooms} Baths
                     </span>
                     <span>•</span>
                     <span className="flex items-center gap-1">
-                      <Maximize2Icon className="size-3" /> {property.size}
+                      <Maximize2Icon className="size-3 text-amber-500 dark:text-amber-300" />{" "}
+                      {property.size}
                     </span>
                   </div>
                 </div>
@@ -240,7 +244,7 @@ export function PropertyTable({
                     {property.formattedPrice ||
                       `$${property.price?.toLocaleString()}`}
                   </div>
-                  <span className="font-mono text-[10px] tracking-widest text-neutral-500 uppercase">
+                  <span className="font-mono text-xs text-neutral-500 uppercase dark:text-neutral-400">
                     ID: {property.id}
                   </span>
                 </div>

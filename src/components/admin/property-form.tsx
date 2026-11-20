@@ -986,7 +986,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
             <CardContent className="grid grid-cols-2 gap-4 pt-4 sm:grid-cols-4">
               <div className="space-y-1.5">
                 <Label className="flex items-center gap-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                  <Bed className="size-3.5 text-neutral-500" />
+                  <Bed className="size-3.5 text-amber-500" />
                   <span>Bedrooms</span>
                 </Label>
                 <Input
@@ -1005,7 +1005,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
               <div className="space-y-1.5">
                 <Label className="flex items-center gap-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                  <Bath className="size-3.5 text-neutral-500" />
+                  <Bath className="size-3.5 text-amber-500" />
                   <span>Bathrooms</span>
                 </Label>
                 <Input
@@ -1023,7 +1023,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
               <div className="space-y-1.5">
                 <Label className="flex items-center gap-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                  <Car className="size-3.5 text-neutral-500" />
+                  <Car className="size-3.5 text-amber-500" />
                   <span>Garage Bays</span>
                 </Label>
                 <Input
@@ -1041,7 +1041,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
               <div className="space-y-1.5">
                 <Label className="flex items-center gap-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                  <Sofa className="size-3.5 text-neutral-500" />
+                  <Sofa className="size-3.5 text-amber-500" />
                   <span>Living Rooms</span>
                 </Label>
                 <Input
@@ -1057,7 +1057,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
               <div className="col-span-2 space-y-1.5">
                 <Label className="flex items-center gap-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                  <Maximize2 className="size-3.5 text-neutral-500" />
+                  <Maximize2 className="size-3.5 text-amber-500" />
                   <span>Interior Home Area (m²)</span>
                 </Label>
                 <Input
@@ -1079,7 +1079,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
               <div className="col-span-2 space-y-1.5">
                 <Label className="flex items-center gap-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                  <Layers className="size-3.5 text-neutral-500" />
+                  <Layers className="size-3.5 text-amber-500" />
                   <span>Land Parcel Area (m²)</span>
                 </Label>
                 <Input
@@ -1241,7 +1241,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                     className="flex items-center justify-between py-4"
                   >
                     <div className="flex items-center gap-2.5">
-                      <div className="text-neutral-800 dark:text-neutral-200">
+                      <div className="text-amber-500 dark:text-amber-400">
                         <Icon className="size-5" />
                       </div>
                       <Label

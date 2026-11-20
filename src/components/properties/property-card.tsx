@@ -130,33 +130,41 @@ export function PropertyCard({
           {/* Specs Matrix */}
           <div className="mt-4 grid grid-cols-4 gap-2 border-y border-neutral-200 py-3 text-xs text-neutral-600 dark:border-neutral-800/80 dark:text-neutral-300">
             <div className="flex flex-col">
-              <span className="text-[10px] text-neutral-500 dark:text-neutral-400">Beds</span>
+              <span className="text-[10px] text-neutral-600 dark:text-neutral-300">
+                Beds
+              </span>
               <span className="mt-0.5 flex items-center gap-1 font-semibold text-neutral-900 dark:text-neutral-200">
-                <Bed className="size-3.5 text-neutral-400 dark:text-neutral-500" />
+                <Bed className="size-3.5 text-amber-400 dark:text-amber-500" />
                 {property.bedrooms}
               </span>
             </div>
 
             <div className="flex flex-col">
-              <span className="text-[10px] text-neutral-500 dark:text-neutral-400">Baths</span>
+              <span className="text-[10px] text-neutral-600 dark:text-neutral-300">
+                Baths
+              </span>
               <span className="mt-0.5 flex items-center gap-1 font-semibold text-neutral-900 dark:text-neutral-200">
-                <Bath className="size-3.5 text-neutral-400 dark:text-neutral-500" />
+                <Bath className="size-3.5 text-amber-400 dark:text-amber-500" />
                 {property.bathrooms}
               </span>
             </div>
 
             <div className="flex flex-col">
-              <span className="text-[10px] text-neutral-500 dark:text-neutral-400">Home Area</span>
+              <span className="text-[10px] text-neutral-600 dark:text-neutral-300">
+                Home Area
+              </span>
               <span className="mt-0.5 flex items-center gap-1 font-semibold text-neutral-900 dark:text-neutral-200">
-                <Maximize2 className="size-3.5 text-neutral-400 dark:text-neutral-500" />
+                <Maximize2 className="size-3.5 text-amber-400 dark:text-amber-500" />
                 {property.homeAreaSqM}m²
               </span>
             </div>
 
             <div className="flex flex-col">
-              <span className="text-[10px] text-neutral-500 dark:text-neutral-400">Land Area</span>
+              <span className="text-[10px] text-neutral-600 dark:text-neutral-300">
+                Land Area
+              </span>
               <span className="mt-0.5 flex items-center gap-1 font-semibold text-neutral-900 dark:text-neutral-200">
-                <Layers className="size-3.5 text-neutral-400 dark:text-neutral-500" />
+                <Layers className="size-3.5 text-amber-400 dark:text-amber-500" />
                 {property.landAreaSqM}m²
               </span>
             </div>

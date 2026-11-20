@@ -99,7 +99,7 @@ export function AdminOverview() {
                 "gap-1.5 border-neutral-200 bg-white text-xs text-neutral-800 transition-colors hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900/60 dark:text-neutral-200 dark:hover:bg-neutral-800/80 dark:hover:text-white"
               )}
             >
-              <Layers className="size-3.5 text-neutral-500 dark:text-neutral-400" />
+              <Layers className="size-3.5 text-amber-500 dark:text-amber-400" />
               Properties
             </Link>
 
@@ -112,7 +112,7 @@ export function AdminOverview() {
               )}
             >
               Public Catalog
-              <ExternalLink className="size-3 text-neutral-500 dark:text-neutral-400" />
+              <ExternalLink className="size-3 text-amber-500 dark:text-amber-400" />
             </Link>
 
             <Link
@@ -226,16 +226,16 @@ export function AdminOverview() {
                               <span className="max-w-[200px] truncate font-medium text-neutral-900 transition-colors group-hover:text-amber-600 dark:text-neutral-100 dark:group-hover:text-amber-300">
                                 {prop.title}
                               </span>
-                              <span className="truncate text-[11px] text-neutral-500">
+                              <span className="truncate text-[11px] text-neutral-500 dark:text-neutral-400">
                                 {prop.bhk ? `${prop.bhk} BHK • ` : ""}
                                 {prop.size || "Luxury Estate"}
                               </span>
                             </div>
                           </div>
                         </td>
-                        <td className="max-w-[150px] truncate px-3 py-3 text-neutral-600 dark:text-neutral-400">
+                        <td className="max-w-[150px] truncate px-3 py-3 text-neutral-600 dark:text-neutral-200">
                           <span className="flex items-center gap-1">
-                            <MapPin className="size-3 shrink-0 text-neutral-400 dark:text-neutral-500" />
+                            <MapPin className="size-3 shrink-0 text-amber-400 dark:text-amber-500" />
                             <span className="truncate">{prop.location}</span>
                           </span>
                         </td>
