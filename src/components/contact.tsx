@@ -94,7 +94,7 @@ const Contact = () => (
             <CardHeader className="gap-1">
               <CardTitle className="font-medium text-xl">Contact Us</CardTitle>
               <CardDescription className="text-base">
-                We'd love to hear from you. Please fill out this form.
+                We&apos;d love to hear from you. Please fill out this form.
               </CardDescription>
             </CardHeader>
             <CardContent className="mt-2">

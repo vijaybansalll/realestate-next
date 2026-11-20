@@ -41,40 +41,78 @@ export function PropertySpecsGrid({
   className,
 }: PropertySpecsGridProps) {
   // Ensure specs object exists with defaults from property fields
-  const specs: PropertySpecs = property.specs || {
-    homeAreaSqM: property.homeAreaSqM,
-    landAreaSqM: property.landAreaSqM,
-    bedrooms: property.bedrooms,
-    bathrooms: property.bathrooms,
-    livingRooms: Math.max(1, Math.floor(property.bedrooms / 2)),
-    pantry: property.bedrooms >= 3 ? "Yes (Butler's Pantry)" : false,
+  const specs: PropertySpecs = {
+    homeAreaSqM: property.specs?.homeAreaSqM ?? property.homeAreaSqM,
+    landAreaSqM: property.specs?.landAreaSqM ?? property.landAreaSqM,
+    bedrooms: property.specs?.bedrooms ?? property.bedrooms,
+    bathrooms: property.specs?.bathrooms ?? property.bathrooms,
+    livingRooms:
+      property.specs?.livingRooms ??
+      Math.max(1, Math.floor(property.bedrooms / 2)),
+    pantry:
+      property.specs?.pantry !== undefined
+        ? property.specs.pantry
+        : property.bedrooms >= 3
+          ? "Yes (Butler's Pantry)"
+          : false,
     alfrescoOutdoor:
-      property.features?.includes("Infinity Pool") || property.isLuxury
-        ? "Large alfresco + pool"
-        : "Yes (Outdoor Terrace)",
-    garage: property.garage,
-    garden: property.landAreaSqM > 500 ? "Yes (Landscaped Grounds)" : false,
+      property.specs?.alfrescoOutdoor !== undefined
+        ? property.specs.alfrescoOutdoor
+        : property.features?.includes("Infinity Pool") || property.isLuxury
+          ? "Large alfresco + pool"
+          : "Yes (Outdoor Terrace)",
+    garage: property.specs?.garage ?? property.garage,
+    garden:
+      property.specs?.garden !== undefined
+        ? property.specs.garden
+        : property.landAreaSqM > 500
+          ? "Yes (Landscaped Grounds)"
+          : false,
     pool:
-      property.features?.includes("Infinity Pool") ||
-      property.features?.includes("Lap Pool"),
-    wineCellar: property.features?.includes("Wine Cellar"),
-    smartHome: property.features?.includes("Smart Home"),
+      property.specs?.pool !== undefined
+        ? property.specs.pool
+        : property.features?.includes("Infinity Pool") ||
+          property.features?.includes("Lap Pool"),
+    wineCellar:
+      property.specs?.wineCellar !== undefined
+        ? property.specs.wineCellar
+        : property.features?.includes("Wine Cellar"),
+    smartHome:
+      property.specs?.smartHome !== undefined
+        ? property.specs.smartHome
+        : property.features?.includes("Smart Home"),
   };
 
   const parseBooleanOrString = (
     val: boolean | string | undefined
   ): { isYes: boolean; textDetail?: string } => {
-    if (typeof val === "boolean") {
-      return { isYes: val };
+    if (val === false) {
+      return { isYes: false };
+    }
+    if (val === true) {
+      return { isYes: true };
     }
     if (typeof val === "string") {
+      const trimmed = val.trim();
+      const lower = trimmed.toLowerCase();
+      if (
+        lower === "false" ||
+        lower === "no" ||
+        lower === "none" ||
+        lower === ""
+      ) {
+        return { isYes: false };
+      }
       const isYes =
-        val.toLowerCase().startsWith("yes") ||
-        val.toLowerCase().includes("large alfresco") ||
-        val.length > 0;
+        lower.startsWith("yes") ||
+        lower.includes("large alfresco") ||
+        trimmed.length > 0;
       return {
         isYes,
-        textDetail: val.replace(/^yes\s*\(?/i, "").replace(/\)$/, ""),
+        textDetail: trimmed
+          .replace(/^yes\s*\(?/i, "")
+          .replace(/\)$/, "")
+          .trim(),
       };
     }
     return { isYes: false };
@@ -239,7 +277,7 @@ export function PropertySpecsGrid({
                         <span>Yes</span>
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 text-sm font-medium text-neutral-400 dark:text-neutral-500">
+                      <span className="inline-flex items-center gap-1 text-sm font-medium text-red-400 dark:text-red-500">
                         <X className="size-4" />
                         <span>No</span>
                       </span>
