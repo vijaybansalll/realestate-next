@@ -137,7 +137,7 @@ export function StickyShowcase({
       >
         <div
           className={cn(
-            "relative h-[80vh] max-h-[560px] w-full max-w-[92vw] overflow-hidden rounded-2xl shadow-2xl sm:h-[70vh] sm:max-h-[640px] sm:rounded-3xl md:h-[75vh]",
+            "relative h-[80vh] max-h-[560px] w-full max-w-[92vw] overflow-hidden rounded-2xl sm:h-[70vh] sm:max-h-[640px] sm:rounded-3xl md:h-[75vh]",
             containerClassName
           )}
         >
@@ -149,7 +149,7 @@ export function StickyShowcase({
                 transform: i === 0 ? "none" : "translate3d(0, 100%, 0)",
               }}
               className={cn(
-                "sticky-card-item absolute inset-0 h-full w-full overflow-hidden rounded-2xl border border-neutral-100/10 bg-neutral-900 shadow-2xl shadow-black/80 will-change-transform sm:rounded-3xl",
+                "sticky-card-item absolute inset-0 h-full w-full overflow-hidden rounded-2xl bg-neutral-900 will-change-transform sm:rounded-3xl",
                 imageClassName
               )}
             >

@@ -212,7 +212,7 @@ export function PropertySpecsGrid({
       </div>
 
       {/* Grid of Specification Tiles */}
-      <div className="grid grid-cols-1 gap-x-8 divide-y-3 divide-solid divide-neutral-200 sm:grid-cols-2 dark:divide-neutral-800">
+      <div className="grid grid-cols-1 gap-x-8 divide-y divide-solid divide-neutral-200 sm:grid-cols-2 dark:divide-neutral-700">
         {specItems.map((item) => {
           const Icon = item.icon;
 
