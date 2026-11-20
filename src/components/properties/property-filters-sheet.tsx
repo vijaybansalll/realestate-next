@@ -321,7 +321,6 @@ export function PropertyFiltersSheet({
                   onValueChange={handleBhkChange}
                   min={0}
                   max={5}
-                  fill="#262626"
                 >
                   <AdaptiveStepperDecrement />
                   <AdaptiveStepperValue>
@@ -358,7 +357,6 @@ export function PropertyFiltersSheet({
                   onValueChange={(val) => onFilterChange("bathrooms", val)}
                   min={0}
                   max={6}
-                  fill="#262626"
                 >
                   <AdaptiveStepperDecrement />
                   <AdaptiveStepperValue>
