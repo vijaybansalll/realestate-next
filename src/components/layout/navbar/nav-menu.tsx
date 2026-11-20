@@ -9,21 +9,27 @@ import type { NavItem } from "@/types";
 interface NavMenuProps {
   className?: string;
   isScrolled?: boolean;
+  isLoggedIn?: boolean;
   items?: NavItem[];
 }
 
 export function NavMenu({
   className,
   isScrolled = false,
+  isLoggedIn = false,
   items = NAV_ITEMS,
 }: NavMenuProps) {
+  const displayItems = isLoggedIn
+    ? [...items, { title: "Admin", href: "/admin" }]
+    : items;
+
   return (
     <nav
       className={cn("flex items-center", className)}
       aria-label="Main Navigation"
     >
       <ul className="m-0 flex list-none items-center gap-1 p-0 lg:gap-2">
-        {items.map((item) => (
+        {displayItems.map((item) => (
           <li key={item.title}>
             <Link
               href={item.href}
@@ -34,7 +40,7 @@ export function NavMenu({
                   : "text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] hover:bg-white/15 hover:text-white active:bg-white/20"
               )}
             >
-              {item.title}
+              <span>{item.title}</span>
             </Link>
           </li>
         ))}
@@ -42,3 +48,5 @@ export function NavMenu({
     </nav>
   );
 }
+
+export default NavMenu;

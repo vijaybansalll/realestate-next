@@ -19,14 +19,20 @@ import { cn } from "@/lib/utils";
 
 interface NavigationSheetProps {
   isScrolled?: boolean;
+  isLoggedIn?: boolean;
   items?: NavItem[];
 }
 
 export function NavigationSheet({
   isScrolled = false,
+  isLoggedIn = false,
   items = NAV_ITEMS,
 }: NavigationSheetProps) {
   const [open, setOpen] = useState(false);
+
+  const displayItems = isLoggedIn
+    ? [...items, { title: "Admin", href: "/admin" }]
+    : items;
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -54,7 +60,7 @@ export function NavigationSheet({
 
       <SheetContent
         side="right"
-        className="flex h-full w-[85%] max-w-xs flex-col justify-between border-l border-neutral-200 bg-white/98 px-5 py-6 text-neutral-900 backdrop-blur-2xl dark:border-neutral-800 dark:bg-neutral-950/98 dark:text-neutral-100"
+        className="flex h-full w-[85%] max-w-xs flex-col justify-between overflow-y-auto border-l border-neutral-200 bg-white/98 px-5 py-6 text-neutral-900 backdrop-blur-2xl dark:border-neutral-800 dark:bg-neutral-950/98 dark:text-neutral-100"
       >
         <div>
           <div className="flex items-center justify-between border-b border-neutral-200/80 pr-8 pb-5 dark:border-neutral-800/80">
@@ -65,10 +71,10 @@ export function NavigationSheet({
           </div>
 
           <nav
-            className="mt-8 flex flex-col gap-1.5"
+            className="mt-6 flex flex-col gap-1.5"
             aria-label="Mobile Navigation"
           >
-            {items.map((item) => (
+            {displayItems.map((item) => (
               <Link
                 key={item.title}
                 href={item.href}
@@ -97,3 +103,5 @@ export function NavigationSheet({
     </Sheet>
   );
 }
+
+export default NavigationSheet;

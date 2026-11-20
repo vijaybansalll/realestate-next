@@ -19,7 +19,10 @@ export function AppHeader({ pathname }: { pathname?: string }) {
   } else if (!activeItem) {
     activeItem = navLinks.find(
       (item) =>
-        item.path && pathname?.startsWith(item.path) && item.path !== "/admin"
+        item.path &&
+        item.path !== "/" &&
+        item.path !== "/admin" &&
+        pathname?.startsWith(item.path)
     ) || { title: "Overview", icon: <LayoutGridIcon className="size-4" /> };
   }
 

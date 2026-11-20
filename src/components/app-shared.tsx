@@ -4,6 +4,7 @@ import {
   BuildingIcon,
   PlusCircleIcon,
   LayersIcon,
+  HomeIcon,
 } from "lucide-react";
 
 export type SidebarNavItem = {
@@ -43,6 +44,16 @@ export const navGroups: SidebarNavGroup[] = [
             icon: <PlusCircleIcon className="size-3.5" />,
           },
         ],
+      },
+    ],
+  },
+  {
+    label: "Website",
+    items: [
+      {
+        title: "Home Page",
+        path: "/",
+        icon: <HomeIcon className="size-4" />,
       },
     ],
   },

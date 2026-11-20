@@ -8,11 +8,17 @@ import { useLenis } from "lenis/react";
 import { Logo } from "@/components/layout/logo";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { checkAuthStatus } from "@/app/(auth)/login/actions";
 import { NavMenu } from "./nav-menu";
 import { NavigationSheet } from "./navigation-sheet";
 import { cn } from "@/lib/utils";
 
-function NavbarContent() {
+interface NavbarProps {
+  initialAuthenticated?: boolean;
+}
+
+function NavbarContent({ initialAuthenticated = false }: NavbarProps) {
+  const [isLoggedIn, setIsLoggedIn] = useState(initialAuthenticated);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
@@ -31,6 +37,19 @@ function NavbarContent() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Re-verify authentication status on mount and when pathname changes
+  useEffect(() => {
+    let isMounted = true;
+    checkAuthStatus().then((authed) => {
+      if (isMounted) {
+        setIsLoggedIn(authed);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [pathname]);
 
   const isHome = pathname === "/";
   const isTransparent = isHome && !isScrolled;
@@ -65,7 +84,7 @@ function NavbarContent() {
 
         {/* Desktop Navigation Menu */}
         <div className="hidden items-center justify-center md:flex">
-          <NavMenu isScrolled={!isTransparent} />
+          <NavMenu isScrolled={!isTransparent} isLoggedIn={isLoggedIn} />
         </div>
 
         {/* Right CTA / Mobile Trigger */}
@@ -84,7 +103,10 @@ function NavbarContent() {
 
           {/* Mobile Navigation Sheet */}
           <div className="md:hidden">
-            <NavigationSheet isScrolled={!isTransparent} />
+            <NavigationSheet
+              isScrolled={!isTransparent}
+              isLoggedIn={isLoggedIn}
+            />
           </div>
         </div>
       </div>
@@ -92,7 +114,7 @@ function NavbarContent() {
   );
 }
 
-export function Navbar() {
+export function Navbar({ initialAuthenticated = false }: NavbarProps) {
   return (
     <Suspense
       fallback={
@@ -114,7 +136,7 @@ export function Navbar() {
         </header>
       }
     >
-      <NavbarContent />
+      <NavbarContent initialAuthenticated={initialAuthenticated} />
     </Suspense>
   );
 }

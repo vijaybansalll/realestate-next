@@ -44,7 +44,10 @@ export function NavGroup({
         {items.map((item) => {
           const isItemActive =
             item.path === pathname ||
-            (item.path !== "/admin" && pathname?.startsWith(item.path || ""));
+            (item.path !== "/admin" &&
+              item.path !== "/" &&
+              Boolean(item.path) &&
+              pathname?.startsWith(item.path || ""));
 
           const hasActiveSubItem = item.subItems?.some(
             (subItem) => subItem.path === pathname
@@ -55,6 +58,7 @@ export function NavGroup({
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton
                   isActive={isItemActive}
+                  tooltip={item.title}
                   render={
                     <Link
                       href={item.path || "#"}
@@ -81,6 +85,7 @@ export function NavGroup({
                 render={
                   <SidebarMenuButton
                     isActive={isItemActive}
+                    tooltip={item.title}
                     className="cursor-pointer"
                   />
                 }
