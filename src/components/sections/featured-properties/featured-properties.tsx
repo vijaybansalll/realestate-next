@@ -25,7 +25,16 @@ interface FeaturedPropertiesProps {
 export function FeaturedProperties({
   properties: propList,
 }: FeaturedPropertiesProps) {
-  const [properties, setProperties] = useState<Property[]>(() => propList || getInitialProperties());
+  const getFeaturedList = (list: Property[]) => {
+    const featured = list.filter((p) => Boolean(p.featured));
+    return featured.length > 0 ? featured : list;
+  };
+
+  const [properties, setProperties] = useState<Property[]>(() => {
+    if (propList) return propList;
+    const initial = getInitialProperties();
+    return getFeaturedList(initial);
+  });
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(
     null
   );
@@ -35,21 +44,21 @@ export function FeaturedProperties({
       let isMounted = true;
       fetchProperties().then((res) => {
         if (isMounted && res.data) {
-          setProperties(res.data);
+          setProperties(getFeaturedList(res.data));
         }
       });
 
       // Reactive update: update carousel cards when properties are added, edited, or deleted
       const unsubscribe = subscribeToProperties((updatedList) => {
         if (isMounted) {
-          setProperties(updatedList);
+          setProperties(getFeaturedList(updatedList));
         }
       });
 
       const handleFocus = () => {
         fetchProperties().then((res) => {
           if (isMounted && res.data) {
-            setProperties(res.data);
+            setProperties(getFeaturedList(res.data));
           }
         });
       };

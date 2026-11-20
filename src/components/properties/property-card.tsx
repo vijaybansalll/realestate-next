@@ -81,7 +81,14 @@ export function PropertyCard({
               {property.purpose === "buy" ? "For Sale" : "For Lease"}
             </span>
 
-            {property.isLuxury && (
+            {property.featured && (
+              <span className="flex items-center gap-1 rounded-full border border-amber-400/40 bg-amber-400/20 px-2.5 py-1 text-xs font-semibold text-amber-300 shadow-sm backdrop-blur-md">
+                <Sparkles className="size-3 text-amber-300" />
+                <span>Featured</span>
+              </span>
+            )}
+
+            {property.isLuxury && !property.featured && (
               <span className="flex items-center gap-1 rounded-full border border-amber-400/30 bg-amber-400/15 px-2.5 py-1 text-xs font-semibold text-amber-300 shadow-sm backdrop-blur-md">
                 <Sparkles className="size-3 text-amber-300" />
                 <span>Luxury</span>

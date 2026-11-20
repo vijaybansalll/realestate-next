@@ -459,7 +459,19 @@ export function PropertyFiltersSheet({
             </div>
           </div>
 
-          {/* 7. Luxury Only Switch */}
+          {/* 7. Featured & Luxury Toggles */}
+          <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-50/80 p-4 dark:border-neutral-800 dark:bg-neutral-900/40">
+            <span className="text-xs font-medium text-neutral-900 dark:text-neutral-200">
+              Featured Properties Only
+            </span>
+            <Switch
+              checked={filters.featuredOnly}
+              onCheckedChange={(checked) =>
+                onFilterChange("featuredOnly", Boolean(checked))
+              }
+            />
+          </div>
+
           <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-50/80 p-4 dark:border-neutral-800 dark:bg-neutral-900/40">
             <span className="text-xs font-medium text-neutral-900 dark:text-neutral-200">
               Luxury Portfolio Only

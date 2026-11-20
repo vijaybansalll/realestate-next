@@ -378,8 +378,9 @@ export async function fetchProperties(): Promise<{
     }
   }
 
+  const currentList = getInitialProperties();
   return {
-    data: inMemoryProperties,
+    data: currentList,
     isLiveSupabase: false,
   };
 }
@@ -406,7 +407,8 @@ export async function fetchPropertyById(
     }
   }
 
-  const found = inMemoryProperties.find((p) => p.id === id) || null;
+  const currentList = getInitialProperties();
+  const found = currentList.find((p) => p.id === id) || null;
   return { data: found, isLiveSupabase: false };
 }
 
@@ -440,25 +442,29 @@ export async function createProperty(
 
       if (error) {
         console.warn("Supabase create failed, saving to local state:", error.message);
-        const updated = [newProperty, ...inMemoryProperties.filter((p) => p.id !== newProperty.id)];
+        const currentList = getInitialProperties();
+        const updated = [newProperty, ...currentList.filter((p) => p.id !== newProperty.id)];
         notifyPropertiesChanged(updated);
         return { data: newProperty, isLiveSupabase: false, error: error.message };
       } else if (data) {
         const saved = mapRowToProperty(data);
-        const updated = [saved, ...inMemoryProperties.filter((p) => p.id !== saved.id)];
+        const currentList = getInitialProperties();
+        const updated = [saved, ...currentList.filter((p) => p.id !== saved.id)];
         notifyPropertiesChanged(updated);
         return { data: saved, isLiveSupabase: true };
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       console.warn("Supabase insert exception:", message);
-      const updated = [newProperty, ...inMemoryProperties.filter((p) => p.id !== newProperty.id)];
+      const currentList = getInitialProperties();
+      const updated = [newProperty, ...currentList.filter((p) => p.id !== newProperty.id)];
       notifyPropertiesChanged(updated);
       return { data: newProperty, isLiveSupabase: false, error: message };
     }
   }
 
-  const updated = [newProperty, ...inMemoryProperties.filter((p) => p.id !== newProperty.id)];
+  const currentList = getInitialProperties();
+  const updated = [newProperty, ...currentList.filter((p) => p.id !== newProperty.id)];
   notifyPropertiesChanged(updated);
   return { data: newProperty, isLiveSupabase: false, error: "Supabase client not configured" };
 }
@@ -493,7 +499,8 @@ export async function updateProperty(
         dbError = error.message;
       } else if (data) {
         const updated = mapRowToProperty(data);
-        const updatedList = inMemoryProperties.map((p) => (p.id === id ? updated : p));
+        const currentList = getInitialProperties();
+        const updatedList = currentList.map((p) => (p.id === id ? updated : p));
         notifyPropertiesChanged(updatedList);
         return { data: updated, isLiveSupabase: true };
       }
@@ -504,12 +511,15 @@ export async function updateProperty(
     }
   }
 
-  // Fallback to in-memory state update
-  const updatedList = inMemoryProperties.map((p) => {
+  // Fallback to local state update
+  const currentList = getInitialProperties();
+  const updatedList = currentList.map((p) => {
     if (p.id === id) {
       return {
         ...p,
         ...updates,
+        featured: updates.featured !== undefined ? Boolean(updates.featured) : p.featured,
+        isLuxury: updates.isLuxury !== undefined ? Boolean(updates.isLuxury) : p.isLuxury,
         image: updates.image || p.image,
         images: updates.images || p.images || [updates.image || p.image],
         formattedPrice:

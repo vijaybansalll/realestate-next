@@ -249,6 +249,8 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
             setFormData({
               ...propData,
+              featured: Boolean(propData.featured),
+              isLuxury: Boolean(propData.isLuxury),
               images: existingImages,
               image: propData.image || existingImages[0] || "",
               specs: existingSpecs,
@@ -460,6 +462,8 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
       const payload: Partial<Property> = {
         ...formData,
+        featured: Boolean(formData.featured),
+        isLuxury: Boolean(formData.isLuxury),
         specs: specsData,
         image: coverImage,
         images:
@@ -1123,9 +1127,14 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
             <CardContent className="gap-0 divide-y divide-solid divide-neutral-200 dark:divide-neutral-700">
               <div className="flex items-center justify-between py-4">
-                <p className="text-sm font-medium text-neutral-900 dark:text-neutral-200">
-                  Luxury Designation
-                </p>
+                <div>
+                  <p className="text-sm font-medium text-neutral-900 dark:text-neutral-200">
+                    Luxury Designation
+                  </p>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                    Applies the Luxury badge across property listings.
+                  </p>
+                </div>
 
                 <Switch
                   checked={Boolean(formData.isLuxury)}
@@ -1136,9 +1145,14 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
               </div>
 
               <div className="flex items-center justify-between py-4">
-                <p className="text-sm font-medium text-neutral-900 dark:text-neutral-200">
-                  Featured Showcase
-                </p>
+                <div>
+                  <p className="text-sm font-medium text-neutral-900 dark:text-neutral-200">
+                    Featured Showcase
+                  </p>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                    Features this estate in the homepage Featured Residences carousel.
+                  </p>
+                </div>
                 <Switch
                   checked={Boolean(formData.featured)}
                   onCheckedChange={(checked) =>

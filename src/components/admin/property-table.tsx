@@ -43,7 +43,12 @@ export function PropertyTable({
 
     const matchesPurpose =
       purposeFilter === "all" || p.purpose === purposeFilter;
-    const matchesType = typeFilter === "all" || p.type === typeFilter;
+    const matchesType =
+      typeFilter === "all"
+        ? true
+        : typeFilter === "featured"
+          ? Boolean(p.featured)
+          : p.type === typeFilter;
 
     return matchesSearch && matchesPurpose && matchesType;
   });
@@ -111,7 +116,7 @@ export function PropertyTable({
 
           {/* Type Filter */}
           <div className="inline-flex rounded-lg border border-neutral-200 bg-neutral-100 p-1 dark:border-neutral-800 dark:bg-neutral-950">
-            {["all", "estate", "villa", "penthouse"].map((t) => (
+            {["all", "featured", "estate", "villa", "penthouse"].map((t) => (
               <button
                 type="button"
                 key={t}
@@ -122,7 +127,7 @@ export function PropertyTable({
                     : "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200"
                 }`}
               >
-                {t}
+                {t === "all" ? "All Types" : t}
               </button>
             ))}
           </div>
@@ -203,6 +208,14 @@ export function PropertyTable({
                       >
                         {property.purpose === "buy" ? "For Sale" : "For Lease"}
                       </Badge>
+                      {property.featured && (
+                        <Badge
+                          variant="secondary"
+                          className="inline-flex items-center gap-1 border-amber-500/30 bg-amber-500/15 px-1.5 py-0 text-[9px] font-semibold text-amber-700 sm:text-[10px] dark:border-amber-400/30 dark:bg-amber-400/15 dark:text-amber-300"
+                        >
+                          <SparklesIcon className="size-2.5 text-amber-500 dark:text-amber-400" /> Featured
+                        </Badge>
+                      )}
                       {property.isLuxury && (
                         <Badge
                           variant="secondary"

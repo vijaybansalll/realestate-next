@@ -215,6 +215,7 @@ export function usePropertyFilters(initial = INITIAL_FILTERS) {
       filters.location !== "all",
       filters.bathrooms > 0,
       filters.luxuryOnly,
+      filters.featuredOnly,
       filters.minBudget > 0,
       filters.purpose === "rent"
         ? filters.maxBudget < 50000
@@ -283,6 +284,14 @@ export function usePropertyFilters(initial = INITIAL_FILTERS) {
         id: "luxuryOnly",
         label: "Luxury Only",
         onRemove: () => handleFilterChange("luxuryOnly", false),
+      });
+    }
+
+    if (filters.featuredOnly) {
+      chips.push({
+        id: "featuredOnly",
+        label: "Featured Only",
+        onRemove: () => handleFilterChange("featuredOnly", false),
       });
     }
 
