@@ -68,6 +68,7 @@ export function PropertyInquiryModal({
           propertyTitle: property.title,
           propertyLocation: property.location,
           propertyPrice: property.formattedPrice,
+          propertyImage: property.image || property.images?.[0],
           source: "property-inquiry-modal",
         }),
       });

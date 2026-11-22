@@ -49,6 +49,7 @@ export function PropertyDetailInquiryForm({
           propertyTitle: property.title,
           propertyLocation: property.location,
           propertyPrice: property.formattedPrice,
+          propertyImage: property.image || property.images?.[0],
           source: "property-detail-page",
         }),
       });

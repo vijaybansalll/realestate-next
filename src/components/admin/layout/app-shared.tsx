@@ -5,6 +5,7 @@ import {
   PlusCircleIcon,
   LayersIcon,
   HomeIcon,
+  MailIcon,
 } from "lucide-react";
 
 export type SidebarNavItem = {
@@ -44,6 +45,11 @@ export const navGroups: SidebarNavGroup[] = [
             icon: <PlusCircleIcon className="size-3.5" />,
           },
         ],
+      },
+      {
+        title: "Email Templates",
+        path: "/admin/emails",
+        icon: <MailIcon className="size-4" />,
       },
     ],
   },

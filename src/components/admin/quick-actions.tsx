@@ -21,6 +21,7 @@ import {
   CompassIcon,
   HomeIcon,
   ChevronRightIcon,
+  MailIcon,
 } from "lucide-react";
 
 const actions = [
@@ -35,6 +36,12 @@ const actions = [
     description: "Full CRUD operations and inventory.",
     href: "/admin/properties",
     icon: <BuildingIcon aria-hidden="true" className="text-blue-400" />,
+  },
+  {
+    title: "Email Templates & Communications",
+    description: "Preview & test minimal branded concierge emails.",
+    href: "/admin/emails",
+    icon: <MailIcon aria-hidden="true" className="text-amber-500" />,
   },
   {
     title: "Public Properties Catalog",
