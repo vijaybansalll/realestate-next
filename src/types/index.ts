@@ -84,6 +84,8 @@ export interface ShowcaseCard {
 export interface StatItem {
   value: string;
   label: string;
+  subtext?: string;
+  icon?: string;
 }
 
 export interface FooterLink {

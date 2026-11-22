@@ -11,7 +11,7 @@ import { PORTFOLIO_GALLERY_ITEMS } from "@/data";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-neutral-50 font-sans text-neutral-900 transition-colors duration-200 dark:bg-neutral-950 dark:text-neutral-100 selection:bg-amber-500 selection:text-neutral-950">
+    <main className="relative min-h-screen bg-neutral-50 font-sans text-neutral-900 transition-colors duration-200 selection:bg-amber-500 selection:text-neutral-950 dark:bg-neutral-950 dark:text-neutral-100">
       <HouseWalkthrough />
 
       <div className="container mx-auto">
@@ -20,13 +20,13 @@ export default function Home() {
           className="mx-auto max-w-7xl scroll-mt-24 px-4 py-12 sm:px-6 sm:py-20 lg:px-8"
         >
           <div className="mb-8 text-center sm:mb-12">
-            <span className="text-xs font-semibold tracking-[0.25em] text-amber-500 dark:text-amber-400 uppercase">
+            <span className="text-xs font-semibold tracking-[0.25em] text-amber-500 uppercase dark:text-amber-400">
               Curated Portfolio
             </span>
-            <h2 className="mt-3 text-2xl font-medium tracking-tight text-neutral-900 dark:text-neutral-100 sm:text-4xl md:text-5xl">
+            <h2 className="mt-3 text-2xl font-medium tracking-tight text-neutral-900 sm:text-4xl md:text-5xl dark:text-neutral-100">
               Featured Architectural Estates
             </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-xs text-neutral-600 dark:text-neutral-400 sm:mt-4 sm:text-base sm:text-sm">
+            <p className="mx-auto mt-3 max-w-2xl text-xs text-neutral-600 sm:mt-4 sm:text-base sm:text-sm dark:text-neutral-400">
               Explore our handpicked collection of modern residences, prime
               coastal retreats, and architectural masterpieces.
             </p>
@@ -62,14 +62,14 @@ export default function Home() {
         <FeaturedProperties />
 
         <section id="showcase" className="relative w-full py-8 sm:py-12">
-          <div className="mb-4 px-4 text-center">
-            <span className="text-xs font-semibold tracking-[0.25em] text-amber-500 dark:text-amber-400 uppercase">
+          <div className="mb-0 px-4 text-center">
+            <span className="text-xs font-semibold tracking-[0.25em] text-amber-500 uppercase dark:text-amber-400">
               Interactive Showcase
             </span>
-            <h2 className="mt-3 text-2xl font-medium tracking-tight text-neutral-900 dark:text-neutral-100 sm:text-4xl md:text-5xl">
+            <h2 className="mt-3 text-2xl font-medium tracking-tight text-neutral-900 sm:text-4xl md:text-5xl dark:text-neutral-100">
               Architectural Perspectives
             </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-xs text-neutral-600 dark:text-neutral-400 sm:mt-4 sm:text-sm md:text-base">
+            <p className="mx-auto mt-3 max-w-2xl text-xs text-neutral-600 sm:mt-4 sm:text-sm md:text-base dark:text-neutral-400">
               Scroll to explore our layered portfolio of bespoke residences and
               transformations.
             </p>

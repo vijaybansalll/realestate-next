@@ -261,7 +261,7 @@ export function PropertySpecsGrid({
             >
               {/* Header: Icon + Title */}
               <div className="flex items-center gap-3">
-                <div className="flex shrink-0 items-center justify-center text-neutral-900 dark:text-neutral-100">
+                <div className="flex shrink-0 items-center justify-center text-amber-600 dark:text-amber-400">
                   <Icon className="size-5" />
                 </div>
                 <div className="min-w-0 flex-1">

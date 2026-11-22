@@ -71,13 +71,14 @@ export default async function PropertyDetailPage({ params }: PageProps) {
 
   // Related properties (same purpose or type, excluding current)
   const allPropsRes = await fetchProperties();
-  const allProps = allPropsRes.data.length > 0 ? allPropsRes.data : ALL_PROPERTIES;
-  const relatedProperties = allProps.filter(
-    (p) => p.id !== property.id && p.purpose === property.purpose
-  ).slice(0, 3);
+  const allProps =
+    allPropsRes.data.length > 0 ? allPropsRes.data : ALL_PROPERTIES;
+  const relatedProperties = allProps
+    .filter((p) => p.id !== property.id && p.purpose === property.purpose)
+    .slice(0, 3);
 
   return (
-    <main className="min-h-screen bg-neutral-50 pt-24 pb-20 text-neutral-900 transition-colors duration-200 dark:bg-neutral-950 dark:text-neutral-100 selection:bg-amber-500 selection:text-neutral-950">
+    <main className="min-h-screen bg-neutral-50 pt-24 pb-20 text-neutral-900 transition-colors duration-200 selection:bg-amber-500 selection:text-neutral-950 dark:bg-neutral-950 dark:text-neutral-100">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Navigation & Breadcrumb */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
@@ -90,7 +91,10 @@ export default async function PropertyDetailPage({ params }: PageProps) {
           </Link>
 
           <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
-            <Link href="/" className="transition-colors hover:text-neutral-900 dark:hover:text-amber-400">
+            <Link
+              href="/"
+              className="transition-colors hover:text-neutral-900 dark:hover:text-amber-400"
+            >
               Home
             </Link>
             <span>/</span>
@@ -248,27 +252,13 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                   </div>
                 </div>
 
-                <div>
-                  <label className="mb-1 block text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                    Preferred Viewing Date
-                  </label>
-                  <div className="relative">
-                    <Calendar className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400 dark:text-neutral-500" />
-                    <input
-                      type="date"
-                      className="w-full rounded-xl border border-neutral-200 bg-white py-2.5 pr-3 pl-9 text-xs text-neutral-900 placeholder:text-neutral-400 focus:border-amber-500 focus:outline-none dark:border-neutral-800 dark:bg-neutral-950/80 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:border-amber-400"
-                    />
-                  </div>
-                </div>
-
                 <Button
                   type="button"
                   variant="primary"
                   size="lg"
                   className="mt-2 w-full"
                 >
-                  <span>Book Private Tour</span>
-                  <ArrowUpRight className="ml-1 size-4" />
+                  <span>Send</span>
                 </Button>
               </form>
             </div>

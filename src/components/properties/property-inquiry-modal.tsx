@@ -62,7 +62,7 @@ export function PropertyInquiryModal({
         side="right"
         className="w-full max-w-lg overflow-y-auto border-l border-neutral-200 bg-white p-6 text-neutral-900 sm:max-w-md dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100"
       >
-        <SheetHeader className="mb-5 border-b border-neutral-200/80 pb-4 dark:border-neutral-800/80">
+        <SheetHeader className="mb-5 border-b border-neutral-200/80 p-0 pb-4 dark:border-neutral-800/80">
           <SheetTitle className="text-base font-semibold text-neutral-900 dark:text-neutral-100">
             Private Estate Inquiry
           </SheetTitle>
@@ -167,23 +167,6 @@ export function PropertyInquiryModal({
 
               <div>
                 <label className="mb-1 block text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                  Preferred Viewing Date
-                </label>
-                <div className="relative">
-                  <Calendar className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400 dark:text-neutral-500" />
-                  <input
-                    type="date"
-                    value={formData.date}
-                    onChange={(e) =>
-                      setFormData({ ...formData, date: e.target.value })
-                    }
-                    className="w-full rounded-xl border border-neutral-200 bg-white py-2.5 pr-3 pl-9 text-xs text-neutral-900 placeholder:text-neutral-400 focus:border-amber-500 focus:outline-none dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:border-amber-400"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="mb-1 block text-xs font-medium text-neutral-700 dark:text-neutral-300">
                   Special Inquiries or Confidential Requirements
                 </label>
                 <div className="relative">
@@ -207,12 +190,8 @@ export function PropertyInquiryModal({
                   size="lg"
                   className="w-full"
                 >
-                  Request Private Tour
+                  Send
                 </Button>
-                <p className="mt-2 text-center text-[10px] text-neutral-500 dark:text-neutral-400">
-                  Strict client confidentiality assured. NDA available on
-                  request.
-                </p>
               </div>
             </form>
           </div>

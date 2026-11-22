@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useState, useMemo } from "react";
 import { ESTATE_STATS } from "@/data";
 import type { StatItem } from "@/types";
 
@@ -5,9 +8,119 @@ interface StatsProps {
   stats?: StatItem[];
 }
 
-export function Stats({ stats = ESTATE_STATS }: StatsProps) {
+function parseStatValue(raw: string) {
+  const match = raw.match(/^([^0-9.]*)([0-9]+(?:\.[0-9]+)?)(.*)$/);
+  if (!match) {
+    return { prefix: "", target: 0, decimals: 0, suffix: raw };
+  }
+
+  const prefix = match[1] || "";
+  const numStr = match[2] || "0";
+  const suffix = match[3] || "";
+  const decimals = numStr.includes(".") ? numStr.split(".")[1].length : 0;
+  const target = parseFloat(numStr);
+
+  return { prefix, target, decimals, suffix };
+}
+
+function AnimatedNumber({
+  value,
+  isVisible,
+  index,
+}: {
+  value: string;
+  isVisible: boolean;
+  index: number;
+}) {
+  const { prefix, target, decimals, suffix } = useMemo(
+    () => parseStatValue(value),
+    [value]
+  );
+
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const [currentVal, setCurrentVal] = useState(() =>
+    prefersReducedMotion ? target : 0
+  );
+
+  useEffect(() => {
+    if (!isVisible || prefersReducedMotion) return;
+
+    let startTime: number | null = null;
+    let frameId: number;
+    const duration = 1600;
+    const delay = index * 120;
+
+    const animate = (timestamp: number) => {
+      if (startTime === null) startTime = timestamp;
+      const elapsed = timestamp - startTime - delay;
+
+      if (elapsed < 0) {
+        frameId = requestAnimationFrame(animate);
+        return;
+      }
+
+      const progress = Math.min(1, elapsed / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+
+      setCurrentVal(target * eased);
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(animate);
+      } else {
+        setCurrentVal(target);
+      }
+    };
+
+    frameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameId);
+  }, [isVisible, target, index, prefersReducedMotion]);
+
+  const display =
+    decimals > 0 ? currentVal.toFixed(decimals) : Math.round(currentVal);
+
   return (
-    <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-20">
+    <span className="tabular-nums">
+      {prefix}
+      {display}
+      {suffix}
+    </span>
+  );
+}
+
+export function Stats({ stats = ESTATE_STATS }: StatsProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry?.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section
+      ref={sectionRef}
+      className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-20"
+    >
       <h2 className="text-center text-2xl font-medium tracking-tight text-balance text-neutral-900 dark:text-neutral-100 sm:text-3xl md:text-4xl">
         Proven Architectural Distinction
       </h2>
@@ -24,7 +137,11 @@ export function Stats({ stats = ESTATE_STATS }: StatsProps) {
             }`}
           >
             <span className="text-3xl font-medium text-neutral-900 dark:text-neutral-100 sm:text-4xl md:text-5xl">
-              {item.value}
+              <AnimatedNumber
+                value={item.value}
+                isVisible={isVisible}
+                index={index}
+              />
             </span>
             <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400 sm:mt-4 sm:text-base md:text-lg">
               {item.label}

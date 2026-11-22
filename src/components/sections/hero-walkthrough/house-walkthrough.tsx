@@ -153,12 +153,21 @@ export function HouseWalkthrough() {
         {/* Initial Hero Content: Just ONE Title and a Short Description */}
         <div
           ref={heroContentRef}
-          className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-6 text-center will-change-transform select-none"
+          className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 text-center will-change-transform select-none"
         >
-          <div className="mx-auto flex max-w-4xl flex-col items-center">
-            <h1 className="px-2 font-sans text-4xl leading-[1.08] font-medium tracking-tight text-white drop-shadow-[0_12px_36px_rgba(0,0,0,0.9)] sm:text-6xl md:text-7xl lg:text-8xl">
+          <div className="mx-auto flex max-w-4xl flex-col items-center px-2">
+            <h1 className="font-sans text-3xl min-[400px]:text-4xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.1] sm:leading-[1.08] font-medium tracking-tight text-white drop-shadow-[0_12px_36px_rgba(0,0,0,0.9)]">
               Crafting Luxury Living Experiences
             </h1>
+
+            <p className="mt-3 sm:mt-5 max-w-xl text-xs min-[400px]:text-sm sm:text-base md:text-lg text-neutral-300 drop-shadow-md leading-relaxed">
+              An interactive 3D architectural walkthrough. Scroll to step inside.
+            </p>
+
+            <div className="mt-6 sm:mt-8 flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-medium text-neutral-400">
+              <ChevronDown className="h-3.5 w-3.5 sm:h-4 sm:w-4 animate-bounce text-amber-500" />
+              <span>Scroll to explore</span>
+            </div>
           </div>
         </div>
       </div>
