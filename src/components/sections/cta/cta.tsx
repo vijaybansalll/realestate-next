@@ -14,7 +14,7 @@ export function CTA() {
       <div className="relative mx-auto max-w-5xl overflow-hidden rounded-2xl border border-neutral-200 bg-white/90 p-6 shadow-xl backdrop-blur-xl sm:p-10 md:p-14 dark:border-neutral-800 dark:bg-neutral-900/90 dark:shadow-2xl">
         {/* Aurora Silk Fade Gradient */}
         <div
-          className="absolute inset-0 z-0 opacity-25 dark:opacity-25 opacity-40"
+          className="absolute inset-0 z-0 opacity-25 opacity-40 dark:opacity-25"
           style={{
             background:
               "linear-gradient(150deg, #FFAB91 0%, #FFCDD2 20%, #FCE4EC 40%, #e2daf1 60%, #b39ddb 80%, #8b6ac8 100%)",
@@ -71,10 +71,10 @@ export function CTA() {
         </div>
 
         <div className="relative isolate">
-          <h2 className="text-2xl font-medium tracking-tight text-balance text-neutral-900 dark:text-neutral-100 sm:text-3xl md:text-4xl md:leading-tight lg:text-[2.75rem]">
+          <h2 className="text-2xl font-medium tracking-tight text-balance text-neutral-900 sm:text-3xl md:text-4xl md:leading-tight lg:text-[2.75rem] dark:text-neutral-100">
             Turn your architectural vision into reality
           </h2>
-          <p className="mt-3 text-sm/relaxed text-balance text-neutral-600 dark:text-neutral-300 sm:mt-4 sm:text-base/relaxed md:text-xl/normal">
+          <p className="mt-3 text-sm/relaxed text-balance text-neutral-600 sm:mt-4 sm:text-base/relaxed md:text-xl/normal dark:text-neutral-300">
             Connect with our private client advisory team to schedule an
             exclusive viewing or commission a bespoke estate tailored to your
             lifestyle.
@@ -84,7 +84,7 @@ export function CTA() {
               variant="primary"
               size="lg"
               className="w-full sm:w-auto"
-              render={<Link href="#contact" />}
+              render={<Link href="/contact-us" />}
             >
               <span>Schedule Private Tour</span>
               <ArrowUpRight className="ml-1 size-4" />

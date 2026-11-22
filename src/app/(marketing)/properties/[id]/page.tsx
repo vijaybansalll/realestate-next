@@ -6,9 +6,6 @@ import {
   Sparkles,
   ArrowLeft,
   Calendar,
-  Phone,
-  Mail,
-  User,
   ArrowUpRight,
 } from "lucide-react";
 import { ALL_PROPERTIES } from "@/data/properties";
@@ -17,6 +14,7 @@ import { siteConfig } from "@/config/site";
 import { PropertyGridGallery } from "@/components/properties/property-grid-gallery";
 import { PropertySpecsGrid } from "@/components/properties/property-specs-grid";
 import { PropertyCard } from "@/components/properties/property-card";
+import { PropertyDetailInquiryForm } from "@/components/properties/property-detail-inquiry-form";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -209,58 +207,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
               </div>
 
               {/* Inquiry Form */}
-              <form className="mt-5 space-y-3.5">
-                <div>
-                  <label className="mb-1 block text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                    Full Name
-                  </label>
-                  <div className="relative">
-                    <User className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400 dark:text-neutral-500" />
-                    <input
-                      type="text"
-                      placeholder="Sir / Lady Harrison"
-                      className="w-full rounded-xl border border-neutral-200 bg-white py-2.5 pr-3 pl-9 text-xs text-neutral-900 placeholder:text-neutral-400 focus:border-amber-500 focus:outline-none dark:border-neutral-800 dark:bg-neutral-950/80 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:border-amber-400"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                    Email Address
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400 dark:text-neutral-500" />
-                    <input
-                      type="email"
-                      placeholder="harrison@estate-family.com"
-                      className="w-full rounded-xl border border-neutral-200 bg-white py-2.5 pr-3 pl-9 text-xs text-neutral-900 placeholder:text-neutral-400 focus:border-amber-500 focus:outline-none dark:border-neutral-800 dark:bg-neutral-950/80 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:border-amber-400"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                    Phone Number
-                  </label>
-                  <div className="relative">
-                    <Phone className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400 dark:text-neutral-500" />
-                    <input
-                      type="tel"
-                      placeholder="+1 (555) 019-2834"
-                      className="w-full rounded-xl border border-neutral-200 bg-white py-2.5 pr-3 pl-9 text-xs text-neutral-900 placeholder:text-neutral-400 focus:border-amber-500 focus:outline-none dark:border-neutral-800 dark:bg-neutral-950/80 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:border-amber-400"
-                    />
-                  </div>
-                </div>
-
-                <Button
-                  type="button"
-                  variant="primary"
-                  size="lg"
-                  className="mt-2 w-full"
-                >
-                  <span>Send</span>
-                </Button>
-              </form>
+              <PropertyDetailInquiryForm property={property} />
             </div>
           </div>
         </div>

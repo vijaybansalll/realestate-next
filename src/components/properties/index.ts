@@ -18,6 +18,7 @@ export {
   PropertyFiltersSheet as PropertyFiltersComponent,
 } from "./property-filters-sheet";
 export { PropertyInquiryModal } from "./property-inquiry-modal";
+export { PropertyDetailInquiryForm } from "./property-detail-inquiry-form";
 export { LiquidPurposeSelector } from "./liquid-purpose-selector";
 export {
   Pagination14,

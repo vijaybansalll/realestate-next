@@ -95,7 +95,7 @@ function NavbarContent({ initialAuthenticated = false }: NavbarProps) {
           <Button
             variant="primary"
             className="hidden rounded-full px-5 sm:inline-flex"
-            render={<Link href="/#contact" />}
+            render={<Link href="/contact-us" />}
           >
             <span>Get in touch</span>
             <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

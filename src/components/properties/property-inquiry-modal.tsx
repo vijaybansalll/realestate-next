@@ -9,10 +9,12 @@ import {
   Phone,
   User,
   MessageSquare,
+  Loader2,
 } from "lucide-react";
 import type { Property } from "@/types";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/sonner";
+import { submitContactInquiry } from "@/app/actions/inquiries";
 import {
   Sheet,
   SheetContent,
@@ -30,6 +32,7 @@ export function PropertyInquiryModal({
   onClose,
 }: PropertyInquiryModalProps) {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -38,20 +41,64 @@ export function PropertyInquiryModal({
     notes: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!property) return;
-    setSubmitted(true);
-    toast.success("Inquiry Received", {
-      description: `Thank you, ${formData.name || "Client"}. Our concierge will contact you regarding ${property.title}.`,
-    });
-    setTimeout(() => {
-      // Auto close after showing thank you
-      setTimeout(() => {
-        setSubmitted(false);
-        onClose();
-      }, 1800);
-    }, 200);
+
+    if (!formData.name.trim()) {
+      toast.error("Please provide your name.");
+      return;
+    }
+
+    if (!formData.email.trim() || !formData.email.includes("@")) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          preferredDate: formData.date.trim(),
+          message: formData.notes.trim(),
+          propertyTitle: property.title,
+          propertyLocation: property.location,
+          propertyPrice: property.formattedPrice,
+          source: "property-inquiry-modal",
+        }),
+      });
+
+      const res = await response.json();
+
+      if (response.ok && res.success) {
+        setSubmitted(true);
+        toast.success("Inquiry Transmitted Successfully", {
+          description: `Thank you, ${formData.name || "Client"}. Our concierge will contact you regarding ${property.title}.`,
+        });
+        setTimeout(() => {
+          setTimeout(() => {
+            setSubmitted(false);
+            onClose();
+          }, 1800);
+        }, 200);
+      } else {
+        toast.error("Transmission Failed", {
+          description: res?.error || "Failed to transmit inquiry.",
+        });
+      }
+    } catch (err: any) {
+      toast.error("Transmission Error", {
+        description: err?.message || "Failed to submit inquiry. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!property) return null;
@@ -188,9 +235,17 @@ export function PropertyInquiryModal({
                   type="submit"
                   variant="primary"
                   size="lg"
-                  className="w-full"
+                  className="w-full cursor-pointer"
+                  disabled={isSubmitting}
                 >
-                  Send
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 size-4 animate-spin" />
+                      <span>Transmitting...</span>
+                    </>
+                  ) : (
+                    <span>Send Inquiry</span>
+                  )}
                 </Button>
               </div>
             </form>

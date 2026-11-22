@@ -20,7 +20,7 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     title: "Contact",
-    href: "/#contact",
+    href: "/contact-us",
   },
 ];
 
@@ -55,15 +55,15 @@ export const FOOTER_SECTIONS: FooterSection[] = [
     links: [
       {
         title: "Architectural Planning",
-        href: "/#contact",
+        href: "/contact-us",
       },
       {
         title: "Interior Architecture",
-        href: "/#contact",
+        href: "/contact-us",
       },
       {
         title: "Private Commissions",
-        href: "/#contact",
+        href: "/contact-us",
       },
       {
         title: "Privacy & Terms",
