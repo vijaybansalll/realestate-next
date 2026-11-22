@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Navbar, Footer } from "@/components/layout";
+import { Navbar, Footer, WhatsAppButton } from "@/components/layout";
 
 export default function MarketingLayout({
   children,
@@ -13,6 +13,7 @@ export default function MarketingLayout({
       </Suspense>
       {children}
       <Footer />
+      <WhatsAppButton />
     </>
   );
 }
