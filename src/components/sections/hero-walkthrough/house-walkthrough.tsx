@@ -1,106 +1,30 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import dynamic from "next/dynamic";
 import { useLenis } from "lenis/react";
+import { gsap } from "gsap";
+import { ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-const TOTAL_FRAMES = 144;
+// Dynamically import HouseScene to guarantee client-only Three.js rendering
+const HouseScene = dynamic(
+  () => import("./house-scene").then((mod) => mod.HouseScene),
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
 
 export function HouseWalkthrough() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const heroContentRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef(0);
 
-  // In-memory array of preloaded images
-  const imagesRef = useRef<(HTMLImageElement | null)[]>(
-    new Array(TOTAL_FRAMES).fill(null)
-  );
-  const currentRenderedFrameRef = useRef<number>(1);
-  const targetFrameRef = useRef<number>(1);
-  const isTickingRef = useRef<boolean>(false);
+  const [isCanvasReady, setIsCanvasReady] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
-  const [scrollProgress, setScrollProgress] = useState<number>(0);
-
-  // Helper to format frame path
-  const getFramePath = useCallback((frameIndex: number) => {
-    const padded = String(frameIndex).padStart(3, "0");
-    return `/houseWalkthrough/${padded}.webp`;
-  }, []);
-
-  // Canvas drawing function with retina display & object-fit cover
-  const renderFrame = useCallback((frameIdx: number) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    // Find requested frame or closest available loaded frame
-    let img: HTMLImageElement | null = imagesRef.current[frameIdx - 1];
-    let actualFrameIdx = frameIdx;
-
-    if (!img || !img.complete || img.naturalWidth === 0) {
-      for (let delta = 1; delta < TOTAL_FRAMES; delta++) {
-        const prevIdx = frameIdx - 1 - delta;
-        if (prevIdx >= 0) {
-          const prev = imagesRef.current[prevIdx];
-          if (prev && prev.complete && prev.naturalWidth > 0) {
-            img = prev;
-            actualFrameIdx = prevIdx + 1;
-            break;
-          }
-        }
-        const nextIdx = frameIdx - 1 + delta;
-        if (nextIdx < TOTAL_FRAMES) {
-          const next = imagesRef.current[nextIdx];
-          if (next && next.complete && next.naturalWidth > 0) {
-            img = next;
-            actualFrameIdx = nextIdx + 1;
-            break;
-          }
-        }
-      }
-    }
-
-    if (!img || !img.complete || img.naturalWidth === 0) return;
-
-    const dpr =
-      typeof window !== "undefined"
-        ? Math.min(window.devicePixelRatio || 1, 2)
-        : 1;
-    const displayWidth = canvas.clientWidth || window.innerWidth;
-    const displayHeight = canvas.clientHeight || window.innerHeight;
-
-    if (
-      canvas.width !== Math.floor(displayWidth * dpr) ||
-      canvas.height !== Math.floor(displayHeight * dpr)
-    ) {
-      canvas.width = Math.floor(displayWidth * dpr);
-      canvas.height = Math.floor(displayHeight * dpr);
-    }
-
-    ctx.save();
-    ctx.scale(dpr, dpr);
-
-    // Clear background
-    ctx.fillStyle = "#0a0a0a";
-    ctx.fillRect(0, 0, displayWidth, displayHeight);
-
-    // Object-fit: cover calculation
-    const naturalW = img.naturalWidth;
-    const naturalH = img.naturalHeight;
-    const scale = Math.max(displayWidth / naturalW, displayHeight / naturalH);
-    const drawW = naturalW * scale;
-    const drawH = naturalH * scale;
-    const offsetX = (displayWidth - drawW) / 2;
-    const offsetY = (displayHeight - drawH) / 2;
-
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = "high";
-    ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
-    ctx.restore();
-
-    currentRenderedFrameRef.current = actualFrameIdx;
-  }, []);
-
-  // Update progress calculation
+  // Directly update DOM transform/opacity on scroll without triggering React re-renders
   const updateProgress = useCallback(() => {
     if (!containerRef.current) return;
 
@@ -110,119 +34,129 @@ export function HouseWalkthrough() {
 
     if (scrollableDistance <= 0) return;
 
-    // Progress from 0 to 1 as the container passes through the viewport
     const currentScroll = -rect.top;
     const progress = Math.max(
       0,
       Math.min(1, currentScroll / scrollableDistance)
     );
+    progressRef.current = progress;
 
-    const target = Math.min(
-      TOTAL_FRAMES,
-      Math.max(1, Math.round(progress * (TOTAL_FRAMES - 1)) + 1)
-    );
-
-    targetFrameRef.current = target;
-    setScrollProgress(progress);
-
-    if (!isTickingRef.current) {
-      isTickingRef.current = true;
-      requestAnimationFrame(() => {
-        renderFrame(targetFrameRef.current);
-        isTickingRef.current = false;
-      });
+    if (heroContentRef.current) {
+      const opacity = Math.max(0, 1 - progress * 5);
+      heroContentRef.current.style.opacity = String(opacity);
+      heroContentRef.current.style.transform = `translateY(-${progress * 48}px)`;
+      heroContentRef.current.style.pointerEvents =
+        opacity <= 0.05 ? "none" : "auto";
     }
-  }, [renderFrame]);
+  }, []);
 
-  // Hook directly into Lenis smooth-scroll ticks
+  // Hook directly into Lenis smooth-scroll ticks (0 React component re-renders)
   useLenis(() => {
     updateProgress();
   });
 
-  // Preload all frames on mount
+  // Native scroll fallback
   useEffect(() => {
-    let isCancelled = false;
-
-    // Load first frame immediately for instant first paint
-    const img1 = new Image();
-    img1.src = getFramePath(1);
-    const onFirstLoad = () => {
-      if (isCancelled) return;
-      imagesRef.current[0] = img1;
-      renderFrame(1);
-    };
-
-    if (img1.complete && img1.naturalWidth > 0) {
-      onFirstLoad();
-    } else {
-      img1.onload = onFirstLoad;
-    }
-
-    // Load remaining frames in parallel
-    for (let i = 2; i <= TOTAL_FRAMES; i++) {
-      const img = new Image();
-      img.src = getFramePath(i);
-      img.onload = () => {
-        if (isCancelled) return;
-        imagesRef.current[i - 1] = img;
-
-        // If this frame is the target or closer than what is currently rendered, redraw!
-        const currentDist = Math.abs(
-          currentRenderedFrameRef.current - targetFrameRef.current
-        );
-        const thisDist = Math.abs(i - targetFrameRef.current);
-        if (thisDist < currentDist || i === targetFrameRef.current) {
-          renderFrame(targetFrameRef.current);
-        }
-      };
-    }
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [getFramePath, renderFrame]);
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    updateProgress();
+    return () => window.removeEventListener("scroll", updateProgress);
+  }, [updateProgress]);
 
   // Handle window resize
   useEffect(() => {
     const handleResize = () => {
       updateProgress();
-      renderFrame(targetFrameRef.current);
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [renderFrame, updateProgress]);
-
-  // Fallback native scroll listener
-  useEffect(() => {
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    updateProgress();
-
-    return () => window.removeEventListener("scroll", updateProgress);
   }, [updateProgress]);
+
+  // IntersectionObserver to pause 3D rendering when scrolled out of viewport
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry) {
+          setIsVisible(entry.isIntersecting);
+        }
+      },
+      { rootMargin: "200px 0px 200px 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // GSAP entrance animation for initial hero content on mount
+  useEffect(() => {
+    if (!heroContentRef.current) return;
+    const ctx = gsap.context(() => {
+      gsap.from(heroContentRef.current!.children, {
+        y: 28,
+        opacity: 0,
+        duration: 1.1,
+        stagger: 0.15,
+        ease: "power3.out",
+        delay: 0.1,
+      });
+    }, heroContentRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
       id="walkthrough"
       ref={containerRef}
-      className="relative min-h-[320vh] w-full bg-neutral-950 sm:min-h-[450vh]"
+      className="relative min-h-[350vh] w-full bg-neutral-950 text-neutral-100 sm:min-h-[450vh]"
     >
-      <div className="sticky top-0 h-dvh h-screen w-full overflow-hidden">
-        <canvas
-          ref={canvasRef}
-          className="absolute inset-0 block h-full w-full"
+      <div className="sticky top-0 h-dvh h-screen w-full overflow-hidden bg-neutral-950 select-none">
+        {/* Instant First Paint Hero Poster (0ms LCP, zero layout shift) */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/media/rooms/exterior.webp"
+          alt="Villa Lumina Exterior"
+          fetchPriority="high"
+          decoding="async"
+          className={cn(
+            "will-change-opacity pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-700",
+            isCanvasReady ? "opacity-0" : "opacity-90"
+          )}
         />
 
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(10,10,10,0.3)_0%,rgba(10,10,10,0.15)_50%,rgba(10,10,10,0.6)_100%)]" />
-
+        {/* 3D House Scene (fades in smoothly over poster once compiled and ready) */}
         <div
-          className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-4 text-center transition-transform duration-75 select-none sm:p-6"
-          style={{
-            opacity: Math.max(0, 1 - scrollProgress * 4),
-            transform: `translateY(-${scrollProgress * 40}px)`,
-          }}
+          className={cn(
+            "absolute inset-0 h-full w-full transition-opacity duration-700",
+            isCanvasReady ? "opacity-100" : "opacity-0"
+          )}
         >
-          <div className="mx-auto flex max-w-5xl flex-col items-center">
-            <h1 className="px-2 font-sans text-3xl leading-[1.12] font-medium tracking-tight text-neutral-100 drop-shadow-[0_12px_32px_rgba(0,0,0,0.9)] sm:text-6xl md:text-7xl lg:text-8xl">
+          <HouseScene
+            progressRef={progressRef}
+            onFirstFrame={() => setIsCanvasReady(true)}
+            isVisible={isVisible}
+          />
+        </div>
+
+        {/* Ambient radial vignette for cinematic contrast */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(10,10,10,0.2)_0%,rgba(10,10,10,0.15)_50%,rgba(10,10,10,0.65)_100%)]" />
+
+        {/* Top vignette under navbar */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-neutral-950/90 to-transparent" />
+
+        {/* Bottom edge vignette */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-neutral-950/80 to-transparent" />
+
+        {/* Initial Hero Content: Just ONE Title and a Short Description */}
+        <div
+          ref={heroContentRef}
+          className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-6 text-center will-change-transform select-none"
+        >
+          <div className="mx-auto flex max-w-4xl flex-col items-center">
+            <h1 className="px-2 font-sans text-4xl leading-[1.08] font-medium tracking-tight text-white drop-shadow-[0_12px_36px_rgba(0,0,0,0.9)] sm:text-6xl md:text-7xl lg:text-8xl">
               Crafting Luxury Living Experiences
             </h1>
           </div>

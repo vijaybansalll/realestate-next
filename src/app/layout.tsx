@@ -51,6 +51,21 @@ export default function RootLayout({
         inter.variable
       )}
     >
+      <head>
+        <link
+          rel="preload"
+          href="/media/rooms/exterior.webp"
+          as="image"
+          type="image/webp"
+          fetchPriority="high"
+        />
+        <link
+          rel="preload"
+          href="/models/alder-house.glb"
+          as="fetch"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body
         suppressHydrationWarning
         className="min-h-screen overflow-x-clip bg-neutral-50 text-neutral-900 transition-colors duration-200 dark:bg-neutral-950 dark:text-neutral-100 font-sans"
