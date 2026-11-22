@@ -3,8 +3,8 @@
 import { Suspense } from "react";
 import { usePathname } from "next/navigation";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AppHeader } from "@/components/app-header";
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppHeader } from "./app-header";
+import { AppSidebar } from "./app-sidebar";
 
 function AppShellInner({
   children,

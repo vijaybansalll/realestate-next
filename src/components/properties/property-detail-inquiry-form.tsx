@@ -65,9 +65,13 @@ export function PropertyDetailInquiryForm({
           description: res?.error || "Failed to submit viewing request.",
         });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "Failed to submit viewing request.";
       toast.error("Submission Error", {
-        description: err?.message || "Failed to submit viewing request.",
+        description: message,
       });
     } finally {
       setIsSubmitting(false);

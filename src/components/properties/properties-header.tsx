@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, Home as HomeIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SectionHeader } from "@/components/common";
 
 export interface PropertiesHeaderProps {
   totalCount: number;
@@ -26,34 +27,31 @@ export function PropertiesHeader({ totalCount }: PropertiesHeaderProps) {
       </nav>
 
       {/* Page Header */}
-      <header className="mb-8 flex flex-col gap-4 border-b border-neutral-200/80 pb-8 sm:flex-row sm:items-end sm:justify-between dark:border-neutral-800/80">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold tracking-wider text-amber-500 dark:text-amber-400 uppercase">
-              Curated Portfolio
-            </span>
+      <header className="mb-8 border-b border-neutral-200/80 pb-8 dark:border-neutral-800/80">
+        <SectionHeader
+          align="between"
+          badge="Curated Portfolio"
+          badgeExtra={
             <span className="inline-flex items-center rounded-full border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 text-[11px] font-medium text-amber-700 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-300">
               {totalCount} Estates Available
             </span>
-          </div>
-          <h1 className="mt-2 text-3xl font-medium tracking-tight text-neutral-900 dark:text-neutral-100 sm:text-5xl">
-            Architectural Estates & Residences
-          </h1>
-          <p className="mt-2 max-w-2xl text-xs leading-relaxed text-neutral-600 dark:text-neutral-400 sm:text-sm">
-            Browse our premier portfolio of coastal retreats, hillside villas,
-            and penthouses available for private acquisition and luxury lease.
-          </p>
-        </div>
-
-        <Button
-          variant="secondary"
-          size="sm"
-          className="hidden sm:inline-flex"
-          render={<Link href="/" />}
-        >
-          <ArrowLeft className="size-3.5" />
-          <span>Back to Walkthrough</span>
-        </Button>
+          }
+          title="Architectural Estates & Residences"
+          titleAs="h1"
+          size="xl"
+          description="Browse our premier portfolio of coastal retreats, hillside villas, and penthouses available for private acquisition and luxury lease."
+          action={
+            <Button
+              variant="secondary"
+              size="sm"
+              className="hidden sm:inline-flex"
+              render={<Link href="/" />}
+            >
+              <ArrowLeft className="size-3.5" />
+              <span>Back to Walkthrough</span>
+            </Button>
+          }
+        />
       </header>
     </>
   );

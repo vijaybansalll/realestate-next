@@ -4,7 +4,6 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { useLenis } from "lenis/react";
 import { gsap } from "gsap";
-import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Dynamically import HouseScene to guarantee client-only Three.js rendering

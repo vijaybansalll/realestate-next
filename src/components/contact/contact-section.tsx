@@ -18,7 +18,11 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { siteConfig } from "@/config/site";
-import { submitContactInquiry } from "@/app/actions/inquiries";
+import {
+  SectionBadge,
+  SectionHeading,
+  SectionDescription,
+} from "@/components/common";
 
 export interface ContactInfoItem {
   icon: React.ReactNode;
@@ -71,19 +75,18 @@ export function ContactSection({
     >
       <div className="col-span-1 flex flex-col justify-between space-y-6 p-8 lg:p-10">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-600 dark:text-amber-400">
-            <span className="size-1.5 rounded-full bg-amber-500 animate-pulse" />
+          <SectionBadge variant="pill" pulse>
             Direct Concierge
-          </div>
-          <h2 className="font-heading text-2xl font-medium tracking-wide text-neutral-900 sm:text-3xl dark:text-neutral-100">
+          </SectionBadge>
+          <SectionHeading size="default">
             {title}
-          </h2>
-          <p className="max-w-md text-sm leading-relaxed text-muted-foreground md:text-base">
+          </SectionHeading>
+          <SectionDescription size="default" className="max-w-md">
             {description}
-          </p>
-          <p className="max-w-md text-xs leading-relaxed text-muted-foreground md:text-sm">
+          </SectionDescription>
+          <SectionDescription size="sm" className="max-w-md opacity-80">
             {responseNotice}
-          </p>
+          </SectionDescription>
         </div>
 
         <div className="grid gap-3 pt-2">
@@ -151,9 +154,13 @@ function ContactForm() {
           description: res?.error || "Failed to transmit inquiry.",
         });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "Failed to send message. Please try again.";
       toast.error("Submission Error", {
-        description: err?.message || "Failed to send message. Please try again.",
+        description: message,
       });
     } finally {
       setIsSubmitting(false);

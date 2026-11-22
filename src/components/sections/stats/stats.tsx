@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import { ESTATE_STATS } from "@/data";
 import type { StatItem } from "@/types";
+import { SectionHeader } from "@/components/common";
 
 interface StatsProps {
   stats?: StatItem[];
@@ -121,12 +122,13 @@ export function Stats({ stats = ESTATE_STATS }: StatsProps) {
       ref={sectionRef}
       className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-20"
     >
-      <h2 className="text-center text-2xl font-medium tracking-tight text-balance text-neutral-900 dark:text-neutral-100 sm:text-3xl md:text-4xl">
-        Proven Architectural Distinction
-      </h2>
-      <p className="mt-2 text-center text-sm text-neutral-600 dark:text-muted-foreground sm:mt-3.5 sm:text-base md:text-xl">
-        Curating visionary residences and benchmark luxury living spaces
-      </p>
+      <SectionHeader
+        align="center"
+        title="Proven Architectural Distinction"
+        size="lg"
+        description="Curating visionary residences and benchmark luxury living spaces"
+        descriptionSize="lg"
+      />
 
       <div className="mt-8 grid grid-cols-1 overflow-hidden rounded-2xl border border-neutral-200 bg-white/80 shadow-sm sm:mt-14 sm:grid-cols-2 md:grid-cols-3 dark:border-neutral-800 dark:bg-neutral-950/40">
         {stats.map((item, index) => (

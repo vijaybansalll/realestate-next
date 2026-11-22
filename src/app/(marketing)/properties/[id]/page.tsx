@@ -5,8 +5,6 @@ import {
   MapPin,
   Sparkles,
   ArrowLeft,
-  Calendar,
-  ArrowUpRight,
 } from "lucide-react";
 import { ALL_PROPERTIES } from "@/data/properties";
 import { fetchPropertyById, fetchProperties } from "@/lib/supabase";
@@ -15,7 +13,6 @@ import { PropertyGridGallery } from "@/components/properties/property-grid-galle
 import { PropertySpecsGrid } from "@/components/properties/property-specs-grid";
 import { PropertyCard } from "@/components/properties/property-card";
 import { PropertyDetailInquiryForm } from "@/components/properties/property-detail-inquiry-form";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface PageProps {

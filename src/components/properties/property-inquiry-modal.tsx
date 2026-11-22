@@ -4,7 +4,6 @@ import { useState } from "react";
 import Image from "next/image";
 import {
   CheckCircle2,
-  Calendar,
   Mail,
   Phone,
   User,
@@ -14,7 +13,6 @@ import {
 import type { Property } from "@/types";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/sonner";
-import { submitContactInquiry } from "@/app/actions/inquiries";
 import {
   Sheet,
   SheetContent,
@@ -92,9 +90,13 @@ export function PropertyInquiryModal({
           description: res?.error || "Failed to transmit inquiry.",
         });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "Failed to submit inquiry. Please try again.";
       toast.error("Transmission Error", {
-        description: err?.message || "Failed to submit inquiry. Please try again.",
+        description: message,
       });
     } finally {
       setIsSubmitting(false);
@@ -107,7 +109,7 @@ export function PropertyInquiryModal({
     <Sheet open={!!property} onOpenChange={(open) => !open && onClose()}>
       <SheetContent
         side="right"
-        className="w-full max-w-lg overflow-y-auto border-l border-neutral-200 bg-white p-6 text-neutral-900 sm:max-w-md dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100"
+        className="w-full! max-w-lg overflow-y-auto border-l border-neutral-200 bg-white p-6 text-neutral-900 sm:max-w-md dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100"
       >
         <SheetHeader className="mb-5 border-b border-neutral-200/80 p-0 pb-4 dark:border-neutral-800/80">
           <SheetTitle className="text-base font-semibold text-neutral-900 dark:text-neutral-100">

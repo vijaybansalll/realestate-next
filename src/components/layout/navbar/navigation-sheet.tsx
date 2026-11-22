@@ -12,7 +12,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Logo } from "@/components/layout/logo";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@/components/theme";
 import { NAV_ITEMS } from "@/data";
 import type { NavItem } from "@/types";
 import { cn } from "@/lib/utils";

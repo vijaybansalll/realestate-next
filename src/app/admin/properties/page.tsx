@@ -23,6 +23,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Heading, Text } from "@/components/common";
 
 export default function PropertiesAdminPage() {
   const router = useRouter();
@@ -100,15 +101,13 @@ export default function PropertiesAdminPage() {
       {/* Header bar */}
       <div className="flex flex-col gap-3.5 border-b border-neutral-200 pb-4 sm:flex-row sm:items-center sm:justify-between dark:border-neutral-800">
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="flex items-center gap-2 text-xl sm:text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
-              <BuildingIcon className="size-5 sm:size-6 text-amber-500 dark:text-amber-400" />
-              Properties Management
-            </h1>
-          </div>
-          <p className="mt-1 text-xs text-neutral-600 dark:text-neutral-400">
+          <Heading as="h1" size="md" className="flex items-center gap-2">
+            <BuildingIcon className="size-5 sm:size-6 text-amber-500 dark:text-amber-400" />
+            Properties Management
+          </Heading>
+          <Text variant="muted" size="xs" className="mt-1">
             Create listings, update pricing, edit architectural specs, and manage deletions.
-          </p>
+          </Text>
         </div>
 
         <div className="flex items-center gap-2 w-full sm:w-auto">

@@ -25,13 +25,15 @@ export async function submitContactInquiry(
       message: "Your inquiry has been successfully sent to our concierge.",
       messageId: result.messageId,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Failed to send inquiry email:", error);
+    const message =
+      error instanceof Error
+        ? error.message
+        : "An unexpected error occurred while transmitting your inquiry. Please try again or reach out to us directly.";
     return {
       success: false,
-      error:
-        error?.message ||
-        "An unexpected error occurred while transmitting your inquiry. Please try again or reach out to us directly.",
+      error: message,
     };
   }
 }

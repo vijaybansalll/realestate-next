@@ -6,7 +6,7 @@ import { Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-interface ThemeToggleProps {
+export interface ThemeToggleProps {
   className?: string;
   variant?: "ghost" | "outline" | "default";
   size?: "default" | "sm" | "icon" | "icon-sm";

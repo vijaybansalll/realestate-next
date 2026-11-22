@@ -8,7 +8,8 @@ import {
   Building,
   Sparkles,
 } from "lucide-react";
-import { ContactSection } from "@/components/contact-section";
+import { ContactSection } from "@/components/contact";
+import { SectionHeader } from "@/components/common";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -68,20 +69,16 @@ export default function ContactUsPage() {
         </div>
 
         {/* Page Header */}
-        <div className="mx-auto mb-10 max-w-3xl text-center sm:mb-14">
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.25em] text-amber-500 uppercase dark:text-amber-400">
-            <Sparkles className="size-3.5" />
-            Private Advisory & Concierge
-          </span>
-          <h1 className="mt-3 text-3xl font-medium tracking-tight text-neutral-900 sm:text-5xl dark:text-neutral-100">
-            Connect With Our Studio
-          </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400">
-            Whether seeking private acquisition details, scheduling an
-            architectural walkthrough, or commissioning a bespoke retreat, our
-            concierge associates provide dedicated representation.
-          </p>
-        </div>
+        <SectionHeader
+          align="center"
+          badge="Private Advisory & Concierge"
+          badgeIcon={<Sparkles className="size-3.5" />}
+          title="Connect With Our Studio"
+          titleAs="h1"
+          size="xl"
+          description="Whether seeking private acquisition details, scheduling an architectural walkthrough, or commissioning a bespoke retreat, our concierge associates provide dedicated representation."
+          className="mx-auto mb-10 max-w-3xl sm:mb-14"
+        />
 
         {/* ContactSection Component */}
         <div className="mx-auto max-w-4xl">

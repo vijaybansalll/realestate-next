@@ -1,4 +1,4 @@
-import { AppShell } from "@/components/app-shell";
+import { AppShell } from "@/components/admin";
 
 export const metadata = {
   title: "Admin Command Center | Villa Lumina Real Estate",

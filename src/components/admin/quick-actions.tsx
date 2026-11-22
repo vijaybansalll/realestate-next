@@ -61,7 +61,7 @@ export function QuickActions() {
           Direct navigation across available modules.
         </CardDescription>
       </CardHeader>
-      <CardContent className="">
+      <CardContent>
         <ItemGroup className="gap-0">
           {actions.map((a) => (
             <Item

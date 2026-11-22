@@ -25,7 +25,7 @@ import {
   useState,
 } from "react";
 import { EASE_OUT } from "@/lib/ease";
-import { type ListboxRow, useListbox } from "@/lib/hooks/use-listbox";
+import { type ListboxRow, useListbox } from "@/hooks";
 import { cn } from "@/lib/utils";
 
 // One progress value drives the surface, gap, corners and chevron. This short

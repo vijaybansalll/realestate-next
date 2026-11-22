@@ -17,7 +17,7 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import type { SidebarNavGroup } from "@/components/app-shared";
+import type { SidebarNavGroup } from "./app-shared";
 import { ChevronRightIcon } from "lucide-react";
 
 export function NavGroup({
@@ -63,12 +63,12 @@ export function NavGroup({
                     <Link
                       href={item.path || "#"}
                       onClick={handleLinkClick}
-                      className="transition-colors hover:text-neutral-900 dark:hover:text-neutral-100"
+                      className="gap-2.5"
                     />
                   }
                 >
                   {item.icon}
-                  <span className="font-medium">{item.title}</span>
+                  <span>{item.title}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             );
@@ -76,37 +76,31 @@ export function NavGroup({
 
           return (
             <Collapsible
-              className="group/collapsible"
-              defaultOpen={isItemActive || hasActiveSubItem}
               key={item.title}
+              defaultOpen={isItemActive || hasActiveSubItem}
+              className="group/collapsible"
               render={<SidebarMenuItem />}
             >
               <CollapsibleTrigger
                 render={
-                  <SidebarMenuButton
-                    isActive={isItemActive}
-                    tooltip={item.title}
-                    className="cursor-pointer"
-                  />
+                  <SidebarMenuButton tooltip={item.title} className="gap-2.5" />
                 }
               >
                 {item.icon}
-                <span className="font-medium">{item.title}</span>
-                <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 size-4 text-neutral-400" />
+                <span>{item.title}</span>
+                <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
               </CollapsibleTrigger>
               <CollapsibleContent>
-                <SidebarMenuSub>
-                  {item.subItems.map((subItem) => {
-                    const isSubActive = subItem.path === pathname;
-                    return (
+                  <SidebarMenuSub>
+                    {item.subItems.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.title}>
                         <SidebarMenuSubButton
-                          isActive={isSubActive}
+                          isActive={subItem.path === pathname}
                           render={
                             <Link
                               href={subItem.path || "#"}
                               onClick={handleLinkClick}
-                              className="transition-colors hover:text-neutral-900 dark:hover:text-neutral-100"
+                              className="gap-2 text-xs"
                             />
                           }
                         >
@@ -114,10 +108,9 @@ export function NavGroup({
                           <span>{subItem.title}</span>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
-                    );
-                  })}
-                </SidebarMenuSub>
-              </CollapsibleContent>
+                    ))}
+                  </SidebarMenuSub>
+                </CollapsibleContent>
             </Collapsible>
           );
         })}

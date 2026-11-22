@@ -1,7 +1,7 @@
 "use client";
 
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import React from "react";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
-export interface Pagination14Props {
+export interface PropertiesPaginationProps {
   currentPage?: number;
   pageSize?: number;
   totalItems?: number;
@@ -29,7 +29,7 @@ export interface Pagination14Props {
   className?: string;
 }
 
-export function Pagination14({
+export function PropertiesPagination({
   currentPage: controlledPage,
   pageSize: controlledPageSize,
   totalItems = 100,
@@ -38,7 +38,7 @@ export function Pagination14({
   pageSizeOptions = [6, 9, 12, 18],
   label = "Estates per page:",
   className,
-}: Pagination14Props) {
+}: PropertiesPaginationProps) {
   const [internalPageSize, setInternalPageSize] = React.useState(
     pageSizeOptions[0] ?? 6
   );
@@ -216,4 +216,6 @@ export function Pagination14({
   );
 }
 
-export default Pagination14;
+// Backward compatibility alias
+export const Pagination14 = PropertiesPagination;
+export default PropertiesPagination;

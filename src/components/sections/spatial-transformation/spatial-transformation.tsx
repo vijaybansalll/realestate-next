@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { BeforeAfterSlider } from "./before-after-slider";
+import { SectionHeader } from "@/components/common";
 
 export function SpatialTransformation() {
   return (
@@ -11,17 +12,13 @@ export function SpatialTransformation() {
     >
       <div className="flex flex-col items-center gap-8 lg:flex-row lg:gap-12">
         <div className="w-full lg:w-1/2">
-          <span className="text-xs font-semibold tracking-widest text-amber-500 uppercase dark:text-amber-400">
-            Transformation
-          </span>
-          <h3 className="mt-2 text-2xl font-medium text-neutral-900 sm:text-3xl dark:text-neutral-100">
-            Restoration & Spatial Architecture
-          </h3>
-          <p className="mt-3 text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400">
-            Every property undergoes a comprehensive visual and architectural
-            assessment. Drag the slider to witness our bespoke spatial staging
-            and atmospheric illumination.
-          </p>
+          <SectionHeader
+            badge="Transformation"
+            title="Restoration & Spatial Architecture"
+            titleAs="h3"
+            size="default"
+            description="Every property undergoes a comprehensive visual and architectural assessment. Drag the slider to witness our bespoke spatial staging and atmospheric illumination."
+          />
         </div>
 
         <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl lg:w-1/2">

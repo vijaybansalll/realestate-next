@@ -2,6 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  SectionBadge,
+  SectionHeading,
+  SectionDescription,
+} from "@/components/common";
 
 export function CTA() {
   return (
@@ -23,21 +28,21 @@ export function CTA() {
         {/* Left-Aligned Content Container */}
         <div className="relative z-10 max-w-2xl px-6 py-8 text-left sm:px-12 lg:px-16 lg:py-16">
           {/* Eyebrow */}
-          <span className="text-sm font-semibold text-amber-400">
+          <SectionBadge variant="glow">
             Private Architectural Advisory
-          </span>
+          </SectionBadge>
 
           {/* Heading */}
-          <h2 className="mt-4 font-heading text-2xl font-medium tracking-tight text-white sm:text-4xl md:text-5xl md:leading-tight">
+          <SectionHeading size="lg" className="mt-4 text-white">
             Turn your architectural vision into reality
-          </h2>
+          </SectionHeading>
 
           {/* Subtitle */}
-          <p className="mt-4 max-w-lg text-sm leading-relaxed text-neutral-300 sm:text-base">
+          <SectionDescription className="mt-4 max-w-lg text-neutral-300">
             Connect with our private client concierge to coordinate an exclusive
             showing or commission a bespoke timber retreat tailored to your
             lifestyle.
-          </p>
+          </SectionDescription>
 
           {/* Action Buttons */}
           <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">

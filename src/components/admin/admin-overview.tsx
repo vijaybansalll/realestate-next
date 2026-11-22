@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { DashboardStats } from "@/components/stats";
-import { QuickActions } from "@/components/quick-actions";
+import { DashboardStats } from "./dashboard-stats";
+import { QuickActions } from "./quick-actions";
 import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {

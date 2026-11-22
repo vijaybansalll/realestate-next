@@ -26,12 +26,14 @@ export async function POST(request: Request) {
       message: "Inquiry delivered successfully.",
       messageId: result.messageId,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("API /api/inquiries error:", error);
+    const message =
+      error instanceof Error ? error.message : "Failed to deliver inquiry email.";
     return NextResponse.json(
       {
         success: false,
-        error: error?.message || "Failed to deliver inquiry email.",
+        error: message,
       },
       { status: 500 }
     );

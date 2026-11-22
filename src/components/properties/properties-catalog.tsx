@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { Property } from "@/types";
-import { Pagination14 } from "@/components/pagination-14";
+import { PropertiesPagination } from "./properties-pagination";
 import { usePropertyFilters } from "./use-property-filters";
 import { PropertiesHeader } from "./properties-header";
 import { PropertiesControlBar } from "./properties-control-bar";
@@ -66,7 +66,7 @@ export function PropertiesCatalog() {
             onInquire={(prop) => setSelectedProperty(prop)}
           />
 
-          <Pagination14
+          <PropertiesPagination
             currentPage={page}
             pageSize={pageSize}
             totalItems={filteredProperties.length}

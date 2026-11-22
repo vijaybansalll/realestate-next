@@ -2,11 +2,11 @@
 
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
-import { AppBreadcrumbs } from "@/components/app-breadcrumbs";
-import { CustomSidebarTrigger } from "@/components/custom-sidebar-trigger";
-import { navLinks } from "@/components/app-shared";
+import { AppBreadcrumbs } from "./app-breadcrumbs";
+import { CustomSidebarTrigger } from "./custom-sidebar-trigger";
+import { navLinks } from "./app-shared";
 import { LayoutGridIcon, BuildingIcon } from "lucide-react";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 export function AppHeader({ pathname }: { pathname?: string }) {
   let activeItem = navLinks.find((item) => item.path === pathname);

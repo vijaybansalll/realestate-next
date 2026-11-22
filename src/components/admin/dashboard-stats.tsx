@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Delta, DeltaIcon, DeltaValue } from "@/components/delta";
+import { Delta, DeltaIcon, DeltaValue } from "./delta";
 import type { Property } from "@/types";
 import { DollarSign, Building2, KeyRound, TrendingUp } from "lucide-react";
 
@@ -49,46 +49,46 @@ export function DashboardStats({ properties = [] }: DashboardStatsProps) {
         label: "Acquisition (For Sale)",
         value: `${forSaleCount} Listed`,
         delta: forSaleCount > 0 ? 12.0 : 0,
-        hint: "exclusive ownership",
-        icon: <KeyRound className="size-5 text-emerald-400" />,
+        hint: `${forSaleCount} freehold estates`,
+        icon: <TrendingUp className="size-5 text-emerald-400" />,
       },
       {
-        label: "Lease & Rentals",
+        label: "Exclusive Leases",
         value: `${forLeaseCount} Available`,
         delta: forLeaseCount > 0 ? 5.8 : 0,
-        hint: "luxury rental yields",
-        icon: <TrendingUp className="size-5 text-purple-400" />,
+        hint: `${forLeaseCount} luxury rentals`,
+        icon: <KeyRound className="size-5 text-purple-400" />,
       },
     ];
   }, [properties]);
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
       {stats.map((s) => (
         <Card
           key={s.label}
-          className="gap-2 border-neutral-200 bg-white shadow-sm transition-all duration-300 hover:border-neutral-300 hover:shadow-md dark:border-neutral-800/80 dark:bg-neutral-900/50 dark:shadow-lg dark:hover:border-neutral-700/80 dark:hover:bg-neutral-900/70"
+          className="border-neutral-200 bg-white shadow-xs transition-shadow hover:shadow-md dark:border-neutral-800/80 dark:bg-neutral-900/60"
         >
-          <CardHeader className="flex flex-row items-center justify-between px-4">
-            <CardTitle className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
               {s.label}
             </CardTitle>
-            <div>{s.icon}</div>
+            <div className="flex size-8 items-center justify-center rounded-lg bg-neutral-100 dark:bg-neutral-800">
+              {s.icon}
+            </div>
           </CardHeader>
-          <CardContent className="px-4 pb-0">
-            <p className="text-lg font-bold tracking-tight text-neutral-900 tabular-nums md:text-xl dark:text-neutral-100">
+          <CardContent className="space-y-1.5">
+            <div className="text-xl sm:text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
               {s.value}
-            </p>
-            <div className="mt-0 flex items-center gap-1.5 text-xs">
+            </div>
+            <div className="flex items-center justify-between text-xs text-neutral-500 dark:text-neutral-400">
+              <span>{s.hint}</span>
               {s.delta !== 0 ? (
                 <Delta value={s.delta} variant="default">
                   <DeltaIcon />
                   <DeltaValue />
                 </Delta>
               ) : null}
-              <span className="text-xs text-neutral-500 dark:text-neutral-400">
-                {s.hint}
-              </span>
             </div>
           </CardContent>
         </Card>
@@ -96,5 +96,3 @@ export function DashboardStats({ properties = [] }: DashboardStatsProps) {
     </div>
   );
 }
-
-export default DashboardStats;

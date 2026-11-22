@@ -21,9 +21,9 @@ export { PropertyInquiryModal } from "./property-inquiry-modal";
 export { PropertyDetailInquiryForm } from "./property-detail-inquiry-form";
 export { LiquidPurposeSelector } from "./liquid-purpose-selector";
 export {
-  Pagination14,
-  Pagination14 as PropertiesPagination,
-} from "@/components/pagination-14";
+  PropertiesPagination,
+  PropertiesPagination as Pagination14,
+} from "./properties-pagination";
 
 // Hooks & State Management
 export { usePropertyFilters, type ActiveChip } from "./use-property-filters";

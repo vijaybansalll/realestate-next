@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { useLenis } from "lenis/react";
 import { Logo } from "@/components/layout/logo";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@/components/theme";
 import { checkAuthStatus } from "@/app/(auth)/login/actions";
 import { NavMenu } from "./nav-menu";
 import { NavigationSheet } from "./navigation-sheet";

@@ -7,6 +7,7 @@ import {
   Stats,
   CTA,
 } from "@/components/sections";
+import { SectionHeader } from "@/components/common";
 import { PORTFOLIO_GALLERY_ITEMS } from "@/data";
 
 export default function Home() {
@@ -19,18 +20,14 @@ export default function Home() {
           id="properties"
           className="mx-auto max-w-7xl scroll-mt-24 px-4 py-12 sm:px-6 sm:py-20 lg:px-8"
         >
-          <div className="mb-8 text-center sm:mb-12">
-            <span className="text-xs font-semibold tracking-[0.25em] text-amber-500 uppercase dark:text-amber-400">
-              Curated Portfolio
-            </span>
-            <h2 className="mt-3 text-2xl font-medium tracking-tight text-neutral-900 sm:text-4xl md:text-5xl dark:text-neutral-100">
-              Featured Architectural Estates
-            </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-xs text-neutral-600 sm:mt-4 sm:text-base sm:text-sm dark:text-neutral-400">
-              Explore our handpicked collection of modern residences, prime
-              coastal retreats, and architectural masterpieces.
-            </p>
-          </div>
+          <SectionHeader
+            align="center"
+            badge="Curated Portfolio"
+            title="Featured Architectural Estates"
+            size="lg"
+            description="Explore our handpicked collection of modern residences, prime coastal retreats, and architectural masterpieces."
+            className="mb-8 sm:mb-12"
+          />
 
           <AccordionGallery
             items={PORTFOLIO_GALLERY_ITEMS}

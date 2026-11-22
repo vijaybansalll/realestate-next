@@ -14,8 +14,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { NavGroup } from "@/components/nav-group";
-import { navGroups } from "@/components/app-shared";
+import { NavGroup } from "./nav-group";
+import { navGroups } from "./app-shared";
 import { LogOut } from "lucide-react";
 import { logoutAction } from "@/app/(auth)/login/actions";
 
@@ -61,34 +61,29 @@ export function AppSidebar({ pathname }: AppSidebarProps) {
             />
           }
         >
-          <LogoIcon className="size-5 text-amber-500 dark:text-amber-400" />
-          <span className="font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
-            Estate Admin
+          <LogoIcon className="size-6 text-amber-500" />
+          <span className="font-semibold text-sm tracking-wide text-neutral-900 dark:text-neutral-100">
+            Villa Lumina
           </span>
         </SidebarMenuButton>
       </SidebarHeader>
 
-      <SidebarContent>
-        {navGroups.map((group, index) => (
-          <NavGroup
-            key={`sidebar-group-${index}`}
-            {...group}
-            pathname={pathname}
-          />
+      <SidebarContent className="gap-2">
+        {navGroups.map((group) => (
+          <NavGroup key={group.label} pathname={pathname} {...group} />
         ))}
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-neutral-200/80 p-2 dark:border-neutral-800/60">
+      <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
               onClick={handleLogout}
               disabled={isLoggingOut}
-              tooltip="Log out"
-              className="flex w-full cursor-pointer items-center gap-2 text-neutral-600 transition-colors hover:bg-red-500/10 hover:text-red-600 dark:text-neutral-400 dark:hover:text-red-400"
+              className="text-red-500 hover:bg-red-500/10 hover:text-red-600 dark:text-red-400 dark:hover:bg-red-500/20"
             >
-              <LogOut className="size-4 shrink-0 text-red-500/90 dark:text-red-400/90" />
-              <span>{isLoggingOut ? "Logging out..." : "Log out"}</span>
+              <LogOut className="size-4" />
+              <span>{isLoggingOut ? "Signing out..." : "Sign Out"}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -96,5 +91,3 @@ export function AppSidebar({ pathname }: AppSidebarProps) {
     </Sidebar>
   );
 }
-
-export default AppSidebar;

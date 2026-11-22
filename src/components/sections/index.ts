@@ -8,3 +8,4 @@ export { FeaturedProperties } from "./featured-properties";
 export { StickyShowcase } from "./sticky-showcase";
 export { Stats } from "./stats";
 export { CTA } from "./cta";
+export { ContactSection } from "@/components/contact";
