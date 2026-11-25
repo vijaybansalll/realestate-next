@@ -26,15 +26,23 @@ export const NAV_ITEMS: NavItem[] = [
 
 export const FOOTER_SECTIONS: FooterSection[] = [
   {
-    title: "Estates & Portfolio",
+    title: "Explore",
     links: [
       {
-        title: "All Properties Catalog",
+        title: "Home",
+        href: "/",
+      },
+      {
+        title: "All Properties",
         href: "/properties",
       },
       {
-        title: "Featured Estates",
+        title: "Featured Portfolio",
         href: "/#properties",
+      },
+      {
+        title: "Featured Residences",
+        href: "/#residences",
       },
       {
         title: "Virtual Walkthrough",
@@ -45,29 +53,21 @@ export const FOOTER_SECTIONS: FooterSection[] = [
         href: "/#showcase",
       },
       {
-        title: "Spatial Staging",
+        title: "Design Transformations",
         href: "/#transformation",
       },
     ],
   },
   {
-    title: "Services & Studio",
+    title: "Get in Touch",
     links: [
       {
-        title: "Architectural Planning",
+        title: "Contact Us",
         href: "/contact-us",
       },
       {
-        title: "Interior Architecture",
-        href: "/contact-us",
-      },
-      {
-        title: "Private Commissions",
-        href: "/contact-us",
-      },
-      {
-        title: "Privacy & Terms",
-        href: "#",
+        title: "Request a Viewing",
+        href: "/#contact",
       },
     ],
   },

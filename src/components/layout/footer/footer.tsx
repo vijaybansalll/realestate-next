@@ -68,9 +68,9 @@ export function Footer() {
   return (
     <footer className="border-t border-neutral-200 bg-neutral-100/90 py-8 sm:py-10 dark:border-neutral-900 dark:bg-neutral-950/80">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-16">
-        <div className="flex flex-col gap-6 sm:gap-12">
-          <div className="grid grid-cols-2 gap-x-6 gap-y-10 py-8 sm:grid-cols-4 sm:gap-x-8 sm:py-12 md:grid-cols-7 lg:grid-cols-12">
-            <div className="col-span-2 sm:col-span-4 lg:col-span-4">
+        <div className="flex flex-col gap-6 sm:gap-10">
+          <div className="grid grid-cols-1 gap-x-10 gap-y-10 py-8 sm:grid-cols-2 sm:py-12 lg:grid-cols-12">
+            <div className="sm:col-span-2 lg:col-span-5">
               <div className="flex animate-in flex-col gap-6 delay-100 duration-1000 ease-in-out fill-mode-both slide-in-from-bottom-10 fade-in">
                 {/* Brand Logo */}
                 <Link
@@ -138,12 +138,10 @@ export function Footer() {
               </div>
             </div>
 
-            <div className="col-span-1 hidden lg:block"></div>
-
-            {FOOTER_SECTIONS.map(({ title, links }, index) => (
+            {FOOTER_SECTIONS.map(({ title, links }) => (
               <div
-                key={index}
-                className="col-span-1 sm:col-span-2 md:col-span-2 lg:col-span-2"
+                key={title}
+                className="sm:col-span-1 lg:col-span-2"
               >
                 <div className="flex animate-in flex-col gap-4 delay-100 duration-1000 ease-in-out fill-mode-both slide-in-from-bottom-10 fade-in">
                   <p className="text-sm font-semibold tracking-wider text-foreground uppercase">
@@ -152,12 +150,12 @@ export function Footer() {
                   <ul className="flex flex-col gap-3">
                     {links.map(({ title: linkTitle, href }) => (
                       <li key={linkTitle}>
-                        <a
+                        <Link
                           href={href}
                           className="text-sm font-normal text-muted-foreground transition-colors hover:text-foreground"
                         >
                           {linkTitle}
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -165,7 +163,7 @@ export function Footer() {
               </div>
             ))}
 
-            <div className="col-span-2 sm:col-span-4 md:col-span-3 lg:col-span-3">
+            <div className="sm:col-span-2 lg:col-span-3">
               <div className="flex animate-in flex-col gap-4 delay-100 duration-1000 ease-in-out fill-mode-both slide-in-from-bottom-10 fade-in">
                 <p className="text-sm font-semibold tracking-wider text-foreground uppercase">
                   Private Advisory
