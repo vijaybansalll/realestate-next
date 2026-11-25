@@ -64,33 +64,49 @@ export function renderInquiryNotificationEmail(
 
   const propertyCardHtml = propertyTitle
     ? `
-      <!-- Target Estate Card -->
-      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 24px;">
+      <!-- Estate of Interest -->
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 28px;">
         <tr>
-          <td>
-            <div style="font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: ${labelColor}; margin-bottom: 8px;">
-              Estate of Interest
-            </div>
-            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="inner-box" style="background-color: ${boxBg}; border: 1px solid ${boxBorder}; border-radius: 8px; padding: 18px 20px;">
+          <td style="padding: 0 0 9px 2px; font-size: 10px; line-height: 1.4; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: ${labelColor};">
+            Estate of Interest
+          </td>
+        </tr>
+        <tr>
+          <td class="inner-box" style="background-color: ${boxBg}; border: 1px solid ${boxBorder}; border-radius: 10px; overflow: hidden;">
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
               <tr>
-                <td>
-                  <div style="font-size: 16px; font-weight: 600; color: ${textColor}; letter-spacing: -0.2px;">
-                    ${propertyTitle}
-                  </div>
-                  ${
-                    propertyLocation
-                      ? `<div style="font-size: 13px; color: ${textSecondary}; margin-top: 4px;">
-                          📍 ${propertyLocation}
-                        </div>`
-                      : ""
-                  }
-                  ${
-                    propertyPrice
-                      ? `<div style="font-size: 13px; font-weight: 600; color: ${goldColor}; margin-top: 6px;">
-                          Valuation: ${propertyPrice}
-                        </div>`
-                      : ""
-                  }
+                <td width="4" bgcolor="${goldColor}" style="width: 4px; background-color: ${goldColor}; font-size: 0; line-height: 0;">&nbsp;</td>
+                <td style="padding: 18px 20px 17px 18px;">
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                    <tr>
+                      <td style="font-size: 17px; line-height: 1.35; font-weight: 650; letter-spacing: -0.2px; color: ${textColor};">
+                        ${propertyTitle}
+                      </td>
+                    </tr>
+                    ${
+                      propertyLocation
+                        ? `<tr>
+                            <td style="padding-top: 6px; font-size: 13px; line-height: 1.5; color: ${textSecondary};">
+                              ${propertyLocation}
+                            </td>
+                          </tr>`
+                        : ""
+                    }
+                    ${
+                      propertyPrice
+                        ? `<tr>
+                            <td style="padding-top: 14px;">
+                              <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                  <td style="padding: 6px 10px; border: 1px solid ${boxBorder}; border-radius: 5px; font-size: 10px; line-height: 1.2; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: ${labelColor};">Valuation</td>
+                                  <td style="padding-left: 9px; font-size: 13px; line-height: 1.4; font-weight: 700; color: ${goldColor};">${propertyPrice}</td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>`
+                        : ""
+                    }
+                  </table>
                 </td>
               </tr>
             </table>

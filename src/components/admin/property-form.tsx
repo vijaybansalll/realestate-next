@@ -32,7 +32,6 @@ import {
   ArrowLeftIcon,
   BuildingIcon,
   LayersIcon,
-  ShieldCheckIcon,
   SparklesIcon,
   AlertTriangle,
   ExternalLink,
@@ -156,7 +155,6 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
   const [formData, setFormData] =
     useState<Partial<Property>>(DEFAULT_NEW_PROPERTY);
-  const [newFeatureText, setNewFeatureText] = useState("");
   const [urlInput, setUrlInput] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -399,24 +397,6 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
         images: reordered,
       };
     });
-  };
-
-  // Feature tag adder
-  const handleAddFeature = () => {
-    if (!newFeatureText.trim()) return;
-    const text = newFeatureText.trim();
-    setFormData((prev) => ({
-      ...prev,
-      features: [...(prev.features || []), text],
-    }));
-    setNewFeatureText("");
-  };
-
-  const handleRemoveFeature = (idxToRemove: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      features: (prev.features || []).filter((_, idx) => idx !== idxToRemove),
-    }));
   };
 
   // Submit handler
@@ -990,7 +970,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
             <CardContent className="grid grid-cols-2 gap-4 pt-4 sm:grid-cols-4">
               <div className="space-y-1.5">
                 <Label className="flex items-center gap-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                  <Bed className="size-3.5 text-amber-500" />
+                  <Bed className="size-4 text-amber-500" />
                   <span>Bedrooms</span>
                 </Label>
                 <Input
@@ -1009,7 +989,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
               <div className="space-y-1.5">
                 <Label className="flex items-center gap-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                  <Bath className="size-3.5 text-amber-500" />
+                  <Bath className="size-4 text-amber-500" />
                   <span>Bathrooms</span>
                 </Label>
                 <Input
@@ -1027,7 +1007,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
               <div className="space-y-1.5">
                 <Label className="flex items-center gap-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                  <Car className="size-3.5 text-amber-500" />
+                  <Car className="size-4 text-amber-500" />
                   <span>Garage Bays</span>
                 </Label>
                 <Input
@@ -1045,7 +1025,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
               <div className="space-y-1.5">
                 <Label className="flex items-center gap-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                  <Sofa className="size-3.5 text-amber-500" />
+                  <Sofa className="size-4 text-amber-500" />
                   <span>Living Rooms</span>
                 </Label>
                 <Input
@@ -1061,7 +1041,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
               <div className="col-span-2 space-y-1.5">
                 <Label className="flex items-center gap-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                  <Maximize2 className="size-3.5 text-amber-500" />
+                  <Maximize2 className="size-4 text-amber-500" />
                   <span>Interior Home Area (m²)</span>
                 </Label>
                 <Input
@@ -1083,7 +1063,7 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
 
               <div className="col-span-2 space-y-1.5">
                 <Label className="flex items-center gap-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                  <Layers className="size-3.5 text-amber-500" />
+                  <Layers className="size-4 text-amber-500" />
                   <span>Land Parcel Area (m²)</span>
                 </Label>
                 <Input
@@ -1150,7 +1130,8 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                     Featured Showcase
                   </p>
                   <p className="text-xs text-neutral-500 dark:text-neutral-400">
-                    Features this estate in the homepage Featured Residences carousel.
+                    Features this estate in the homepage Featured Residences
+                    carousel.
                   </p>
                 </div>
                 <Switch
@@ -1159,65 +1140,6 @@ export function PropertyForm({ mode, propertyId }: PropertyFormProps) {
                     handleChange("featured", checked)
                   }
                 />
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* SECTION 5: FEATURES & AMENITIES LIST */}
-          <Card className="border-neutral-200 bg-white shadow-md dark:border-neutral-800 dark:bg-neutral-900/60 dark:shadow-xl">
-            <CardHeader className="border-b border-neutral-200 pb-3 dark:border-neutral-800/80">
-              <CardTitle className="flex items-center gap-2 text-base font-semibold text-neutral-900 dark:text-neutral-100">
-                <ShieldCheckIcon className="size-4 text-emerald-500 dark:text-emerald-400" />
-                Amenities & Features
-              </CardTitle>
-              <CardDescription className="text-xs text-neutral-500 dark:text-neutral-400">
-                Key selling points showcased on the property page.
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className="space-y-3.5 pt-4">
-              {/* Feature Tags Adder */}
-              <div className="flex items-center gap-2">
-                <Input
-                  value={newFeatureText}
-                  onChange={(e) => setNewFeatureText(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      handleAddFeature();
-                    }
-                  }}
-                  placeholder="e.g. Heated Infinity Pool"
-                  className="border-neutral-200 bg-white text-xs text-neutral-900 placeholder:text-neutral-400 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-100 dark:placeholder:text-neutral-500"
-                />
-                <Button
-                  type="button"
-                  onClick={handleAddFeature}
-                  size="sm"
-                  className="shrink-0 cursor-pointer bg-neutral-200 text-xs text-neutral-800 hover:bg-neutral-300 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
-                >
-                  <PlusIcon className="size-3.5" />
-                </Button>
-              </div>
-
-              {/* Tag Badges List */}
-              <div className="flex flex-wrap gap-1.5 pt-1">
-                {(formData.features || []).map((feat, index) => (
-                  <Badge
-                    key={`${feat}-${index}`}
-                    variant="outline"
-                    className="flex items-center gap-1.5 border-neutral-200 bg-neutral-100 px-2.5 py-1 text-xs text-neutral-700 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-300"
-                  >
-                    <span>{feat}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveFeature(index)}
-                      className="cursor-pointer text-neutral-400 hover:text-rose-500 dark:text-neutral-500 dark:hover:text-rose-400"
-                    >
-                      <XIcon className="size-3.5" />
-                    </button>
-                  </Badge>
-                ))}
               </div>
             </CardContent>
           </Card>
